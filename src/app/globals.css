@@ -1,26 +1,216 @@
 @import "tailwindcss";
 
+/* ═══════════════════════════════════════════════════════════
+   OMATAPALO DESIGN SYSTEM — v3 · Clean & Spacious
+   ═══════════════════════════════════════════════════════════ */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Brand */
+  --navy:       #002B6B;
+  --navy-dark:  #001840;
+  --navy-mid:   #003087;
+  --accent:     #1A6FD4;
+  --accent-2:   #2583E8;
+  /* aliases para retrocompatibilidade com componentes */
+  --orange:     #1A6FD4;
+  --orange-2:   #2583E8;
+
+  /* Surface */
+  --white:      #FFFFFF;
+  --surface:    #F6F8FB;
+  --surface-2:  #EFF2F7;
+
+  /* Text — all WCAG AA compliant */
+  --text-1:     #111827;  /* headings */
+  --text-2:     #374151;  /* body */
+  --text-3:     #6B7280;  /* secondary */
+  --text-4:     #9CA3AF;  /* muted — decorative only */
+
+  /* Spacing — generous 8px grid */
+  --gap-section: clamp(96px, 12vw, 160px);
+  --gap-block:   clamp(48px, 6vw, 80px);
+  --gap-item:    clamp(24px, 3vw, 40px);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+*, *::before, *::after { cursor: auto !important; }
+a, button, [role="button"], label, select { cursor: pointer !important; }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 1rem;
+  line-height: 1.65;
+  color: var(--text-2);
+  background: var(--white);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+  html { scroll-behavior: auto; }
+}
+
+
+/* ─── Scrollbar ─────────────────────────────────────────── */
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--navy); }
+
+/* ─── Focus ──────────────────────────────────────────────── */
+:focus-visible { outline: 2px solid var(--navy); outline-offset: 4px; }
+
+/* ─── Layout ─────────────────────────────────────────────── */
+.wrap {
+  max-width: 1280px;
+  margin-inline: auto;
+  padding-inline: clamp(24px, 6vw, 80px);
+}
+
+.section {
+  padding-block: var(--gap-section);
+}
+
+/* ─── Type scale ─────────────────────────────────────────── */
+.t-hero {
+  font-size: clamp(4rem, 11vw, 11rem);
+  font-weight: 900;
+  line-height: 0.88;
+  letter-spacing: -0.04em;
+}
+.t-h1 {
+  font-size: clamp(2.75rem, 6vw, 6rem);
+  font-weight: 900;
+  line-height: 0.92;
+  letter-spacing: -0.025em;
+}
+.t-h2 {
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  font-weight: 800;
+  line-height: 1.0;
+  letter-spacing: -0.02em;
+}
+.t-h3 {
+  font-size: clamp(1.375rem, 2.5vw, 1.875rem);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+}
+.t-body-xl { font-size: 1.25rem; line-height: 1.7; }
+.t-body-lg { font-size: 1.125rem; line-height: 1.7; }
+.t-body    { font-size: 1rem;     line-height: 1.65; }
+.t-sm      { font-size: 0.9375rem; line-height: 1.6; }
+.t-xs      { font-size: 0.875rem;  line-height: 1.5; }
+.t-label   {
+  font-size: 0.8125rem; /* 13px */
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* ─── Colour utilities ───────────────────────────────────── */
+.c-orange { color: var(--orange); }
+.c-navy   { color: var(--navy); }
+.c-2      { color: var(--text-2); }
+.c-3      { color: var(--text-3); }
+
+.orange-gradient {
+  background: linear-gradient(135deg, var(--orange), var(--orange-2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ─── Buttons — 48px min height ─────────────────────────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 52px;
+  padding-inline: 32px;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  border: 2px solid transparent;
+  transition: background .2s, color .2s, border-color .2s, box-shadow .2s;
+  white-space: nowrap;
+}
+.btn:active { transform: translateY(1px); }
+
+.btn-primary {
+  background: var(--navy); color: #fff; border-color: var(--navy);
+}
+.btn-primary:hover {
+  background: var(--navy-mid); border-color: var(--navy-mid);
+  box-shadow: 0 6px 24px rgba(0,43,107,.3);
+}
+.btn-navy {
+  background: var(--navy); color: #fff; border-color: var(--navy);
+}
+.btn-navy:hover {
+  background: var(--navy-mid); border-color: var(--navy-mid);
+  box-shadow: 0 6px 24px rgba(0,43,107,.25);
+}
+.btn-ghost {
+  background: transparent; color: var(--navy); border-color: currentColor;
+}
+.btn-ghost:hover { background: var(--surface); }
+.btn-ghost-white {
+  background: transparent; color: #fff; border-color: rgba(255,255,255,.5);
+}
+.btn-ghost-white:hover { background: rgba(255,255,255,.1); border-color: #fff; }
+
+/* ─── Tag / badge ────────────────────────────────────────── */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 12px;
+  border-radius: 2px;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  line-height: 1;
+}
+.tag-orange { background: var(--navy); color: #fff; }
+.tag-navy   { background: var(--navy);   color: #fff; }
+.tag-ghost  { background: var(--surface-2); color: var(--text-3); }
+
+/* ─── Section eyebrow ────────────────────────────────────── */
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.eyebrow-bar {
+  display: block;
+  width: 32px; height: 3px;
+  background: var(--navy);
+  flex-shrink: 0;
+}
+.eyebrow-text {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--navy);
+}
+
+/* ─── Marquee ────────────────────────────────────────────── */
+@keyframes marquee { to { transform: translateX(-50%); } }
+.marquee { animation: marquee 40s linear infinite; }
+@media (prefers-reduced-motion: reduce) { .marquee { animation: none; } }
+
+/* ─── sr-only ────────────────────────────────────────────── */
+.sr-only {
+  position: absolute; width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden;
+  clip: rect(0,0,0,0); white-space: nowrap; border: 0;
 }
