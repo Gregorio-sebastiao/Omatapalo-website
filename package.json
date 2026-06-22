@@ -23,6 +23,9 @@
     "react-simple-maps": "^3.0.0",
     "swiper": "^12.2.0"
   },
+  "engines": {
+    "node": ">=20"
+  },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
