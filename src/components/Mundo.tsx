@@ -3,14 +3,14 @@
 import { useEffect, useRef, useState } from 'react';
 
 const COUNTRIES = [
-  { name: 'Angola',      code: 'AO', continent: 'África',   sub: 'Sede · Lubango — todas as províncias', x: 51.5, y: 62,  anchor: true },
-  { name: 'Moçambique',  code: 'MZ', continent: 'África',   sub: 'Infraestrutura e construção civil',    x: 57,   y: 67  },
-  { name: 'Namíbia',     code: 'NA', continent: 'África',   sub: 'Mineração e obras públicas',           x: 50,   y: 69  },
-  { name: 'RDC',         code: 'CD', continent: 'África',   sub: 'República Democrática do Congo',       x: 53,   y: 60  },
-  { name: 'Portugal',    code: 'PT', continent: 'Europa',   sub: 'Representação e parcerias europeias',  x: 42,   y: 33  },
-  { name: 'Espanha',     code: 'ES', continent: 'Europa',   sub: 'Parcerias comerciais e técnicas',      x: 43.5, y: 33  },
-  { name: 'Reino Unido', code: 'GB', continent: 'Europa',   sub: 'Parcerias estratégicas e financeiras', x: 44,   y: 27  },
-  { name: 'EUA',         code: 'US', continent: 'Américas', sub: 'Parcerias estratégicas e de investimento', x: 22, y: 35 },
+  { name: 'Angola',      code: 'AO', continent: 'África',   sub: 'Sede · Lubango — todas as províncias', x: 53,   y: 63,  anchor: true, labelLeft: true },
+  { name: 'Moçambique',  code: 'MZ', continent: 'África',   sub: 'Infraestrutura e construção civil',    x: 59,   y: 66  },
+  { name: 'Namíbia',     code: 'NA', continent: 'África',   sub: 'Mineração e obras públicas',           x: 53,   y: 69  },
+  { name: 'RDC',         code: 'CD', continent: 'África',   sub: 'República Democrática do Congo',       x: 54,   y: 56  },
+  { name: 'Portugal',    code: 'PT', continent: 'Europa',   sub: 'Representação e parcerias europeias',  x: 45,   y: 31,  labelLeft: true },
+  { name: 'Espanha',     code: 'ES', continent: 'Europa',   sub: 'Parcerias comerciais e técnicas',      x: 47,   y: 31  },
+  { name: 'Reino Unido', code: 'GB', continent: 'Europa',   sub: 'Parcerias estratégicas e financeiras', x: 47,   y: 19  },
+  { name: 'EUA',         code: 'US', continent: 'América do Norte', sub: 'Parcerias estratégicas e de investimento', x: 20, y: 31 },
 ];
 
 export default function Mundo() {
@@ -125,7 +125,10 @@ export default function Mundo() {
                 {/* country name label — appears with pin */}
                 <div style={{
                   position: 'absolute',
-                  top: '50%', left: 'calc(100% + 10px)',
+                  top: '50%',
+                  ...(c as any).labelLeft
+                    ? { right: 'calc(100% + 10px)', left: 'auto', textAlign: 'right' }
+                    : { left: 'calc(100% + 10px)' },
                   transform: 'translateY(-50%)',
                   whiteSpace: 'nowrap',
                   opacity: visible ? 1 : 0,
@@ -181,15 +184,15 @@ export default function Mundo() {
 
             {/* scroll progress indicator */}
             <div className="mundo-hdr-el" style={{ opacity: 0, display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 8 }}>
-              <div style={{ fontFamily: 'var(--font-label)', fontSize: 9, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.3)' }}>
+              <div style={{ fontFamily: 'var(--font-label)', fontSize: 9, letterSpacing: '0.16em', textTransform: 'uppercase', color: '#fff' }}>
                 {visibleCount}/{COUNTRIES.length} países
               </div>
-              <div style={{ width: 80, height: 1, background: 'rgba(255,255,255,0.1)', borderRadius: 1, overflow: 'hidden' }}>
+              <div style={{ width: 80, height: 1, background: 'rgba(255,255,255,0.3)', borderRadius: 1, overflow: 'hidden' }}>
                 <div style={{ height: '100%', background: '#fff', width: `${(visibleCount / COUNTRIES.length) * 100}%`, transition: 'width .3s ease' }} />
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><rect width="10" height="10" fill="rgba(255,255,255,0.3)" /></svg>
-                <span style={{ fontFamily: 'var(--font-label)', fontSize: 9, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.3)' }}>Deslize para explorar</span>
+                <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><rect width="10" height="10" fill="#fff" /></svg>
+                <span style={{ fontFamily: 'var(--font-label)', fontSize: 9, letterSpacing: '0.16em', textTransform: 'uppercase', color: '#fff' }}>Deslize para explorar</span>
               </div>
             </div>
           </div>

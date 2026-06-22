@@ -4,10 +4,10 @@ import { useEffect, useRef, useState, useCallback } from 'react';
 import Image from 'next/image';
 
 const CERTS = [
-  { src: '/ISO-9001-2.png',          label: 'ISO 9001',          sub: 'Sistemas de Gestão da Qualidade',         n: '01' },
-  { src: '/ISO-14001-2.png',         label: 'ISO 14001',         sub: 'Gestão Ambiental',                        n: '02' },
-  { src: '/ISO-45001-2.png',         label: 'ISO 45001',         sub: 'Saúde e Segurança no Trabalho',           n: '03' },
-  { src: '/UN-GLOBAL-COMPACT-2.png', label: 'UN Global Compact', sub: 'Pacto Global das Nações Unidas',          n: '04' },
+  { src: '/ISO-9001-3.png',          label: 'ISO 9001',          sub: 'Sistemas de Gestão da Qualidade',         n: '01' },
+  { src: '/ISO-14001-3.png',         label: 'ISO 14001',         sub: 'Gestão Ambiental',                        n: '02' },
+  { src: '/ISO-45001-3.png',         label: 'ISO 45001',         sub: 'Saúde e Segurança no Trabalho',           n: '03' },
+  { src: '/UN-GLOBAL-COMPACT-3.png', label: 'UN Global Compact', sub: 'Pacto Global das Nações Unidas',          n: '04' },
 ];
 
 function CertColumn({ cert, index, hovered, onEnter, onLeave }: {
@@ -56,6 +56,7 @@ function CertColumn({ cert, index, hovered, onEnter, onLeave }: {
       style={{
         flex: isHov ? '2.2' : '1',
         transition: 'flex 0.55s cubic-bezier(0.77,0,0.175,1)',
+        background: isHov ? 'linear-gradient(135deg, #22479a 0%, #0e2554 100%)' : 'linear-gradient(135deg, #172d6e 0%, #0a1a45 100%)',
         borderRight: index < CERTS.length - 1 ? '1px solid rgba(255,255,255,0.07)' : 'none',
         padding: 'clamp(32px,4vw,56px) clamp(20px,2.5vw,40px)',
         display: 'flex',
@@ -80,15 +81,6 @@ function CertColumn({ cert, index, hovered, onEnter, onLeave }: {
         transition: 'height 0.4s ease',
       }} />
 
-      {/* top: number */}
-      <div style={{
-        fontFamily: 'var(--font-display)', fontWeight: 900,
-        fontSize: 'clamp(0.75rem,1vw,1rem)',
-        color: isHov ? 'rgba(255,255,255,0.5)' : 'rgba(255,255,255,0.2)',
-        letterSpacing: '0.08em',
-        transition: 'color 0.3s',
-        transform: 'translateZ(8px)',
-      }}>{cert.n}</div>
 
       {/* centre: seal — fades + scales in on hover */}
       <div style={{
@@ -120,7 +112,7 @@ function CertColumn({ cert, index, hovered, onEnter, onLeave }: {
         <div style={{
           fontFamily: 'var(--font-label)', fontSize: 9,
           letterSpacing: '0.16em', textTransform: 'uppercase',
-          color: isHov ? 'rgba(255,255,255,0.55)' : 'rgba(255,255,255,0.25)',
+          color: '#fff',
           lineHeight: 1.6, transition: 'color 0.3s',
           maxWidth: isHov ? 280 : 120,
           overflow: 'hidden',

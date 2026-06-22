@@ -22,10 +22,10 @@ export default function Footer() {
             <Image
               src="/logo/LOGO OMT 1.png"
               alt="Omatapalo"
-              width={140}
-              height={24}
-              className="h-7 w-auto"
-              style={{ marginBottom: 'var(--space-5)', filter: 'brightness(0) invert(1)' }}
+              width={220}
+              height={38}
+              className="w-auto"
+              style={{ marginBottom: 'var(--space-3)', filter: 'brightness(0) invert(1)' }}
             />
             <p style={{ fontSize: 'var(--text-sm)', lineHeight: 1.65, color: '#fff', maxWidth: '320px' }}>
               Engenharia, Construção e Infraestrutura a transformar Angola e o continente africano desde 1994. Fazemos acontecer.

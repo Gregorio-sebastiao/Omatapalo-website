@@ -9,7 +9,7 @@ const STATS = [
   { value: 5000, prefix: '+', suffix: ' km',  label: 'de Estrada', thousands: true },
 ];
 
-const TICKER = ['Engenharia', 'Construção', 'Infra-estrutura', 'Mineração', 'Energia', 'Turismo', 'Agro-negócio', 'Imobiliário'];
+const TICKER = ['Engenharia', 'Construção', 'Infra-estruturas', 'Mineração', 'Energia', 'Gestão Hoteleira', 'Agro-negócio', 'Imobiliário', 'Transporte', 'Pescas'];
 
 const SQUARES = [
   { size: 180, x: '72%',  y: '12%', opacity: 0.045, speed: -18, rotate: 22  },
@@ -229,7 +229,7 @@ export default function Hero() {
               color: '#fff', marginBottom: 'clamp(24px,3vh,36px)', opacity: 0,
               fontFamily: 'var(--font-sans)',
             }}>
-              Engenharia, Construção e Infra-estrutura — a transformar Angola há mais de duas décadas.
+              Engenharia, Construção e Infra-estruturas — a transformar Angola há mais de duas décadas.
             </p>
             <div ref={actionsRef} style={{ display: 'flex', gap: 14, flexWrap: 'wrap', opacity: 0 }}>
               <a href="#grupo" style={{
@@ -270,7 +270,9 @@ export default function Hero() {
                   <span data-count={s.value} data-float={(s as any).decimals ? '1' : '0'} data-thousands={(s as any).thousands ? '1' : '0'}>
                     {(s as any).thousands ? s.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') : (s as any).decimals ? s.value.toFixed(1) : s.value}
                   </span>
-                  <span style={{ fontSize: '0.42em', color: '#fff', fontFamily: 'var(--font-sans)', fontWeight: 400, marginLeft: 2 }}>{s.suffix}</span>
+                  <span style={{ fontSize: '0.42em', color: '#fff', fontFamily: 'var(--font-sans)', fontWeight: 400, marginLeft: 2 }}>
+                    {s.suffix.includes('m²') ? <>M m<sup>2</sup></> : s.suffix}
+                  </span>
                 </div>
                 <div style={{ fontFamily: 'var(--font-label)', fontSize: 9, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#fff', marginTop: 7 }}>{s.label}</div>
               </div>

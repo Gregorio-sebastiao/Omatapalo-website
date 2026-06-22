@@ -3,9 +3,9 @@
 import { useEffect, useRef, useState } from 'react';
 
 const EVENTOS = [
-  { year: '2003', title: 'Fundação OMATAPALO', desc: 'A OMATAPALO - Engenharia e Construção, SA é fundada na cidade de Lubango, fruto de uma união entre a empresa portuguesa Carlos José Fernandes e Cª., com mais de 70 anos de experiência, e a CNS Norte.' },
-  { year: '2004', title: 'Início de Actividade', desc: 'A OMATAPALO inicia efectivamente a sua actividade em Angola, a partir da qual conheceu um forte crescimento e expansão nas suas áreas de actuação no sector de obras públicas e privadas.' },
-  { year: '2005', title: 'Expansão para o Namibe', desc: 'O forte crescimento levou à expansão para o Namibe, onde a OMATAPALO possui reservas permanentes de materiais, maquinaria, peças e combustível.' },
+  { year: '2003', title: 'Fundação OMATAPALO', desc: 'A OMATAPALO - Engenharia e Construção, SA é fundada na cidade de Lubango, província do Huíla, fruto de uma união de esforços e vontade entre a empresa portuguesa de construção civil Carlos José Fernandes e Cª., com mais de 70 anos de experiência, e a CNS Norte.' },
+  { year: '2004', title: 'Início de Actividade', desc: 'Ano em que a OMATAPALO inicia efectivamente a sua actividade em Angola, a partir da qual conheceu um forte crescimento e expansão nas suas áreas de actuação no sector de obras públicas e privadas.' },
+  { year: '2005', title: 'Expansão para o Namibe', desc: 'O forte crescimento nas suas áreas de actuação levou à expansão para o Namibe, onde a OMATAPALO possui reservas permanentes de materiais, maquinaria, peças, combustível e outros elementos integrantes do processo de produção.' },
   { year: '2008', title: 'Construção da Sede', desc: 'Início da construção da Sede da OMATAPALO, no Lubango, com estaleiros, parques de máquinas e condomínio vocacionado para a habitação dos colaboradores.' },
   { year: '2009', title: 'OMATAPALO + SOCOLIL', desc: 'A OMATAPALO associou-se ao Grupo SOCOLIL, projectando a empresa para outro patamar de relacionamento e partilhando sinergias de um grupo empresarial consolidado.' },
   { year: '2010', title: 'Internacionalização', desc: 'Criação da OMATAPALO Namíbia — primeiro passo para a internacionalização — e fundação da EMADEL Carpintaria. Abertura da Delegação do Huambo.' },

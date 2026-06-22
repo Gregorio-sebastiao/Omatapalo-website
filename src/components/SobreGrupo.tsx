@@ -3,17 +3,17 @@
 import { useEffect, useRef, useState } from 'react';
 
 const IMAGES = [
-  { src: '/EN-230-omatapalo-2.jpg',              label: 'Corredor Rodoviário EN-230'   },
-  { src: '/Salao-Protocolar-1-1.jpg',            label: 'Salão Protocolar'             },
-  { src: '/centro-cultural-huambo-omatapalo.png',label: 'Centro Cultural do Huambo'   },
-  { src: '/EN230-5.jpg',                         label: 'Obras de Infra-estrutura'     },
+  { src: '/EN-230-omatapalo-2.jpg',              label: 'Estrada Nacional 230 - Saurimo'   },
+  { src: '/Salao-Protocolar-1-1.jpg',            label: 'Salão Protocolar - Luanda'             },
+  { src: '/centro-cultural-huambo-omatapalo.png',label: 'Centro Cultural Manuel Rui - Huambo'   },
+  { src: '/omatapalo-construcao-do-monumento-do-soldado-desconhecido.jpg', label: 'Monumento ao Soldado Desconhecido - Luanda' },
   { src: '/DSC_0030.jpg',                        label: 'Equipas em Campo'             },
   { src: '/Academia-barra3.jpg',                 label: 'Academia Omatapalo'           },
 ];
 
 const STATS = [
   { target: 23,   suffix: '',        prefix: '+',  format: (n: number) => Math.round(n).toString(),                          l: 'Anos'          },
-  { target: 15,   suffix: 'K',       prefix: '+',  format: (n: number) => Math.round(n).toString(),                          l: 'Colaboradores' },
+  { target: 15000, suffix: '',       prefix: '+',  format: (n: number) => Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.'), l: 'Colaboradores' },
   { target: 1.5,  suffix: 'M m²',   prefix: '+',  format: (n: number) => n.toFixed(1).replace('.', ','),                    l: 'Construídos'   },
   { target: 5000, suffix: ' km',     prefix: '+',  format: (n: number) => Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.'), l: 'de Estrada' },
 ];
@@ -138,7 +138,7 @@ export default function SobreGrupo() {
 
             {/* body */}
             <p className="sgc-text" style={{ opacity: 0, fontFamily: 'var(--font-sans)', fontSize: 'clamp(13px,1vw,15px)', color: '#0a0f1e', lineHeight: 1.85, marginBottom: 12 }}>
-              Somos um grupo angolano de referência nas áreas de Engenharia, Construção e Infra-estrutura. Fundados em 2003, crescemos com o propósito de transformar Angola através de obras que ficam para a história.
+              Somos um grupo angolano de referência nas áreas de Engenharia, Construção e Infra-estruturas. Fundados em 2003, crescemos com o propósito de transformar Angola através de obras que ficam para a história.
             </p>
             <p className="sgc-text" style={{ opacity: 0, fontFamily: 'var(--font-sans)', fontSize: 'clamp(13px,1vw,15px)', color: '#0a0f1e', lineHeight: 1.85, marginBottom: 32 }}>
               Com mais de duas décadas de experiência, assumimos um papel activo na construção de uma Angola mais sustentável — investindo em pessoas, em inovação e em projectos de impacto nacional e internacional.
@@ -147,7 +147,7 @@ export default function SobreGrupo() {
             {/* stats 2×2 */}
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px 24px', marginBottom: 32 }}>
               {STATS.map((s, i) => {
-                const fmt = s.suffix === ' km' ? 'thousands' : s.suffix === 'M m²' ? 'decimal' : 'int';
+                const fmt = s.suffix === ' km' || s.target === 15000 ? 'thousands' : s.suffix === 'M m²' ? 'decimal' : 'int';
                 return (
                   <div key={i} className="sgc-stat" style={{ opacity: 0, borderTop: '1.5px solid #e5e7eb', paddingTop: 14 }}>
                     <div style={{ fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 'clamp(1.2rem,1.8vw,1.8rem)', color: '#0F1A2E', letterSpacing: '-0.02em', lineHeight: 1, display: 'flex', alignItems: 'baseline', gap: 2 }}>
@@ -156,7 +156,9 @@ export default function SobreGrupo() {
                         data-counter={s.target}
                         data-fmt={fmt}
                       >0</span>
-                      <span style={{ fontSize: '0.55em', color: '#1a396e', fontFamily: 'var(--font-sans)', fontWeight: 600, marginLeft: 2 }}>{s.suffix}</span>
+                      <span style={{ fontSize: '0.55em', color: '#1a396e', fontFamily: 'var(--font-sans)', fontWeight: 600, marginLeft: 2 }}>
+                        {s.suffix.includes('m²') ? <>M m<sup>2</sup></> : s.suffix}
+                      </span>
                     </div>
                     <div style={{ fontFamily: 'var(--font-label)', fontSize: 9, letterSpacing: '0.16em', textTransform: 'uppercase', color: '#0a0f1e', marginTop: 6 }}>{s.l}</div>
                   </div>

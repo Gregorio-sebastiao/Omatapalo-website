@@ -4,16 +4,16 @@ import { useEffect, useRef, useState } from 'react';
 
 const ITEMS = [
   { value: 14,   label: 'Hospitais',          img: '/inauguracao.jpg'                      },
-  { value: 12,   label: 'Estradas',           img: '/EN-230-omatapalo-2.jpg'               },
-  { value: 4,    label: 'Portos',             img: '/EN230-5.jpg'                          },
+  { value: 5000, label: 'Estradas',            img: '/EN-230-omatapalo-2.jpg', thousands: true, suffix: 'km' },
+  { value: 4,    label: 'Portos',             img: '/TOPSIDE NAMIBE.JPG'                   },
   { value: 6,    label: 'Linhas Alta Tensão', img: '/Sustentabilidade-omatapalo.png'       },
-  { value: 6,    label: 'Construções Esp.',   img: '/Salao-Protocolar-1-1.jpg'             },
+  { value: 6,    label: 'Construções Esp.',   img: '/MINISTÉRIO DO PLANEAMENTO.JPG'        },
   { value: 10,   label: 'Escolas',            img: '/colegio-paula-frassinetti.jpg'        },
   { value: 2,    label: 'Aeroportos',         img: '/aeroporto-namibe.jpg'                 },
   { value: 3500, label: 'Equipamentos',       img: '/GRUA.jpg', thousands: true            },
   { value: 3,    label: 'Barragens',          img: '/barragem-calucuve.jpg'                },
   { value: 8,    label: 'ETAR',               img: '/etar-huila.jpg'                       },
-  { value: 7,    label: 'Hotéis',             img: '/Salao-Protocolar-1-1.jpg'             },
+  { value: 7,    label: 'Unidades Hoteleiras', img: '/FLOW HOTEL LUANDA AEROPORTO.jpeg'    },
   { value: 14,   label: 'Centrais Solares',   img: '/parquesolar.jpg'                      },
 ];
 
@@ -135,7 +135,8 @@ export default function GrandesNumeros() {
                     display: 'flex',
                     flexDirection: 'column',
                     justifyContent: 'center',
-                    paddingInline: 'clamp(20px,2.5vw,40px)',
+                    paddingLeft: 'clamp(12px,1.5vw,20px)',
+                    paddingRight: 'clamp(12px,1.5vw,20px)',
                     borderRight: i < ITEMS.length - 1 ? '1px solid rgba(255,255,255,0.07)' : 'none',
                     cursor: 'default',
                     overflow: 'hidden',
@@ -167,15 +168,11 @@ export default function GrandesNumeros() {
 
                   {/* content — sits above image */}
                   <div style={{ position: 'relative', zIndex: 1 }}>
-                    {/* index */}
-                    <div style={{ fontFamily: 'var(--font-label)', fontSize: 10, letterSpacing: '0.14em', color: '#fff', marginBottom: 12 }}>
-                      {String(i + 1).padStart(2, '0')}
-                    </div>
 
                     {/* big number */}
                     <div style={{
                       fontFamily: 'var(--font-display)', fontWeight: 900,
-                      fontSize: (item as any).thousands ? 'clamp(2.2rem,4.5vw,5rem)' : 'clamp(3.5rem,7vw,8rem)', color: '#fff',
+                      fontSize: (item as any).thousands ? 'clamp(2.3rem,4.2vw,5.5rem)' : 'clamp(2.6rem,5vw,6.5rem)', color: '#fff',
                       letterSpacing: '-0.04em', lineHeight: 1,
                       display: 'flex', alignItems: 'baseline',
                       transition: 'transform .3s ease',
@@ -187,6 +184,9 @@ export default function GrandesNumeros() {
                           ? item.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')
                           : item.value}
                       </span>
+                      {(item as any).suffix && (
+                        <span style={{ fontSize: '0.3em', color: '#fff', fontWeight: 400, fontFamily: 'var(--font-sans)', marginLeft: 4, marginBottom: 8 }}>{(item as any).suffix}</span>
+                      )}
                     </div>
 
                     {/* label */}

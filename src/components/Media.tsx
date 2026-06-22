@@ -24,7 +24,7 @@ const NEWS = [
   },
   {
     img: '/centro-cultural-huambo-omatapalo.png',
-    cat: 'Infra-estrutura', date: '18 Fev 2026',
+    cat: 'Infra-estruturas', date: '18 Fev 2026',
     title: 'Centro Cultural do Huambo abre portas à comunidade angolana',
     excerpt: 'Equipamento cultural reforça o compromisso do Grupo com o desenvolvimento social.',
   },
