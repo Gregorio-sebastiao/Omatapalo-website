@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, RefObject } from 'react';
 
-export function useReveal<T extends HTMLElement = HTMLDivElement>(stagger = 0): RefObject<T> {
+export function useReveal<T extends HTMLElement = HTMLDivElement>(stagger = 0): RefObject<T | null> {
   const ref = useRef<T>(null);
 
   useEffect(() => {
