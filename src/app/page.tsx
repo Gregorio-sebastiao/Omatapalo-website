@@ -1,25 +1,29 @@
 import Nav from '@/components/Nav';
-import GeoScrollLines from '@/components/GeoScrollLines';
 import Hero from '@/components/Hero';
-import FazemosAcontecer from '@/components/FazemosAcontecer';
-import OQueProduzimos from '@/components/OQueProduzimos';
-import News from '@/components/News';
-import ParaOndeVamos from '@/components/ParaOndeVamos';
-import ConstruimosFuturo from '@/components/ConstruimosFuturo';
+import SobreGrupo from '@/components/SobreGrupo';
+import Negocios from '@/components/Negocios';
+import GrandesNumeros from '@/components/GrandesNumeros';
+import Certificacoes from '@/components/Certificacoes';
+import SustentabilidadeHome from '@/components/SustentabilidadeHome';
+import Mundo from '@/components/Mundo';
+import Media from '@/components/Media';
 import Footer from '@/components/Footer';
 
 export default function Home() {
   return (
-    <main>
-      <GeoScrollLines />
+    <>
       <Nav />
-      <Hero />
-      <FazemosAcontecer />
-      <OQueProduzimos />
-      <News />
-      <ParaOndeVamos />
-      <ConstruimosFuturo />
+      <main>
+        <Hero />
+        <SobreGrupo />
+        <GrandesNumeros />
+        <Negocios />
+        <Certificacoes />
+        <SustentabilidadeHome />
+        <Mundo />
+        <Media />
+      </main>
       <Footer />
-    </main>
+    </>
   );
 }

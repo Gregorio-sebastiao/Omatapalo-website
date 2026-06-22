@@ -1,26 +1,48 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 
-const links = [
-  { label: 'Omatapalo', href: '#grupo' },
-  { label: 'Portfólio', href: '#portfolio' },
-  { label: 'Regiões', href: '#regioes' },
-  { label: 'Projectos SMOK', href: '#smok' },
-  { label: 'Media', href: '#media' },
-  { label: 'Sustentabilidade', href: '#sustentabilidade' },
-  { label: 'Contactos', href: '#contactos' },
+const NAV = [
+  { t: 'Omatapalo', href: '/omatapalo', sub: [
+    { t: 'Omatapalo no Mundo', href: '/omatapalo#mundo' },
+    { t: 'História', href: '/omatapalo' },
+    { t: 'Conselho de Administração', href: '/omatapalo#conselho' },
+  ]},
+  { t: 'Portefólio', href: '/portefolio' },
+  { t: 'Pessoas', href: '/pessoas' },
+  { t: 'Sustentabilidade', href: '/sustentabilidade' },
+  { t: 'Responsabilidade Social', href: '/responsabilidade-social', sub: [
+    { t: 'Missão Fazer Sorrir', href: '/responsabilidade-social#missao' },
+    { t: 'CDH', href: '/cdh' },
+  ]},
+  { t: 'Media', href: '#media' },
+];
+
+const ALL_PAGES = [
+  { t: 'Omatapalo', href: '#top' },
+  { t: 'Omatapalo no Mundo', href: '/omatapalo#mundo' },
+  { t: 'História', href: '/omatapalo' },
+  { t: 'Conselho de Administração', href: '/omatapalo#conselho' },
+  { t: 'Portefólio', href: '/portefolio' },
+  { t: 'Pessoas', href: '/pessoas' },
+  { t: 'CDH', href: '/cdh' },
+  { t: 'Media', href: '#media' },
+  { t: 'Sustentabilidade', href: '/sustentabilidade' },
+  { t: 'Responsabilidade Social', href: '/responsabilidade-social' },
+  { t: 'Missão Fazer Sorrir', href: '/responsabilidade-social#missao' },
+  { t: 'Contactos', href: '/contactos' },
 ];
 
 export default function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const headerRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    const fn = () => setScrolled(window.scrollY > 80);
+    const fn = () => setScrolled(window.scrollY > 40);
     window.addEventListener('scroll', fn, { passive: true });
+    fn();
     return () => window.removeEventListener('scroll', fn);
   }, []);
 
@@ -30,126 +52,150 @@ export default function Nav() {
     return () => window.removeEventListener('keydown', fn);
   }, []);
 
-  const go = (href: string) => {
-    setOpen(false);
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    document.querySelector(href)?.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth' });
-  };
+  useEffect(() => {
+    document.body.style.overflow = open ? 'hidden' : '';
+    return () => { document.body.style.overflow = ''; };
+  }, [open]);
+
+  /* GSAP entrance */
+  useEffect(() => {
+    let gsap: typeof import('gsap').gsap | null = null;
+    import('gsap').then(({ gsap: g }) => {
+      gsap = g;
+      if (headerRef.current) {
+        g.fromTo(headerRef.current,
+          { y: -80, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.9, ease: 'power3.out', delay: 0.2 }
+        );
+      }
+    });
+    return () => {};
+  }, []);
 
   return (
     <>
-      <motion.header
-        initial={{ y: -80, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-        role="banner"
-        className={`fixed top-0 inset-x-0 z-50 transition-all duration-400 ${
-          scrolled
-            ? 'bg-white/97 backdrop-blur-xl shadow-sm'
-            : 'bg-transparent'
-        }`}
+      <header
+        ref={headerRef}
+        id="top"
+        className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${scrolled ? 'border-b border-white/10' : ''}`}
+        style={{
+          background: scrolled
+            ? '#1a396e'
+            : 'linear-gradient(180deg, rgba(7,16,31,0.55), rgba(7,16,31,0))',
+          backdropFilter: scrolled ? 'none' : 'none',
+          WebkitBackdropFilter: 'none',
+          opacity: 0,
+        }}
       >
-        <div className="wrap flex items-center justify-between h-20">
-
-          {/* Logo */}
-          <a
-            href="/"
-            aria-label="Grupo Omatapalo — Página Inicial"
-            className="flex items-center"
-          >
+        <div className="wrap flex items-center gap-6 h-20">
+          <a href="/" aria-label="Omatapalo — início">
             <Image
-              src="/logo.png"
+              src="/logo/LOGO OMT 1.png"
               alt="Omatapalo"
-              width={180}
-              height={48}
-              className={`h-10 w-auto transition-all duration-300 ${scrolled ? '' : 'brightness-0 invert'}`}
+              width={320}
+              height={139}
+              className="w-[140px] h-auto transition-opacity duration-300"
+              style={{ filter: 'brightness(0) invert(1)' }}
               priority
             />
           </a>
 
           {/* Desktop nav */}
-          <nav aria-label="Navegação principal" className="hidden xl:flex items-center gap-8">
-            {links.map(l => (
-              <button
-                key={l.href}
-                onClick={() => go(l.href)}
-                className={`t-label transition-colors duration-200 relative group ${
-                  scrolled ? 'text-[var(--text-3)] hover:text-[var(--navy)]' : 'text-white/70 hover:text-white'
-                }`}
-              >
-                {l.label}
-                <span className={`absolute -bottom-1 left-0 w-0 h-0.5 bg-[var(--orange)] group-hover:w-full transition-all duration-250`} aria-hidden="true" />
-              </button>
+          <nav className="hidden lg:flex items-center gap-5 ml-auto h-full">
+            {NAV.map((n) => (
+              <div key={n.t} className="relative h-full flex items-center group">
+                <a
+                  href={n.href}
+                  className="flex items-center gap-1 text-[11px] font-semibold tracking-[0.05em] uppercase transition-colors duration-200 whitespace-nowrap"
+                  style={{ fontFamily: 'var(--font-sans)', color: '#ffffff' }}
+                >
+                  {n.t}
+                  {n.sub && (
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="transition-transform duration-200 group-hover:rotate-180">
+                      <polyline points="6 9 12 15 18 9" />
+                    </svg>
+                  )}
+                </a>
+                {/* Underline */}
+                <span className="absolute bottom-[18px] left-0 w-0 h-[2px] bg-[var(--navy-300)] group-hover:w-full transition-all duration-300" />
+
+                {n.sub && (
+                  <div className="absolute top-full left-[-16px] min-w-[248px] opacity-0 invisible translate-y-2 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 transition-all duration-200"
+                    style={{
+                      background: 'rgba(7,16,31,0.45)',
+                      backdropFilter: 'blur(8px)',
+                      WebkitBackdropFilter: 'blur(8px)',
+                      borderRadius: 'var(--radius-md)',
+                      padding: '8px',
+                    }}>
+                    {n.sub.map((s) => (
+                      <a key={s.t} href={s.href}
+                        className="block px-3.5 py-2.5 rounded text-[12px] font-semibold uppercase tracking-[0.08em] hover:bg-white/[0.07] transition-colors duration-150"
+                        style={{ fontFamily: 'var(--font-sans)', color: '#ffffff' }}>
+                        {s.t}
+                      </a>
+                    ))}
+                  </div>
+                )}
+              </div>
             ))}
+            <a href="/contactos"
+              className="btn btn-ghost-white ml-2"
+              style={{ height: '40px', paddingInline: '20px', fontSize: '13px' }}>
+              Contactos
+            </a>
           </nav>
 
-          {/* Hamburger */}
+          {/* Burger */}
           <button
-            onClick={() => setOpen(v => !v)}
-            aria-expanded={open}
-            aria-label={open ? 'Fechar menu' : 'Abrir menu'}
-            className="xl:hidden w-11 h-11 flex flex-col justify-center gap-[5px]"
+            onClick={() => setOpen(true)}
+            aria-label="Menu"
+            className="lg:hidden ml-auto text-white p-2"
           >
-            {[0, 1, 2].map(i => (
-              <span
-                key={i}
-                aria-hidden="true"
-                className={`block h-0.5 transition-all duration-250 ${
-                  scrolled ? 'bg-[var(--navy)]' : 'bg-white'
-                } ${
-                  i === 0 ? (open ? 'w-6 rotate-45 translate-y-[7px]' : 'w-6') :
-                  i === 1 ? (open ? 'opacity-0 w-3' : 'w-4') :
-                  (open ? 'w-6 -rotate-45 -translate-y-[7px]' : 'w-6')
-                }`}
-              />
-            ))}
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <line x1="3" y1="6" x2="21" y2="6" />
+              <line x1="3" y1="12" x2="21" y2="12" />
+              <line x1="3" y1="18" x2="21" y2="18" />
+            </svg>
           </button>
         </div>
-      </motion.header>
+      </header>
 
-      {/* Mobile menu */}
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            role="dialog"
-            aria-modal="true"
-            aria-label="Menu de navegação"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-40 bg-[var(--navy-dark)] flex flex-col"
-          >
-            {/* Close button area */}
-            <div className="h-20 wrap flex items-center justify-end">
-              <button onClick={() => setOpen(false)} aria-label="Fechar menu"
-                className="w-11 h-11 flex items-center justify-center text-white/60 hover:text-white">
-                <span aria-hidden="true" className="text-2xl leading-none">✕</span>
-              </button>
-            </div>
-
-            <nav aria-label="Menu mobile" className="wrap flex-1 flex flex-col justify-center gap-1">
-              {links.map((l, i) => (
-                <motion.button
-                  key={l.href}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: i * 0.05 }}
-                  onClick={() => go(l.href)}
-                  className="text-left py-5 group flex items-center justify-between"
-                >
-                  <span className="t-h3 text-white/70 group-hover:text-white transition-colors duration-200">
-                    {l.label}
-                  </span>
-                  <span aria-hidden="true" className="text-[var(--orange)] opacity-0 group-hover:opacity-100 transition-opacity duration-200 text-2xl">
-                    →
-                  </span>
-                </motion.button>
-              ))}
-            </nav>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* Drawer */}
+      <div
+        className={`fixed inset-0 z-[90] flex flex-col overflow-y-auto transition-transform duration-500 ${open ? 'translate-x-0' : 'translate-x-full'}`}
+        style={{ background: 'var(--navy-950)', padding: 'clamp(20px,5vw,40px)' }}
+        aria-hidden={!open}
+      >
+        <div className="flex items-center justify-between mb-12">
+          <span className="text-white font-black uppercase" style={{ fontFamily: 'var(--font-display)', fontSize: '20px', letterSpacing: '-0.02em' }}>OMATAPALO</span>
+          <button onClick={() => setOpen(false)} aria-label="Fechar" className="text-white p-2">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+          </button>
+        </div>
+        <nav className="flex flex-col">
+          {ALL_PAGES.map((p, i) => (
+            <a
+              key={p.t}
+              href={p.href}
+              onClick={() => setOpen(false)}
+              className="flex items-center justify-between py-3 border-b border-white/10 hover:pl-2.5 transition-all duration-200 group"
+            >
+              <span
+                className="font-black uppercase text-white group-hover:text-[var(--navy-200)] transition-colors"
+                style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(22px,4.4vw,34px)', letterSpacing: '-0.02em' }}>
+                {p.t}
+              </span>
+              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '12px', color: 'var(--navy-400)' }}>
+                {String(i).padStart(2, '0')}
+              </span>
+            </a>
+          ))}
+        </nav>
+      </div>
     </>
   );
 }

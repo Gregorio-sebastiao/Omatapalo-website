@@ -1,0 +1,17 @@
+import Nav from '@/components/Nav';
+import CDH from '@/components/CDH';
+import Footer from '@/components/Footer';
+import PageHero from '@/components/PageHero';
+
+export default function CDHPage() {
+  return (
+    <>
+      <Nav />
+      <main>
+        <PageHero title="Centro de Desenvolvimento Humano" imgSrc="https://images.unsplash.com/photo-1577495508048-b635879837f1?w=1600&q=80" position="center" />
+        <CDH />
+      </main>
+      <Footer />
+    </>
+  );
+}

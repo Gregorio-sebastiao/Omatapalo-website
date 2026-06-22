@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Camada_2" data-name="Camada 2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 72 72">
+  <defs>
+    <style>
+      .cls-1, .cls-2 {
+        fill: none;
+      }
+
+      .cls-3 {
+        clip-path: url(#clippath-1);
+      }
+
+      .cls-4 {
+        clip-path: url(#clippath-3);
+      }
+
+      .cls-5 {
+        clip-path: url(#clippath-4);
+      }
+
+      .cls-6 {
+        clip-path: url(#clippath-2);
+      }
+
+      .cls-7 {
+        clip-path: url(#clippath-7);
+      }
+
+      .cls-8 {
+        clip-path: url(#clippath-6);
+      }
+
+      .cls-9 {
+        clip-path: url(#clippath-9);
+      }
+
+      .cls-10 {
+        clip-path: url(#clippath-8);
+      }
+
+      .cls-11 {
+        clip-path: url(#clippath-5);
+      }
+
+      .cls-2 {
+        stroke: #fff;
+        stroke-miterlimit: 10;
+        stroke-width: .87px;
+      }
+
+      .cls-12 {
+        clip-path: url(#clippath);
+      }
+    </style>
+    <clipPath id="clippath">
+      <rect class="cls-1" width="72" height="72"/>
+    </clipPath>
+    <clipPath id="clippath-1">
+      <rect class="cls-1" x="0" y="0" width="72" height="72"/>
+    </clipPath>
+    <clipPath id="clippath-2">
+      <rect class="cls-1" x=".53" y=".53" width="71.19" height="71.23"/>
+    </clipPath>
+    <clipPath id="clippath-3">
+      <rect class="cls-1" x=".53" y=".53" width="71.19" height="71.23"/>
+    </clipPath>
+    <clipPath id="clippath-4">
+      <rect class="cls-1" x=".53" y=".53" width="71.19" height="71.23"/>
+    </clipPath>
+    <clipPath id="clippath-5">
+      <rect class="cls-1" x=".53" y=".53" width="71.19" height="71.23"/>
+    </clipPath>
+    <clipPath id="clippath-6">
+      <rect class="cls-1" x=".53" y=".53" width="71.19" height="71.23"/>
+    </clipPath>
+    <clipPath id="clippath-7">
+      <rect class="cls-1" x=".53" y=".53" width="71.19" height="71.23"/>
+    </clipPath>
+    <clipPath id="clippath-8">
+      <rect class="cls-1" x=".53" y=".53" width="71.19" height="71.23"/>
+    </clipPath>
+    <clipPath id="clippath-9">
+      <rect class="cls-1" x=".53" y=".53" width="71.19" height="71.23"/>
+    </clipPath>
+  </defs>
+  <g id="Camada_1-2" data-name="Camada 1">
+    <g class="cls-12">
+      <g class="cls-3">
+        <g class="cls-6">
+          <path d="M21.51,42.05l19.06-9.89v10.39l20.02-10.39v28.46H11.65v-18.55h8.95l.91-.02ZM13.44,16.85h5.31l1.74,23.74h-8.79l1.74-23.74ZM18.37,11.66l.27,3.71h-5.1l.27-3.71h4.55ZM42.05,40.11v-10.39l-20.11,10.43-2.19-29.98h-7.31l-2.28,31.16v20.77h51.91V29.73s-20.02,10.39-20.02,10.39Z"/>
+        </g>
+        <g class="cls-4">
+          <path class="cls-2" d="M21.51,42.05l19.06-9.89v10.39l20.02-10.39v28.46H11.65v-18.55h8.95l.91-.02ZM13.44,16.85h5.31l1.74,23.74h-8.79l1.74-23.74ZM18.37,11.66l.27,3.71h-5.1l.27-3.71h4.55ZM42.05,40.11v-10.39l-20.11,10.43-2.19-29.98h-7.31l-2.28,31.16v20.77h51.91V29.73s-20.02,10.39-20.02,10.39Z"/>
+        </g>
+        <g class="cls-5">
+          <path d="M16.84,50.24h3.71v4.45h-3.71v-4.45ZM25.74,54.69h-3.71v-4.45h3.71v4.45ZM15.36,56.17h11.86v-7.42h-11.86v7.42Z"/>
+        </g>
+        <g class="cls-11">
+          <path class="cls-2" d="M16.84,50.24h3.71v4.45h-3.71v-4.45ZM25.74,54.69h-3.71v-4.45h3.71v4.45ZM15.36,56.17h11.86v-7.42h-11.86v7.42Z"/>
+        </g>
+        <g class="cls-8">
+          <path d="M31.67,50.24h3.71v4.45h-3.71v-4.45ZM40.57,54.69h-3.71v-4.45h3.71v4.45ZM30.19,56.17h11.86v-7.42h-11.86v7.42Z"/>
+        </g>
+        <g class="cls-7">
+          <path class="cls-2" d="M31.67,50.24h3.71v4.45h-3.71v-4.45ZM40.57,54.69h-3.71v-4.45h3.71v4.45ZM30.19,56.17h11.86v-7.42h-11.86v7.42Z"/>
+        </g>
+        <g class="cls-10">
+          <path d="M55.4,54.69h-3.71v-4.45h3.71v4.45ZM46.5,50.24h3.71v4.45h-3.71v-4.45ZM56.88,48.75h-11.86v7.42h11.86v-7.42Z"/>
+        </g>
+        <g class="cls-9">
+          <path class="cls-2" d="M55.4,54.69h-3.71v-4.45h3.71v4.45ZM46.5,50.24h3.71v4.45h-3.71v-4.45ZM56.88,48.75h-11.86v7.42h11.86v-7.42Z"/>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

@@ -1,261 +1,338 @@
-'use client';
+﻿'use client';
 
-import { useEffect, useRef, useState } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
-import Image from 'next/image';
+import { useEffect, useRef } from 'react';
 
-const stats = [
-  { end: 30,      suffix: '+',    label: 'Anos de Experiência' },
-  { end: 15000,   suffix: '+',    label: 'Colaboradores' },
-  { end: 1500000, suffix: ' m²',  label: 'Área Construída' },
-  { end: 5000,    suffix: '+ km', label: 'de Estrada' },
+const STATS = [
+  { value: 23,   prefix: '+', suffix: '',     label: 'Anos de Experiência' },
+  { value: 15000, prefix: '+', suffix: '',    label: 'Colaboradores', thousands: true },
+  { value: 1.5,  prefix: '+', suffix: 'M m²', label: 'Área Construída', decimals: 1 },
+  { value: 5000, prefix: '+', suffix: ' km',  label: 'de Estrada', thousands: true },
 ];
 
-function AnimatedNumber({ end, suffix }: { end: number; suffix: string }) {
-  const [val, setVal] = useState(0);
-  const ref = useRef<HTMLSpanElement>(null);
-  const seen = useRef(false);
-  useEffect(() => {
-    const el = ref.current; if (!el) return;
-    const obs = new IntersectionObserver(([e]) => {
-      if (e.isIntersecting && !seen.current) {
-        seen.current = true;
-        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { setVal(end); return; }
-        const dur = 2000, t0 = performance.now();
-        const tick = (now: number) => {
-          const p = Math.min((now - t0) / dur, 1);
-          setVal(Math.round((1 - Math.pow(1 - p, 3)) * end));
-          if (p < 1) requestAnimationFrame(tick);
-        };
-        requestAnimationFrame(tick);
-      }
-    }, { threshold: 0.5 });
-    obs.observe(el); return () => obs.disconnect();
-  }, [end]);
-  const fmt = val >= 1_000_000 ? (val/1_000_000).toFixed(1).replace('.',',')+' M'
-    : val >= 1_000 ? val.toLocaleString('pt-PT') : String(val);
-  return <span ref={ref} className="tabular-nums">{fmt}{suffix}</span>;
-}
+const TICKER = ['Engenharia', 'Construção', 'Infra-estrutura', 'Mineração', 'Energia', 'Turismo', 'Agro-negócio', 'Imobiliário'];
 
-/* Geometric logo mark — animated SVG based on the brand icon */
-function GeoMark({ size = 120, opacity = 0.12, delay = 0 }: { size?: number; opacity?: number; delay?: number }) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.7, rotate: -8 }}
-      animate={{ opacity, scale: 1, rotate: 0 }}
-      transition={{ duration: 1.4, delay, ease: [0.16, 1, 0.3, 1] }}
-      aria-hidden="true"
-      style={{ width: size, height: size }}
-    >
-      <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ width: '100%', height: '100%' }}>
-        {/* Outer frame — top-left L */}
-        <path d="M8 8 L8 72 L22 72 L22 22 L72 22 L72 8 Z" fill="white" />
-        {/* Outer frame — bottom-right L */}
-        <path d="M92 92 L92 28 L78 28 L78 78 L28 78 L28 92 Z" fill="white" />
-        {/* Inner square */}
-        <rect x="40" y="40" width="20" height="20" fill="white" />
-      </svg>
-    </motion.div>
-  );
-}
+const SQUARES = [
+  { size: 180, x: '72%',  y: '12%', opacity: 0.045, speed: -18, rotate: 22  },
+  { size: 60,  x: '88%',  y: '55%', opacity: 0.07,  speed: -28, rotate: 8   },
+  { size: 120, x: '60%',  y: '78%', opacity: 0.035, speed: -12, rotate: -15 },
+  { size: 32,  x: '15%',  y: '20%', opacity: 0.06,  speed: -22, rotate: 45  },
+  { size: 90,  x: '5%',   y: '70%', opacity: 0.03,  speed: -16, rotate: -8  },
+  { size: 220, x: '80%',  y: '40%', opacity: 0.02,  speed: -10, rotate: 30  },
+];
 
 export default function Hero() {
-  const ref = useRef<HTMLElement>(null);
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const [muted, setMuted] = useState(true);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] });
-  const contentY   = useTransform(scrollYProgress, [0, 1], ['0%', '12%']);
-  const fadeOut    = useTransform(scrollYProgress, [0, 0.55], [1, 0]);
-  const videoScale = useTransform(scrollYProgress, [0, 1], [1, 1.08]);
-  const geoScale   = useTransform(scrollYProgress, [0, 1], [1, 1.25]);
+  const heroRef       = useRef<HTMLElement>(null);
+  const bgRef         = useRef<HTMLDivElement>(null);
+  const titleRef      = useRef<HTMLDivElement>(null);
+  const leadRef       = useRef<HTMLParagraphElement>(null);
+  const actionsRef    = useRef<HTMLDivElement>(null);
+  const statsRef      = useRef<HTMLDivElement>(null);
+  const transitionRef = useRef<HTMLDivElement>(null);
+  const squaresRef    = useRef<HTMLDivElement[]>([]);
+  const tickerRef     = useRef<HTMLDivElement>(null);
 
-  const go = (id: string) => {
-    document.querySelector(id)?.scrollIntoView({
-      behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'
+  useEffect(() => {
+    let cleanup: (() => void) | null = null;
+
+    import('gsap').then(({ gsap }) => {
+      import('gsap/ScrollTrigger').then(({ ScrollTrigger }) => {
+        gsap.registerPlugin(ScrollTrigger);
+
+        /* ── entrance timeline ── */
+        const tl = gsap.timeline({ delay: 0.15 });
+
+        /* FAZEMOS — slide up */
+        tl.fromTo('.hero-fazemos',
+          { yPercent: 110, opacity: 0 },
+          { yPercent: 0, opacity: 1, duration: 1, ease: 'power3.out' }
+        )
+        /* ACONTECER — letters stagger */
+        .fromTo('.hero-anim-letter',
+          { yPercent: 115, opacity: 0, rotateX: -45, skewX: 8 },
+          { yPercent: 0, opacity: 1, rotateX: 0, skewX: 0, duration: 0.75, ease: 'power3.out', stagger: 0.07 },
+          '-=0.7'
+        )
+        /* flash to solid then back to outline */
+        .to('.hero-anim-letter',
+          { color: '#fff', WebkitTextStroke: '0px', duration: 0.3, ease: 'power2.inOut', stagger: 0.08 },
+          '+=0.15'
+        )
+        .to('.hero-anim-letter',
+          { color: 'transparent', WebkitTextStroke: '1.5px rgba(255,255,255,0.22)', duration: 0.3, ease: 'power2.inOut', stagger: 0.08 },
+          '+=0.2'
+        )
+        /* lead + actions + stats */
+        .fromTo(leadRef.current,
+          { opacity: 0, x: -24 },
+          { opacity: 1, x: 0, duration: 0.75, ease: 'power2.out' },
+          '-=0.3'
+        )
+        .fromTo(actionsRef.current,
+          { opacity: 0, x: -24 },
+          { opacity: 1, x: 0, duration: 0.7, ease: 'power2.out' },
+          '-=0.5'
+        )
+        .fromTo(statsRef.current,
+          { opacity: 0, y: 18 },
+          { opacity: 1, y: 0, duration: 0.7, ease: 'power2.out' },
+          '-=0.45'
+        )
+        /* ticker fades in */
+        .fromTo(tickerRef.current,
+          { opacity: 0 },
+          { opacity: 1, duration: 0.6, ease: 'power2.out' },
+          '-=0.3'
+        );
+
+        /* ── floating squares parallax ── */
+        squaresRef.current.forEach((el, i) => {
+          if (!el) return;
+          const speed = SQUARES[i].speed;
+          gsap.to(el, {
+            y: `${speed}%`,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: heroRef.current,
+              start: 'top top',
+              end: 'bottom top',
+              scrub: true,
+            },
+          });
+        });
+
+        /* ── bg parallax ── */
+        gsap.to(bgRef.current, {
+          y: '28%',
+          ease: 'none',
+          scrollTrigger: { trigger: heroRef.current, start: 'top top', end: 'bottom top', scrub: true },
+        });
+
+        /* ── diagonal transition on scroll ── */
+        if (transitionRef.current) {
+          gsap.fromTo(transitionRef.current,
+            { clipPath: 'polygon(100% 100%, 100% 100%, 100% 100%)' },
+            {
+              clipPath: 'polygon(0% 100%, 100% 20%, 100% 100%)',
+              ease: 'none',
+              scrollTrigger: { trigger: heroRef.current, start: 'center top', end: 'bottom top', scrub: true },
+            }
+          );
+        }
+
+        /* ── stat counters ── */
+        statsRef.current?.querySelectorAll<HTMLElement>('[data-count]').forEach(el => {
+          const target = parseFloat(el.getAttribute('data-count') || '0');
+          const isFloat = el.getAttribute('data-float') === '1';
+          const proxy = { val: 0 };
+          gsap.to(proxy, {
+            val: target, duration: 2.2, ease: 'power2.out',
+            scrollTrigger: { trigger: el, start: 'top 90%', once: true },
+            onUpdate() {
+              const isK = el.getAttribute('data-thousands') === '1';
+              const raw = isFloat ? proxy.val.toFixed(1) : Math.round(proxy.val).toString();
+              el.textContent = isK ? raw.replace(/\B(?=(\d{3})+(?!\d))/g, '.') : raw;
+            },
+          });
+        });
+
+        cleanup = () => { tl.kill(); ScrollTrigger.getAll().forEach(t => t.kill()); };
+      });
     });
-  };
+
+    return () => cleanup?.();
+  }, []);
 
   return (
     <section
-      ref={ref}
-      aria-label="Grupo Omatapalo — Fazemos Acontecer"
-      className="relative h-screen min-h-[680px] overflow-hidden bg-[var(--navy-dark)]"
+      ref={heroRef}
+      style={{ minHeight: '100vh', background: '#07101f', position: 'relative', overflow: 'hidden', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}
     >
-      {/* ── Video background ── */}
-      <motion.div style={{ scale: videoScale }} className="absolute inset-0 origin-center" aria-hidden="true">
-        <video
-          ref={videoRef} autoPlay muted loop playsInline preload="auto"
-          className="absolute inset-0 w-full h-full object-cover object-center"
-          poster="https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1800&q=60&auto=format&fit=crop"
-        >
+      {/* ── Parallax BG ── */}
+      <div ref={bgRef} style={{ position: 'absolute', inset: '-8% 0 0 0', willChange: 'transform' }}>
+        <video autoPlay muted loop playsInline style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', opacity: 0.45 }}>
           <source src="/hero-construction.mp4" type="video/mp4" />
         </video>
-        <div className="absolute inset-0 bg-gradient-to-t from-[var(--navy-dark)] via-[var(--navy-dark)]/60 to-[var(--navy-dark)]/20" />
-        <div className="absolute inset-0 bg-gradient-to-r from-[var(--navy-dark)]/75 via-[var(--navy-dark)]/25 to-transparent" />
-      </motion.div>
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(7,16,31,0.5) 0%, rgba(7,16,31,0.2) 35%, rgba(7,16,31,0.65) 70%, rgba(7,16,31,0.98) 100%)' }} />
+      </div>
 
-      {/* ── Geometric decorations ── */}
-      <motion.div style={{ scale: geoScale }} className="absolute inset-0 pointer-events-none" aria-hidden="true">
-        {/* Large mark — top right */}
-        <div className="absolute top-16 right-16 hidden lg:block">
-          <GeoMark size={180} opacity={0.07} delay={1.0} />
-        </div>
-        {/* Medium mark — bottom right area */}
-        <div className="absolute bottom-32 right-32 hidden xl:block">
-          <GeoMark size={80} opacity={0.05} delay={1.2} />
-        </div>
-        {/* Animated rotating outline square */}
-        <motion.div
-          initial={{ opacity: 0, rotate: 0 }}
-          animate={{ opacity: 0.04, rotate: 45 }}
-          transition={{ duration: 2, delay: 0.8 }}
-          className="absolute top-1/2 right-20 -translate-y-1/2 hidden lg:block"
-          style={{ width: 260, height: 260, border: '1px solid white' }}
+      {/* ── Film grain ── */}
+      <div style={{
+        position: 'absolute', inset: 0, zIndex: 1, opacity: 0.04, pointerEvents: 'none',
+        backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
+      }} />
+
+      {/* ── Floating squares ── */}
+      {SQUARES.map((sq, i) => (
+        <div
+          key={i}
+          ref={el => { if (el) squaresRef.current[i] = el; }}
+          style={{
+            position: 'absolute',
+            left: sq.x, top: sq.y,
+            width: sq.size, height: sq.size,
+            border: `1px solid rgba(255,255,255,${sq.opacity * 2})`,
+            background: `rgba(26,57,110,${sq.opacity})`,
+            transform: `rotate(${sq.rotate}deg)`,
+            zIndex: 2, pointerEvents: 'none',
+            willChange: 'transform',
+          }}
         />
-        <motion.div
-          initial={{ opacity: 0, rotate: 45 }}
-          animate={{ opacity: 0.03, rotate: 45 }}
-          transition={{ duration: 2, delay: 1.0 }}
-          className="absolute top-1/2 right-20 -translate-y-1/2 hidden lg:block"
-          style={{ width: 200, height: 200, border: '1px solid white', marginLeft: 30, marginTop: 30 }}
-        />
-      </motion.div>
+      ))}
 
-      {/* ── Left accent — vertical line with geo mark ── */}
-      <div className="absolute left-0 top-0 bottom-0 w-[3px] bg-white/20 z-10" aria-hidden="true" />
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1.8, duration: 0.6 }}
-        className="absolute left-0 top-1/2 -translate-y-1/2 z-10 hidden md:block"
-        aria-hidden="true"
-      >
-        <div style={{ width: 3, height: 60, background: 'var(--navy)' }} />
-      </motion.div>
+      {/* ── Top spacer (nav clearance) ── */}
+      <div style={{ height: 'clamp(120px,16vh,180px)', zIndex: 3 }} />
 
-      {/* ── Content ── */}
-      <motion.div
-        style={{ y: contentY, opacity: fadeOut }}
-        className="absolute inset-0 z-10 flex flex-col justify-end wrap pb-10 md:pb-14"
-      >
-        {/* Spacer for fixed nav */}
-        <div className="flex-1" />
-
-        {/* Headline + eyebrow grouped together */}
-        <div className="flex flex-col">
-          {/* Eyebrow — directly above headline */}
-          <motion.div
-            initial={{ opacity: 0, x: -16 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.7, delay: 0.5 }}
-            className="eyebrow mb-5"
-          >
-            <span className="eyebrow-bar" style={{ background: 'rgba(255,255,255,0.4)' }} aria-hidden="true" />
-            <span className="eyebrow-text" style={{ color: 'rgba(255,255,255,0.45)' }}>
-              Grupo Omatapalo · Angola · Desde 1994
-            </span>
-          </motion.div>
-          <div className="overflow-hidden mb-3">
-            <motion.h1
-              initial={{ y: '105%' }}
-              animate={{ y: '0%' }}
-              transition={{ duration: 1.05, delay: 0.45, ease: [0.16, 1, 0.3, 1] }}
-              className="t-hero text-white"
-            >
-              FAZEMOS
-            </motion.h1>
-          </div>
-          <div className="overflow-hidden mb-8">
-            <motion.div
-              initial={{ y: '105%' }}
-              animate={{ y: '0%' }}
-              transition={{ duration: 1.05, delay: 0.58, ease: [0.16, 1, 0.3, 1] }}
-            >
-              <span className="t-hero block" style={{ WebkitTextStroke: '2px rgba(255,255,255,0.22)', color: 'transparent' }}>
-                ACONTECER
-              </span>
-            </motion.div>
-          </div>
-
-          <motion.p
-            initial={{ opacity: 0, y: 14 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.95 }}
-            className="t-body-lg max-w-md mb-10"
-            style={{ color: 'rgba(255,255,255,0.55)' }}
-          >
-            Engenharia, Construção e Infraestrutura —<br />
-            a transformar Angola há mais de três décadas.
-          </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 1.1 }}
-            className="flex flex-wrap gap-4"
-          >
-            <button onClick={() => go('#portfolio')} className="btn btn-primary">Ver Portfólio</button>
-            <button onClick={() => go('#contactos')} className="btn btn-ghost-white">Falar Connosco</button>
-          </motion.div>
+      {/* ── Main title block — LEFT aligned ── */}
+      <div ref={titleRef} style={{ position: 'relative', zIndex: 3, paddingInline: 'var(--gutter)', overflow: 'hidden' }}>
+        {/* eyebrow */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 24 }}>
+          <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><rect width="10" height="10" fill="rgba(255,255,255,0.4)" /></svg>
+          <span style={{ fontFamily: 'var(--font-label)', fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#fff' }}>
+            Grupo Omatapalo · Desde 2003
+          </span>
         </div>
 
-        {/* Stats */}
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 1.35 }}
-        >
-          <div className="h-px bg-white/10 mb-8" aria-hidden="true" />
-          <div role="list" aria-label="Indicadores do Grupo Omatapalo" className="grid grid-cols-2 md:grid-cols-4 gap-0">
-            {stats.map((s, i) => (
-              <motion.div
-                key={s.label}
-                role="listitem"
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 1.45 + i * 0.08 }}
-                className={`flex flex-col py-4 ${i < stats.length - 1 ? 'pr-8 md:border-r md:border-white/10' : ''} ${i > 0 ? 'md:px-8' : ''}`}
-              >
-                <span className="font-black text-white leading-none mb-2" style={{ fontSize: 'clamp(1.9rem,3.2vw,2.8rem)', letterSpacing: '-0.03em' }}>
-                  <AnimatedNumber end={s.end} suffix={s.suffix} />
-                </span>
-                <span className="t-label leading-tight" style={{ color: 'rgba(255,255,255,0.4)' }}>{s.label}</span>
-              </motion.div>
+        {/* FAZEMOS */}
+        <div style={{ overflow: 'hidden' }}>
+          <div className="hero-fazemos" style={{
+            fontFamily: 'var(--font-display)', fontWeight: 900,
+            fontSize: 'clamp(72px,12.5vw,190px)', lineHeight: 0.88,
+            letterSpacing: '-0.03em', textTransform: 'uppercase',
+            color: '#fff', opacity: 0,
+          }}>FAZEMOS</div>
+        </div>
+
+        {/* ACONTECER — outline, letter by letter */}
+        <div style={{ overflow: 'hidden', perspective: '600px' }}>
+          <div style={{
+            fontFamily: 'var(--font-display)', fontWeight: 900,
+            fontSize: 'clamp(72px,12.5vw,190px)', lineHeight: 0.88,
+            letterSpacing: '-0.03em', textTransform: 'uppercase',
+            color: 'transparent', WebkitTextStroke: '1.5px rgba(255,255,255,0.22)',
+            marginTop: '0.06em',
+          }}>
+            {'ACONTECER'.split('').map((l, i) => (
+              <span key={i} className="hero-anim-letter" style={{ display: 'inline-block', opacity: 0, willChange: 'transform' }}>{l}</span>
             ))}
           </div>
-        </motion.div>
-      </motion.div>
+        </div>
+      </div>
 
-      {/* ── Mute button ── */}
-      <motion.button
-        initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 2.2 }}
-        onClick={() => { const v = videoRef.current; if (v) { v.muted = !v.muted; setMuted(v.muted); } }}
-        aria-label={muted ? 'Ativar som' : 'Desativar som'}
-        className="absolute bottom-10 left-8 z-20 hidden md:flex items-center gap-2 text-white/30 hover:text-white/70 transition-colors duration-200"
-      >
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
-          <path d="M11 5L6 9H2v6h4l5 4V5z" />
-          {muted
-            ? <path d="M23 9l-6 6M17 9l6 6" strokeLinecap="round" />
-            : <><path d="M19.07 4.93a10 10 0 0 1 0 14.14" strokeLinecap="round" /><path d="M15.54 8.46a5 5 0 0 1 0 7.07" strokeLinecap="round" /></>
-          }
-        </svg>
-        <span className="t-label" style={{ color: 'inherit' }}>{muted ? 'Som off' : 'Som on'}</span>
-      </motion.button>
+      {/* ── Bottom block: lead + CTAs + stats ── */}
+      <div style={{ position: 'relative', zIndex: 3, paddingInline: 'var(--gutter)', paddingBottom: 'clamp(0px,2vh,24px)' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: 'clamp(24px,4vw,64px)', alignItems: 'flex-end', flexWrap: 'wrap' }} className="hero-bottom">
 
-      {/* ── Scroll indicator ── */}
-      <motion.div
-        initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 2.4 }}
-        className="absolute bottom-10 right-10 z-10 hidden lg:flex flex-col items-center gap-3"
-        aria-hidden="true"
-      >
-        <motion.div
-          animate={{ scaleY: [0.2, 1, 0.2] }}
-          transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
-          style={{ width: 1, height: 52, background: 'linear-gradient(to bottom, rgba(255,255,255,0.6), transparent)', transformOrigin: 'top' }}
-        />
-        <span className="t-label" style={{ color: 'rgba(255,255,255,0.2)', writingMode: 'vertical-rl' }}>scroll</span>
-      </motion.div>
+          {/* lead + buttons */}
+          <div>
+            <p ref={leadRef} style={{
+              maxWidth: 460, fontSize: 'clamp(15px,1.3vw,18px)', lineHeight: 1.75,
+              color: '#fff', marginBottom: 'clamp(24px,3vh,36px)', opacity: 0,
+              fontFamily: 'var(--font-sans)',
+            }}>
+              Engenharia, Construção e Infra-estrutura — a transformar Angola há mais de duas décadas.
+            </p>
+            <div ref={actionsRef} style={{ display: 'flex', gap: 14, flexWrap: 'wrap', opacity: 0 }}>
+              <a href="#grupo" style={{
+                display: 'inline-flex', alignItems: 'center', gap: 10,
+                background: '#1a396e', color: '#fff', textDecoration: 'none',
+                fontFamily: 'var(--font-label)', fontSize: 10, letterSpacing: '0.16em', textTransform: 'uppercase',
+                padding: '0 28px', height: 52, borderRadius: 2,
+                transition: 'background .25s',
+              }}
+                onMouseEnter={e => (e.currentTarget.style.background = '#0f2550')}
+                onMouseLeave={e => (e.currentTarget.style.background = '#1a396e')}
+              >
+                Conhecer o Grupo
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+              </a>
+              <a href="#contactos" style={{
+                display: 'inline-flex', alignItems: 'center', gap: 10,
+                background: 'transparent', color: '#fff', textDecoration: 'none',
+                fontFamily: 'var(--font-label)', fontSize: 10, letterSpacing: '0.16em', textTransform: 'uppercase',
+                padding: '0 28px', height: 52, borderRadius: 2,
+                border: '1px solid rgba(255,255,255,0.25)',
+                transition: 'border-color .25s, background .25s',
+              }}
+                onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.6)'; e.currentTarget.style.background = 'rgba(255,255,255,0.05)'; }}
+                onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.25)'; e.currentTarget.style.background = 'transparent'; }}
+              >
+                Falar Connosco
+              </a>
+            </div>
+          </div>
+
+          {/* stats */}
+          <div ref={statsRef} style={{ opacity: 0, display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 'clamp(16px,3vw,40px)', paddingBottom: 4 }} className="hero-stats">
+            {STATS.map(s => (
+              <div key={s.label} style={{ borderTop: '1px solid rgba(255,255,255,0.12)', paddingTop: 14 }}>
+                <div style={{ fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 'clamp(1.5rem,2.8vw,2.4rem)', color: '#fff', letterSpacing: '-0.03em', lineHeight: 1, display: 'flex', alignItems: 'baseline', gap: 2 }}>
+                  <span style={{ fontSize: '0.6em', color: '#fff', fontFamily: 'var(--font-sans)' }}>{s.prefix}</span>
+                  <span data-count={s.value} data-float={(s as any).decimals ? '1' : '0'} data-thousands={(s as any).thousands ? '1' : '0'}>
+                    {(s as any).thousands ? s.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') : (s as any).decimals ? s.value.toFixed(1) : s.value}
+                  </span>
+                  <span style={{ fontSize: '0.42em', color: '#fff', fontFamily: 'var(--font-sans)', fontWeight: 400, marginLeft: 2 }}>{s.suffix}</span>
+                </div>
+                <div style={{ fontFamily: 'var(--font-label)', fontSize: 9, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#fff', marginTop: 7 }}>{s.label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* ── Ticker strip ── */}
+      <div ref={tickerRef} style={{ position: 'relative', zIndex: 3, opacity: 0, borderTop: '1px solid rgba(255,255,255,0.07)', overflow: 'hidden', marginTop: 'clamp(24px,4vh,48px)' }}>
+        <div style={{ display: 'flex', animation: 'hero-ticker 28s linear infinite', whiteSpace: 'nowrap', width: 'max-content' }}>
+          {[...TICKER, ...TICKER, ...TICKER].map((t, i) => (
+            <span key={i} style={{
+              fontFamily: 'var(--font-display)', fontWeight: 900,
+              fontSize: 'clamp(0.65rem,0.9vw,0.85rem)', textTransform: 'uppercase',
+              letterSpacing: '0.08em', color: '#fff',
+              padding: 'clamp(12px,1.8vh,18px) clamp(24px,3vw,48px)',
+              display: 'inline-flex', alignItems: 'center', gap: 'clamp(24px,3vw,48px)',
+            }}>
+              {t}
+              <svg width="4" height="4" viewBox="0 0 4 4" fill="none"><rect width="4" height="4" fill="#fff" /></svg>
+            </span>
+          ))}
+        </div>
+      </div>
+
+      {/* ── Diagonal transition ── */}
+      <div ref={transitionRef} style={{
+        position: 'absolute', bottom: 0, left: 0, right: 0,
+        height: 'clamp(100px,14vw,200px)', background: '#ffffff',
+        clipPath: 'polygon(100% 100%, 100% 100%, 100% 100%)',
+        zIndex: 5, pointerEvents: 'none',
+      }} />
+
+      {/* ── Scroll cue ── */}
+      <div style={{
+        position: 'absolute', right: 'var(--gutter)', bottom: 'clamp(80px,10vh,120px)',
+        zIndex: 3, writingMode: 'vertical-rl',
+        fontFamily: 'var(--font-label)', fontSize: 9, letterSpacing: '0.24em',
+        textTransform: 'uppercase', color: 'rgba(255,255,255,0.25)',
+        display: 'flex', alignItems: 'center', gap: 12,
+      }}>
+        Scroll
+        <span style={{ width: 1, height: 54, background: 'linear-gradient(rgba(255,255,255,0.3), transparent)', animation: 'scrollPulse 2s ease-in-out infinite' }} />
+      </div>
+
+      <style>{`
+        @keyframes hero-ticker {
+          from { transform: translateX(0); }
+          to   { transform: translateX(-33.333%); }
+        }
+        @keyframes scrollPulse {
+          0%,100% { opacity:.3; transform:scaleY(.7); transform-origin:top; }
+          50%      { opacity:1; transform:scaleY(1); }
+        }
+        @media (max-width: 900px) {
+          .hero-bottom { grid-template-columns: 1fr !important; }
+        }
+        @media (max-width: 640px) {
+          .hero-stats { grid-template-columns: 1fr 1fr !important; }
+        }
+      `}</style>
     </section>
   );
 }

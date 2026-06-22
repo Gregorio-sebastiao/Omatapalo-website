@@ -1,0 +1,12 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "Next.js Dev",
+      "runtimeExecutable": "C:\\Program Files\\nodejs\\node.exe",
+      "runtimeArgs": ["node_modules/next/dist/bin/next", "dev", "--turbopack"],
+      "cwd": "C:\\Users\\Gregório Sebastião\\OneDrive - Omatapalo\\Documentos\\Omatapalo-website",
+      "port": 3000
+    }
+  ]
+}
