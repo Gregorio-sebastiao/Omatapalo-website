@@ -4,14 +4,14 @@ import { useEffect, useRef, useState, useCallback } from 'react';
 import Image from 'next/image';
 
 const CERTS = [
-  { src: '/ISO-9001-3.png',          label: 'ISO 9001',          sub: 'Sistemas de Gestão da Qualidade',         n: '01', bg: '/ISO-9001-2.png',          ghost: '9001'  },
-  { src: '/ISO-14001-3.png',         label: 'ISO 14001',         sub: 'Gestão Ambiental',                        n: '02', bg: '/ISO-14001-2.png',         ghost: '14001' },
-  { src: '/ISO-45001-3.png',         label: 'ISO 45001',         sub: 'Saúde e Segurança no Trabalho',           n: '03', bg: '/ISO-45001-2.png',         ghost: '45001' },
-  { src: '/UN-GLOBAL-COMPACT-3.png', label: 'UN Global Compact', sub: 'Pacto Global das Nações Unidas',          n: '04', bg: '/UN-GLOBAL-COMPACT-2.png', ghost: 'UN'    },
+  { src: '/ISO-9001-3.png',          label: 'ISO 9001',          sub: 'Sistemas de Gestão da Qualidade',   n: '01' },
+  { src: '/ISO-14001-3.png',         label: 'ISO 14001',         sub: 'Gestão Ambiental',                  n: '02' },
+  { src: '/ISO-45001-3.png',         label: 'ISO 45001',         sub: 'Saúde e Segurança no Trabalho',     n: '03' },
+  { src: '/UN-GLOBAL-COMPACT-3.png', label: 'UN Global Compact', sub: 'Pacto Global das Nações Unidas',   n: '04' },
 ];
 
 function CertColumn({ cert, index, hovered, onEnter, onLeave }: {
-  cert: typeof CERTS[0] & { bg?: string };
+  cert: typeof CERTS[0];
   index: number;
   hovered: number | null;
   onEnter: () => void;
@@ -56,45 +56,62 @@ function CertColumn({ cert, index, hovered, onEnter, onLeave }: {
       style={{
         flex: isHov ? '2.2' : '1',
         transition: 'flex 0.55s cubic-bezier(0.77,0,0.175,1)',
-        background: '#fff',
-        border: '0.5px solid #dde2f0',
+        background: isHov ? 'linear-gradient(135deg, #22479a 0%, #0e2554 100%)' : 'linear-gradient(135deg, #172d6e 0%, #0a1a45 100%)',
+        borderRight: index < CERTS.length - 1 ? '1px solid rgba(255,255,255,0.07)' : 'none',
+        padding: 'clamp(32px,4vw,56px) clamp(20px,2.5vw,40px)',
         display: 'flex',
         flexDirection: 'column',
+        justifyContent: 'space-between',
         position: 'relative',
         overflow: 'hidden',
         cursor: 'default',
         willChange: 'flex, transform',
         transformStyle: 'preserve-3d',
         minWidth: 0,
-        opacity: anyHov && !isHov ? 0.6 : 1,
       }}
     >
       {/* glow */}
-      <div ref={glowRef} style={{ position: 'absolute', inset: 0, pointerEvents: 'none', transition: 'background .12s', zIndex: 2 }} />
+      <div ref={glowRef} style={{ position: 'absolute', inset: 0, pointerEvents: 'none', transition: 'background .12s' }} />
 
-      {/* certificate image — top portion */}
-      <div style={{ position: 'relative', flex: 1, overflow: 'hidden', minHeight: 0 }}>
-        {cert.bg && (
-          <Image src={cert.bg} alt="" fill style={{ objectFit: 'cover', objectPosition: 'top left', transition: 'transform 0.6s ease', transform: isHov ? 'scale(1.04)' : 'scale(1)' }} />
-        )}
-        {/* seal top-left */}
-        <div style={{ position: 'absolute', top: 10, left: 12, width: 44, height: 44, zIndex: 1 }}>
-          <Image src={cert.src} alt={cert.label} fill style={{ objectFit: 'contain', filter: 'brightness(10)', opacity: 0.85 }} />
+      {/* animated accent line */}
+      <div style={{
+        position: 'absolute', bottom: 0, left: 0, right: 0,
+        height: isHov ? '3px' : '0px',
+        background: 'rgba(255,255,255,0.25)',
+        transition: 'height 0.4s ease',
+      }} />
+
+      {/* seal */}
+      <div style={{
+        display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 24,
+        opacity: isHov ? 1 : anyHov ? 0.15 : 0.6,
+        transform: isHov ? 'translateZ(24px) translateY(0px)' : 'translateZ(0px) translateY(12px)',
+        transition: 'opacity 0.4s ease, transform 0.5s cubic-bezier(0.34,1.56,0.64,1)',
+      }}>
+        <div style={{
+          position: 'relative',
+          width: isHov ? 'clamp(80px,8vw,120px)' : 'clamp(56px,5vw,80px)',
+          height: isHov ? 'clamp(80px,8vw,120px)' : 'clamp(56px,5vw,80px)',
+          transition: 'width 0.5s ease, height 0.5s ease',
+          flexShrink: 0,
+        }}>
+          <Image src={cert.src} alt={cert.label} fill style={{ objectFit: 'contain', filter: 'brightness(1.15)' }} />
         </div>
       </div>
 
-      {/* footer navy */}
-      <div style={{ background: '#0d1e52', borderTop: '3px solid #1a396e', padding: '14px 16px' }}>
+      {/* label */}
+      <div style={{ transform: 'translateZ(12px)' }}>
         <div style={{
           fontFamily: 'var(--font-display)', fontWeight: 900,
-          fontSize: 'clamp(0.75rem,1.1vw,1rem)',
-          color: '#fff', letterSpacing: '-0.01em', lineHeight: 1.1,
-          textTransform: 'uppercase', marginBottom: 5,
+          fontSize: 'clamp(0.9rem,1.3vw,1.4rem)',
+          color: '#fff', letterSpacing: '-0.02em', lineHeight: 1.1,
+          marginBottom: 10, transition: 'font-size 0.3s',
         }}>{cert.label}</div>
         <div style={{
-          fontFamily: 'var(--font-label)', fontSize: 8,
-          letterSpacing: '0.14em', textTransform: 'uppercase',
-          color: 'rgba(255,255,255,0.45)', lineHeight: 1.5,
+          fontFamily: 'var(--font-label)', fontSize: 9,
+          letterSpacing: '0.16em', textTransform: 'uppercase',
+          color: '#fff', lineHeight: 1.6, transition: 'color 0.3s',
+          maxWidth: isHov ? 280 : 120, overflow: 'hidden',
         }}>{cert.sub}</div>
       </div>
     </div>
