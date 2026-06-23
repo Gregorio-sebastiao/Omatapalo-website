@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from 'react';
 
 const GALLERY = [
   '/Formação omatapalo.jpg',
-  '/omt-academia.jpg',
+  '/Academia-barra3.jpg',
   'https://omatapalo.com/wp-content/uploads/academia-barra2.jpg',
   'https://omatapalo.com/wp-content/uploads/academia-barra.jpg',
 ];
