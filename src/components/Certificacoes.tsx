@@ -56,7 +56,7 @@ function CertColumn({ cert, index, hovered, onEnter, onLeave }: {
       style={{
         flex: isHov ? '2.2' : '1',
         transition: 'flex 0.55s cubic-bezier(0.77,0,0.175,1)',
-        background: isHov ? 'linear-gradient(135deg, #22479a 0%, #0e2554 100%)' : 'linear-gradient(135deg, #172d6e 0%, #0a1a45 100%)',
+        background: '#0a1a45',
         borderRight: index < CERTS.length - 1 ? '1px solid rgba(255,255,255,0.07)' : 'none',
         padding: 'clamp(32px,4vw,56px) clamp(20px,2.5vw,40px)',
         display: 'flex',
@@ -80,6 +80,9 @@ function CertColumn({ cert, index, hovered, onEnter, onLeave }: {
           style={{ objectFit: 'cover', objectPosition: 'center', opacity: isHov ? 0.58 : 0.58, transition: 'opacity 0.5s ease', pointerEvents: 'none' }}
         />
       )}
+
+      {/* dark gradient overlay */}
+      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(10,20,60,0.25) 0%, rgba(10,20,60,0.75) 100%)', pointerEvents: 'none' }} />
 
       {/* glow */}
       <div ref={glowRef} style={{ position: 'absolute', inset: 0, pointerEvents: 'none', transition: 'background .12s' }} />
