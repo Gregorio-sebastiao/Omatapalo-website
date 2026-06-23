@@ -56,9 +56,9 @@ function CertColumn({ cert, index, hovered, onEnter, onLeave }: {
       style={{
         flex: isHov ? '2.2' : '1',
         transition: 'flex 0.55s cubic-bezier(0.77,0,0.175,1)',
-        background: '#0e1e5a',
+        background: '#07101f',
         borderRight: index < CERTS.length - 1 ? '1px solid rgba(255,255,255,0.07)' : 'none',
-        padding: 'clamp(32px,4vw,56px) clamp(20px,2.5vw,40px)',
+        padding: 'clamp(24px,3vw,40px) clamp(20px,2.5vw,36px)',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
@@ -68,69 +68,55 @@ function CertColumn({ cert, index, hovered, onEnter, onLeave }: {
         willChange: 'flex, transform',
         transformStyle: 'preserve-3d',
         minWidth: 0,
+        opacity: anyHov && !isHov ? 0.5 : 1,
       }}
     >
-      {/* certificate background image */}
-      {cert.bg && (
-        <Image
-          src={cert.bg}
-          alt=""
-          fill
-          aria-hidden
-          style={{ objectFit: 'cover', objectPosition: 'center', opacity: isHov ? 0.18 : 0.1, transition: 'opacity 0.5s ease', pointerEvents: 'none' }}
-        />
-      )}
-
-      {/* ghost number */}
-      <div aria-hidden style={{ position: 'absolute', bottom: -10, right: -4, fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 'clamp(60px,8vw,100px)', color: 'rgba(255,255,255,0.06)', lineHeight: 1, letterSpacing: '-0.05em', pointerEvents: 'none', userSelect: 'none' }}>{(cert as any).ghost}</div>
-
       {/* glow */}
       <div ref={glowRef} style={{ position: 'absolute', inset: 0, pointerEvents: 'none', transition: 'background .12s' }} />
 
-      {/* animated accent line — grows from bottom on hover */}
-      <div style={{
-        position: 'absolute', bottom: 0, left: 0, right: 0,
-        height: '2px',
-        background: 'rgba(255,255,255,0.25)',
-        transition: 'height 0.4s ease',
-      }} />
+      {/* accent line bottom */}
+      <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: isHov ? '3px' : '2px', background: isHov ? 'rgba(255,255,255,0.35)' : 'rgba(255,255,255,0.12)', transition: 'height 0.3s, background 0.3s' }} />
 
-
-      {/* centre: seal — fades + scales in on hover */}
-      <div style={{
-        display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 24,
-        opacity: anyHov && !isHov ? 0.4 : 0.9,
-        transform: isHov ? 'translateZ(24px) translateY(0px)' : 'translateZ(0px) translateY(12px)',
-        transition: 'opacity 0.4s ease, transform 0.5s cubic-bezier(0.34,1.56,0.64,1)',
-      }}>
-        <div style={{
-          position: 'relative',
-          width: isHov ? 'clamp(80px,8vw,120px)' : 'clamp(56px,5vw,80px)',
-          height: isHov ? 'clamp(80px,8vw,120px)' : 'clamp(56px,5vw,80px)',
-          transition: 'width 0.5s ease, height 0.5s ease',
-          flexShrink: 0,
-        }}>
-          <Image src={cert.src} alt={cert.label} fill style={{ objectFit: 'contain', filter: 'brightness(1.15)' }} />
+      {/* top row: numbering + doc thumbnail */}
+      <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', position: 'relative', zIndex: 1 }}>
+        <div style={{ fontFamily: 'var(--font-label)', fontSize: 9, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.3)' }}>
+          {cert.n} / 04
         </div>
+        {/* doc thumbnail */}
+        {cert.bg && (
+          <div style={{
+            width: isHov ? 'clamp(90px,8vw,120px)' : 'clamp(64px,6vw,90px)',
+            height: isHov ? 'clamp(68px,6vw,90px)' : 'clamp(48px,4.5vw,68px)',
+            border: '1.5px solid rgba(255,255,255,0.15)',
+            borderRadius: 2,
+            overflow: 'hidden',
+            position: 'relative',
+            flexShrink: 0,
+            transition: 'width 0.4s ease, height 0.4s ease',
+          }}>
+            <Image src={cert.bg} alt="" fill style={{ objectFit: 'cover', objectPosition: 'top left', opacity: 0.85 }} />
+          </div>
+        )}
       </div>
 
-      {/* bottom: label */}
-      <div style={{ transform: 'translateZ(12px)' }}>
+      {/* bottom: line + title + subtitle + seal */}
+      <div style={{ position: 'relative', zIndex: 1 }}>
+        <div style={{ width: 24, height: 2, background: 'rgba(255,255,255,0.25)', marginBottom: 14 }} />
         <div style={{
           fontFamily: 'var(--font-display)', fontWeight: 900,
-          fontSize: 'clamp(0.9rem,1.3vw,1.4rem)',
-          color: '#fff', letterSpacing: '-0.02em', lineHeight: 1.1,
-          marginBottom: 10,
-          transition: 'font-size 0.3s',
+          fontSize: 'clamp(1.1rem,1.8vw,2rem)',
+          color: '#fff', letterSpacing: '-0.03em', lineHeight: 0.95,
+          textTransform: 'uppercase', marginBottom: 10,
         }}>{cert.label}</div>
         <div style={{
           fontFamily: 'var(--font-label)', fontSize: 9,
-          letterSpacing: '0.16em', textTransform: 'uppercase',
-          color: '#fff',
-          lineHeight: 1.6, transition: 'color 0.3s',
-          maxWidth: isHov ? 280 : 120,
-          overflow: 'hidden',
+          letterSpacing: '0.14em', textTransform: 'uppercase',
+          color: 'rgba(255,255,255,0.4)', lineHeight: 1.6,
         }}>{cert.sub}</div>
+        {/* seal bottom right */}
+        <div style={{ position: 'absolute', right: 0, bottom: 0, width: 36, height: 36 }}>
+          <Image src={cert.src} alt={cert.label} fill style={{ objectFit: 'contain', opacity: 0.65 }} />
+        </div>
       </div>
     </div>
   );
