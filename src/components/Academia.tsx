@@ -7,7 +7,7 @@ const GALLERY = [
   '/Formação omatapalo.jpg',
   '/Academia-barra.jpg',
   '/academia-barra1.jpg',
-  '/Academia-barra.jpg',
+  '/academia-barra2.jpg',
 ];
 
 const STATS = [
