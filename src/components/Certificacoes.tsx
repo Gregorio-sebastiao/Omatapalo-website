@@ -77,7 +77,7 @@ function CertColumn({ cert, index, hovered, onEnter, onLeave }: {
           alt=""
           fill
           aria-hidden
-          style={{ objectFit: 'cover', objectPosition: 'center', opacity: isHov ? 0.18 : 0.08, transition: 'opacity 0.5s ease', pointerEvents: 'none' }}
+          style={{ objectFit: 'cover', objectPosition: 'center', opacity: isHov ? 0.58 : 0.58, transition: 'opacity 0.5s ease', pointerEvents: 'none' }}
         />
       )}
 
