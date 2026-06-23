@@ -229,7 +229,7 @@ export default function Hero() {
               color: '#fff', marginBottom: 'clamp(24px,3vh,36px)', opacity: 0,
               fontFamily: 'var(--font-sans)',
             }}>
-              Engenharia, Construção e Infra-estruturas — a transformar Angola há mais de duas décadas.
+              Engenharia, Construção e Infra-estruturas. A transformar Angola há mais de duas décadas.
             </p>
             <div ref={actionsRef} style={{ display: 'flex', gap: 14, flexWrap: 'wrap', opacity: 0 }}>
               <a href="#grupo" style={{
