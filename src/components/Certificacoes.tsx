@@ -7,7 +7,7 @@ const CERTS = [
   { src: '/ISO-9001-3.png',          label: 'ISO 9001',          sub: 'Sistemas de Gestão da Qualidade',         n: '01', bg: '/ISO-9001-2.png' },
   { src: '/ISO-14001-3.png',         label: 'ISO 14001',         sub: 'Gestão Ambiental',                        n: '02', bg: '/ISO-14001-2.png' },
   { src: '/ISO-45001-3.png',         label: 'ISO 45001',         sub: 'Saúde e Segurança no Trabalho',           n: '03', bg: '/ISO-45001-2.png' },
-  { src: '/UN-GLOBAL-COMPACT-3.png', label: 'UN Global Compact', sub: 'Pacto Global das Nações Unidas',          n: '04' },
+  { src: '/UN-GLOBAL-COMPACT-3.png', label: 'UN Global Compact', sub: 'Pacto Global das Nações Unidas',          n: '04', bg: '/UN-GLOBAL-COMPACT-2.png' },
 ];
 
 function CertColumn({ cert, index, hovered, onEnter, onLeave }: {
