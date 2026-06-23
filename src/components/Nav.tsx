@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 
 const NAV = [
-  { t: 'Omatapalo', href: '/omatapalo', sub: [
+  { t: 'O Grupo', href: '/omatapalo', sub: [
     { t: 'Omatapalo no Mundo', href: '/omatapalo#mundo' },
     { t: 'História', href: '/omatapalo' },
     { t: 'Conselho de Administração', href: '/omatapalo#conselho' },
@@ -20,7 +20,7 @@ const NAV = [
 ];
 
 const ALL_PAGES = [
-  { t: 'Omatapalo', href: '#top' },
+  { t: 'O Grupo', href: '#top' },
   { t: 'Omatapalo no Mundo', href: '/omatapalo#mundo' },
   { t: 'História', href: '/omatapalo' },
   { t: 'Conselho de Administração', href: '/omatapalo#conselho' },
