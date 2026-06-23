@@ -97,12 +97,12 @@ export default function Academia() {
                   Pessoas &amp; Formação
                 </span>
               </div>
-              <div style={{ position: 'relative', width: 420, height: 84, marginBottom: 32 }}>
-                <Image
-                  src="/LOGO ACADEMIA 02.png"
+              <div style={{ marginBottom: 32 }}>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/LOGO%20ACADEMIA%2002.png"
                   alt="Academia Omatapalo"
-                  fill
-                  style={{ objectFit: 'contain', objectPosition: 'left' }}
+                  style={{ height: 84, width: 'auto', objectFit: 'contain' }}
                 />
               </div>
               <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'clamp(15px,1.35vw,18px)', color: '#ffffff', lineHeight: 1.85, margin: '0 0 32px' }}>
