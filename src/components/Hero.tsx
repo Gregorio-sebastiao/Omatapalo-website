@@ -243,16 +243,16 @@ export default function Hero() {
           <div ref={statsRef} style={{ opacity: 0, display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 'clamp(16px,3vw,40px)', paddingBottom: 4 }} className="hero-stats">
             {STATS.map(s => (
               <div key={s.label} style={{ borderTop: '1px solid rgba(255,255,255,0.12)', paddingTop: 14 }}>
-                <div style={{ fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 'clamp(1.5rem,2.8vw,2.4rem)', color: '#fff', letterSpacing: '-0.03em', lineHeight: 1, display: 'flex', alignItems: 'baseline', gap: 2 }}>
-                  <span style={{ fontSize: '0.6em', color: '#fff', fontFamily: 'var(--font-sans)' }}>{s.prefix}</span>
+                <div style={{ fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 'clamp(1.5rem,2.8vw,2.4rem)', color: '#1a396e', letterSpacing: '-0.03em', lineHeight: 1, display: 'flex', alignItems: 'baseline', gap: 2 }}>
+                  <span style={{ fontSize: '0.6em', color: '#1a396e', fontFamily: 'var(--font-sans)' }}>{s.prefix}</span>
                   <span data-count={s.value} data-float={(s as any).decimals ? '1' : '0'} data-thousands={(s as any).thousands ? '1' : '0'}>
                     {(s as any).thousands ? s.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') : (s as any).decimals ? s.value.toFixed(1) : s.value}
                   </span>
-                  <span style={{ fontSize: '0.42em', color: '#fff', fontFamily: 'var(--font-sans)', fontWeight: 400, marginLeft: 2 }}>
+                  <span style={{ fontSize: '0.42em', color: '#1a396e', fontFamily: 'var(--font-sans)', fontWeight: 400, marginLeft: 2 }}>
                     {s.suffix.includes('m²') ? <>M m<sup>2</sup></> : s.suffix}
                   </span>
                 </div>
-                <div style={{ fontFamily: 'var(--font-label)', fontSize: 9, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#fff', marginTop: 7 }}>{s.label}</div>
+                <div style={{ fontFamily: 'var(--font-label)', fontSize: 9, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#1a396e', marginTop: 7 }}>{s.label}</div>
               </div>
             ))}
           </div>
