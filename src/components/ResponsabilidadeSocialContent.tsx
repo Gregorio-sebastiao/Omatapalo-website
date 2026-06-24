@@ -259,22 +259,22 @@ export default function ResponsabilidadeSocialContent() {
                     <div style={{ fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 'clamp(0.85rem,1.2vw,1.05rem)', color: '#0F1A2E', letterSpacing: '-0.02em', textTransform: 'uppercase', marginBottom: 6, lineHeight: 1.1 }}>{p.title}</div>
                     <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'clamp(12px,0.9vw,14px)', color: '#475569', lineHeight: 1.75, margin: '0 0 6px', maxWidth: '70ch' }}>{p.desc}</p>
                     <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
-                      <span style={{ fontFamily: 'var(--font-label)', fontSize: 9, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#94A3B8' }}>{p.location}</span>
+                      <span style={{ fontFamily: 'var(--font-label)', fontSize: 9, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#07101f' }}>{p.location}</span>
                       <span style={{ width: 3, height: 3, borderRadius: '50%', background: '#CBD5E1', display: 'inline-block' }} />
-                      <span style={{ fontFamily: 'var(--font-label)', fontSize: 9, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#94A3B8' }}>Desde {p.since}</span>
+                      <span style={{ fontFamily: 'var(--font-label)', fontSize: 9, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#07101f' }}>Desde {p.since}</span>
                     </div>
                   </div>
                   <div style={{ textAlign: 'right', flexShrink: 0, display: 'flex', flexDirection: 'column', gap: 4 }}>
                     {p.directa && (
                       <div>
                         <div style={{ fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 'clamp(1rem,1.5vw,1.4rem)', color: activeOds.color, letterSpacing: '-0.04em', lineHeight: 1 }}>{fmtNum(p.directa)}</div>
-                        <div style={{ fontFamily: 'var(--font-label)', fontSize: 8, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#94A3B8', marginTop: 2 }}>directas</div>
+                        <div style={{ fontFamily: 'var(--font-label)', fontSize: 8, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#07101f', marginTop: 2 }}>directas</div>
                       </div>
                     )}
                     {p.indirecta && (
                       <div>
-                        <div style={{ fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 'clamp(0.8rem,1.1vw,1rem)', color: '#94A3B8', letterSpacing: '-0.03em', lineHeight: 1 }}>{fmtNum(p.indirecta)}</div>
-                        <div style={{ fontFamily: 'var(--font-label)', fontSize: 8, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#CBD5E1', marginTop: 2 }}>indirectas</div>
+                        <div style={{ fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 'clamp(0.8rem,1.1vw,1rem)', color: '#07101f', letterSpacing: '-0.03em', lineHeight: 1 }}>{fmtNum(p.indirecta)}</div>
+                        <div style={{ fontFamily: 'var(--font-label)', fontSize: 8, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#07101f', marginTop: 2 }}>indirectas</div>
                       </div>
                     )}
                   </div>
