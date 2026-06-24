@@ -267,13 +267,13 @@ export default function ResponsabilidadeSocialContent() {
                   <div style={{ textAlign: 'right', flexShrink: 0, display: 'flex', flexDirection: 'column', gap: 4 }}>
                     {p.directa && (
                       <div>
-                        <div style={{ fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 'clamp(1rem,1.5vw,1.4rem)', color: activeOds.color, letterSpacing: '-0.04em', lineHeight: 1 }}>{fmtNum(p.directa)}</div>
+                        <div style={{ fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 'clamp(1rem,1.5vw,1.4rem)', color: '#1a396e', letterSpacing: '-0.04em', lineHeight: 1 }}>{fmtNum(p.directa)}</div>
                         <div style={{ fontFamily: 'var(--font-label)', fontSize: 8, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#07101f', marginTop: 2 }}>directas</div>
                       </div>
                     )}
                     {p.indirecta && (
                       <div>
-                        <div style={{ fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 'clamp(0.8rem,1.1vw,1rem)', color: '#07101f', letterSpacing: '-0.03em', lineHeight: 1 }}>{fmtNum(p.indirecta)}</div>
+                        <div style={{ fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 'clamp(0.8rem,1.1vw,1rem)', color: '#1a396e', letterSpacing: '-0.03em', lineHeight: 1 }}>{fmtNum(p.indirecta)}</div>
                         <div style={{ fontFamily: 'var(--font-label)', fontSize: 8, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#07101f', marginTop: 2 }}>indirectas</div>
                       </div>
                     )}
