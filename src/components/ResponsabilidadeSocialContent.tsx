@@ -158,7 +158,7 @@ export default function ResponsabilidadeSocialContent() {
           {/* Faixa de 4 stats com cores ODS */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', borderTop: '1px solid rgba(7,16,31,0.1)', paddingTop: 'clamp(16px,2.5vw,24px)' }}>
             {[
-              { v: '720k+', l: 'Vidas Tocadas',      c: '#fff',    bc: 'rgba(26,57,110,0.5)'  },
+              { v: '720k+', l: 'Vidas Tocadas',      c: '#07101f', bc: 'rgba(26,57,110,0.5)'  },
               { v: '500k+', l: 'Sopas Distribuídas', c: '#DDA63A', bc: 'rgba(221,166,58,0.25)' },
               { v: '500k+', l: 'Merendas Escolares', c: '#4C9F38', bc: 'rgba(76,159,56,0.25)'  },
               { v: '11',    l: 'Iniciativas Activas',c: '#C5192D', bc: 'rgba(197,25,45,0.25)'  },
