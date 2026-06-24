@@ -3,10 +3,10 @@
 import { useEffect, useRef } from 'react';
 
 const ODS = [
-  { n: '01', t: 'Erradicar a Pobreza' },
-  { n: '02', t: 'Erradicar a Fome' },
-  { n: '03', t: 'Saúde de Qualidade' },
-  { n: '04', t: 'Educação de Qualidade' },
+  { n: 'ODS 1', t: 'Erradicar a Pobreza' },
+  { n: 'ODS 2', t: 'Erradicar a Fome' },
+  { n: 'ODS 3', t: 'Saúde de Qualidade' },
+  { n: 'ODS 4', t: 'Educação de Qualidade' },
 ];
 
 export default function SustentabilidadeHome() {
