@@ -58,7 +58,7 @@ export default function Mundo() {
   return (
     /* tall wrapper gives scroll room for pin reveals */
     <div ref={wrapperRef} id="mundo" style={{ height: `${100 + COUNTRIES.length * 18}vh`, position: 'relative' }}>
-      <div ref={stickyRef} style={{ position: 'sticky', top: 0, height: '100vh', overflow: 'hidden', background: '#07101f' }}>
+      <div ref={stickyRef} style={{ position: 'sticky', top: 0, height: '100vh', overflow: 'hidden', background: '#1a396e' }}>
 
         {/* grid texture */}
         <div style={{
@@ -76,7 +76,7 @@ export default function Mundo() {
             style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.07, filter: 'invert(1)' }}
           />
           {/* vignette overlay */}
-          <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at center, transparent 30%, #07101f 85%)' }} />
+          <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at center, transparent 30%, #1a396e 85%)' }} />
         </div>
 
         {/* ── Pins on map ── */}
