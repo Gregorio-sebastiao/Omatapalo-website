@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from 'react';
 const IMAGES = [
   { src: '/EN-230-omatapalo-2.jpg',              label: 'Estrada Nacional 230 - Saurimo'   },
   { src: '/Salao-Protocolar-1-1.jpg',            label: 'Salão Protocolar - Luanda'             },
-  { src: '/centro-cultural-huambo-omatapalo.png',label: 'Centro Cultural Manuel Rui - Huambo'   },
+  { src: '/HOSPITAL MILITAR_1306202.JPG',         label: 'Hospital Militar'                        },
   { src: '/omatapalo-construcao-do-monumento-do-soldado-desconhecido.jpg', label: 'Monumento ao Soldado Desconhecido - Luanda' },
   { src: '/DSC_0030.jpg',                        label: 'Missão Fazer Sorrir'             },
   { src: '/Academia-barra.jpg',                  label: 'Academia Omatapalo'           },
