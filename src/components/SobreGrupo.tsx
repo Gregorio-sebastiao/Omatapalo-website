@@ -229,10 +229,6 @@ export default function SobreGrupo() {
                   <div style={{ position: 'absolute', bottom: 18, left: '10%', fontFamily: 'var(--font-label)', fontSize: 10, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#fff' }}>
                     {img.label}
                   </div>
-                  {/* index */}
-                  <div style={{ position: 'absolute', top: 18, left: '10%', fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: '0.7rem', color: 'rgba(255,255,255,0.3)', letterSpacing: '0.06em' }}>
-                    {String(i + 1).padStart(2, '0')}
-                  </div>
                 </div>
               ))}
             </div>
