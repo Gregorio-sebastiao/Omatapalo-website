@@ -179,7 +179,7 @@ export default function Certificacoes() {
             </h2>
           </div>
           <p style={{ margin: 0, fontFamily: 'var(--font-sans)', fontSize: 'clamp(13px,1vw,15px)', color: '#fff', lineHeight: 1.85, maxWidth: 380 }}>
-            A segurança e a saúde no trabalho é a pedra angular no Grupo Omatapalo. Comprometemo-nos a contribuir para o desenvolvimento sustentado da engenharia segundo os mais elevados padrões éticos.
+            No Grupo Omatapalo, o compromisso com a segurança, a qualidade e a sustentabilidade orienta todas as nossas operações. As nossas certificações reflectem uma cultura de excelência, responsabilidade e confiança.
           </p>
         </div>
 
