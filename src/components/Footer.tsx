@@ -37,10 +37,13 @@ export default function Footer() {
                   borderRadius: 'var(--radius-sm)', display: 'flex', alignItems: 'center',
                   justifyContent: 'center', color: '#fff', fontSize: '14px', fontWeight: 700,
                   transition: 'background 0.2s, border-color 0.2s, color 0.2s',
+                  overflow: 'hidden', padding: 0,
                 }}
                   className="ftr-social"
                 >
-                  {s.icon}
+                  {s.label === 'LinkedIn' ? (
+                    <Image src="/linkedin.png" alt="LinkedIn" width={38} height={38} style={{ objectFit: 'cover', display: 'block' }} />
+                  ) : s.icon}
                 </a>
               ))}
             </div>
