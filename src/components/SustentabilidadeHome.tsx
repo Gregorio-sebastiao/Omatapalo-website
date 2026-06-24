@@ -2,37 +2,11 @@
 
 import { useEffect, useRef } from 'react';
 
-const CATEGORIES = [
-  {
-    n: '01–02', t: 'Direitos Humanos', start: 1,
-    principles: [
-      'Apoiar e respeitar a protecção dos direitos humanos internacionalmente proclamados.',
-      'Garantir que não sejam cúmplices de abusos de direitos humanos.',
-    ],
-  },
-  {
-    n: '03–06', t: 'Trabalhistas', start: 3,
-    principles: [
-      'Defender a liberdade de associação e o reconhecimento efectivo do direito à negociação colectiva.',
-      'Eliminação de todas as formas de trabalho forçado e obrigatório.',
-      'Abolição efectiva do trabalho infantil.',
-      'Eliminação da discriminação em relação ao emprego e à ocupação.',
-    ],
-  },
-  {
-    n: '07–09', t: 'Meio Ambiente', start: 7,
-    principles: [
-      'Apoiar uma abordagem preventiva diante dos desafios ambientais.',
-      'Empreender iniciativas para promover maior responsabilidade ambiental.',
-      'Incentivar o desenvolvimento e a difusão de tecnologias ambientalmente amigáveis.',
-    ],
-  },
-  {
-    n: '10', t: 'Anticorrupção', start: 10,
-    principles: [
-      'Trabalhar contra a corrupção em todas as suas formas, incluindo extorsão e suborno.',
-    ],
-  },
+const ODS = [
+  { n: '01', t: 'Erradicar a Pobreza' },
+  { n: '02', t: 'Erradicar a Fome' },
+  { n: '03', t: 'Saúde de Qualidade' },
+  { n: '04', t: 'Educação de Qualidade' },
 ];
 
 export default function SustentabilidadeHome() {
@@ -184,32 +158,22 @@ export default function SustentabilidadeHome() {
             </div>
           </div>
 
-          {/* RIGHT: UN Global Compact principles */}
+          {/* RIGHT: ODS */}
           <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <div className="sus-reveal" style={{ opacity: 0, marginBottom: 20 }}>
-              <p style={{ fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 'clamp(0.85rem,1.1vw,1rem)', color: '#fff', textTransform: 'uppercase', letterSpacing: '0.04em', margin: 0 }}>
-                Os Dez Princípios do Pacto Global da ONU
-              </p>
-            </div>
-            {CATEGORIES.map((c, i) => (
-              <div key={c.n} className="sus-reveal" style={{
+            {ODS.map((o, i) => (
+              <div key={o.n} className="sus-reveal" style={{
                 opacity: 0,
                 paddingTop: 20, paddingBottom: 20,
                 borderTop: '1px solid rgba(255,255,255,0.08)',
-                borderBottom: i === CATEGORIES.length - 1 ? '1px solid rgba(255,255,255,0.08)' : 'none',
+                borderBottom: i === ODS.length - 1 ? '1px solid rgba(255,255,255,0.08)' : 'none',
+                display: 'flex', alignItems: 'center', gap: 16,
               }}>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-                  {c.principles.map((pr, j) => (
-                    <div key={j} style={{ display: 'flex', gap: 8 }}>
-                      <span style={{ fontFamily: 'var(--font-label)', fontSize: 9, color: 'rgba(255,255,255,0.35)', flexShrink: 0, paddingTop: 2, minWidth: 16 }}>
-                        {c.start + j}.
-                      </span>
-                      <span style={{ fontFamily: 'var(--font-sans)', fontSize: 11, color: 'rgba(255,255,255,0.6)', lineHeight: 1.6 }}>
-                        {pr}
-                      </span>
-                    </div>
-                  ))}
-                </div>
+                <span style={{ fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 'clamp(1.4rem,2vw,2rem)', color: 'rgba(255,255,255,0.18)', letterSpacing: '-0.04em', flexShrink: 0 }}>
+                  {o.n}
+                </span>
+                <span style={{ fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 'clamp(0.85rem,1.1vw,1rem)', color: '#fff', textTransform: 'uppercase', letterSpacing: '0.04em', lineHeight: 1.2 }}>
+                  {o.t}
+                </span>
               </div>
             ))}
           </div>
