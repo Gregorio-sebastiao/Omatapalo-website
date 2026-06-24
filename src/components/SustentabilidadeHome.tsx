@@ -186,6 +186,11 @@ export default function SustentabilidadeHome() {
 
           {/* RIGHT: UN Global Compact principles */}
           <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <div className="sus-reveal" style={{ opacity: 0, marginBottom: 20 }}>
+              <p style={{ fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 'clamp(0.85rem,1.1vw,1rem)', color: '#fff', textTransform: 'uppercase', letterSpacing: '0.04em', margin: 0 }}>
+                Os Dez Princípios do Pacto Global da ONU
+              </p>
+            </div>
             {CATEGORIES.map((c, i) => (
               <div key={c.n} className="sus-reveal" style={{
                 opacity: 0,
