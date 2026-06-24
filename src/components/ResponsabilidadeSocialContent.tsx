@@ -222,8 +222,8 @@ export default function ResponsabilidadeSocialContent() {
                         )}
                         {o.totalIndirecta && (
                           <div>
-                            <div style={{ fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 'clamp(1rem,1.5vw,1.4rem)', color: isActive ? 'rgba(255,255,255,0.55)' : '#94A3B8', letterSpacing: '-0.04em', lineHeight: 1 }}>{fmtNum(o.totalIndirecta)}</div>
-                            <div style={{ fontFamily: 'var(--font-label)', fontSize: 8, letterSpacing: '0.12em', textTransform: 'uppercase', color: isActive ? 'rgba(255,255,255,0.35)' : '#CBD5E1', marginTop: 3 }}>indirectas</div>
+                            <div style={{ fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 'clamp(1rem,1.5vw,1.4rem)', color: isActive ? '#fff' : o.color, letterSpacing: '-0.04em', lineHeight: 1 }}>{fmtNum(o.totalIndirecta)}</div>
+                            <div style={{ fontFamily: 'var(--font-label)', fontSize: 8, letterSpacing: '0.12em', textTransform: 'uppercase', color: isActive ? 'rgba(255,255,255,0.4)' : '#94A3B8', marginTop: 3 }}>indirectas</div>
                           </div>
                         )}
                       </div>
