@@ -2,21 +2,36 @@
 
 import { useEffect, useRef } from 'react';
 
-const PILLARS = [
+const CATEGORIES = [
   {
-    n: '01', t: 'Ambiente',
-    d: 'Energias renováveis, gestão de resíduos e compensação de carbono em todos os projectos.',
-    stat: 60, statSuffix: ' ha', statLabel: 'inovação verde',
+    n: '01–02', t: 'Direitos Humanos',
+    principles: [
+      'Apoiar e respeitar a protecção dos direitos humanos internacionalmente proclamados.',
+      'Garantir que não sejam cúmplices de abusos de direitos humanos.',
+    ],
   },
   {
-    n: '02', t: 'Social',
-    d: 'Academia Omatapalo, apoio às comunidades e programas de saúde para os colaboradores.',
-    stat: 3200, statSuffix: '+', statLabel: 'colaboradores formados',
+    n: '03–06', t: 'Trabalhistas',
+    principles: [
+      'Defender a liberdade de associação e o reconhecimento efectivo do direito à negociação colectiva.',
+      'Eliminação de todas as formas de trabalho forçado e obrigatório.',
+      'Abolição efectiva do trabalho infantil.',
+      'Eliminação da discriminação em relação ao emprego e à ocupação.',
+    ],
   },
   {
-    n: '03', t: 'Governança',
-    d: 'Transparência, ética empresarial e adesão ao Pacto Global das Nações Unidas.',
-    stat: 2008, statSuffix: '', statLabel: 'membro do Pacto Global',
+    n: '07–09', t: 'Meio Ambiente',
+    principles: [
+      'Apoiar uma abordagem preventiva diante dos desafios ambientais.',
+      'Empreender iniciativas para promover maior responsabilidade ambiental.',
+      'Incentivar o desenvolvimento e a difusão de tecnologias ambientalmente amigáveis.',
+    ],
+  },
+  {
+    n: '10', t: 'Anticorrupção',
+    principles: [
+      'Trabalhar contra a corrupção em todas as suas formas, incluindo extorsão e suborno.',
+    ],
   },
 ];
 
@@ -82,20 +97,6 @@ export default function SustentabilidadeHome() {
           );
         }
 
-        /* count-up stats */
-        sectionRef.current.querySelectorAll<HTMLElement>('[data-count]').forEach(el => {
-          const target = parseFloat(el.getAttribute('data-count') || '0');
-          const proxy = { val: 0 };
-          gsap.to(proxy, {
-            val: target, duration: 2.2, ease: 'power2.out',
-            scrollTrigger: { trigger: el, start: 'top 88%', once: true },
-            onUpdate() {
-              el.textContent = target < 100
-                ? Math.round(proxy.val).toString()
-                : Math.round(proxy.val).toLocaleString('pt-PT');
-            },
-          });
-        });
       });
     });
   }, []);
@@ -183,41 +184,30 @@ export default function SustentabilidadeHome() {
             </div>
           </div>
 
-          {/* RIGHT: pillars */}
+          {/* RIGHT: UN Global Compact principles */}
           <div style={{ display: 'flex', flexDirection: 'column' }}>
-            {PILLARS.map((p, i) => (
-              <div key={p.n} className="sus-reveal" style={{
+            {CATEGORIES.map((c, i) => (
+              <div key={c.n} className="sus-reveal" style={{
                 opacity: 0,
-                paddingTop: 24, paddingBottom: 24,
+                paddingTop: 20, paddingBottom: 20,
                 borderTop: '1px solid rgba(255,255,255,0.08)',
-                borderBottom: i === PILLARS.length - 1 ? '1px solid rgba(255,255,255,0.08)' : 'none',
+                borderBottom: i === CATEGORIES.length - 1 ? '1px solid rgba(255,255,255,0.08)' : 'none',
               }}>
-                {/* stat number */}
-                <div style={{ marginBottom: 12 }}>
-                  <div style={{
-                    fontFamily: 'var(--font-display)', fontWeight: 900,
-                    fontSize: 'clamp(1.8rem,3vw,3.2rem)', color: '#fff',
-                    letterSpacing: '-0.04em', lineHeight: 1,
-                    display: 'flex', alignItems: 'baseline', gap: 4,
-                  }}>
-                    <span data-count={p.stat}>0</span>
-                    <span style={{ fontSize: '0.4em', color: '#fff', fontFamily: 'var(--font-sans)', fontWeight: 400 }}>
-                      {p.statSuffix}
-                    </span>
-                  </div>
-                  <div style={{ fontFamily: 'var(--font-label)', fontSize: 8, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#fff', marginTop: 4 }}>
-                    {p.statLabel}
+                <div style={{ display: 'flex', alignItems: 'baseline', gap: 10, marginBottom: 8 }}>
+                  <span style={{ fontFamily: 'var(--font-label)', fontSize: 9, letterSpacing: '0.12em', color: 'rgba(255,255,255,0.4)', flexShrink: 0 }}>
+                    {c.n}
+                  </span>
+                  <div style={{ fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 'clamp(0.75rem,0.95vw,0.9rem)', color: '#fff', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+                    {c.t}
                   </div>
                 </div>
-
-                <div style={{ paddingLeft: 0 }}>
-                  <div style={{ fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 'clamp(0.8rem,1vw,0.95rem)', color: '#fff', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 6 }}>
-                    {p.t}
-                  </div>
-                  <p style={{ fontFamily: 'var(--font-sans)', fontSize: 12, color: '#fff', lineHeight: 1.65, margin: 0 }}>
-                    {p.d}
-                  </p>
-                </div>
+                <ul style={{ margin: 0, paddingLeft: 14, display: 'flex', flexDirection: 'column', gap: 4 }}>
+                  {c.principles.map((pr, j) => (
+                    <li key={j} style={{ fontFamily: 'var(--font-sans)', fontSize: 11, color: 'rgba(255,255,255,0.6)', lineHeight: 1.6 }}>
+                      {pr}
+                    </li>
+                  ))}
+                </ul>
               </div>
             ))}
           </div>
