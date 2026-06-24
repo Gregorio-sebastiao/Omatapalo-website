@@ -104,7 +104,7 @@ export default function GrandesNumeros() {
                 <span style={{ color: 'transparent', WebkitTextStroke: '1.5px rgba(255,255,255,0.2)' }}>Números</span>
               </h2>
               <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'clamp(13px,1vw,15px)', color: '#fff', lineHeight: 1.8, maxWidth: 340, margin: 0, paddingBottom: 4 }}>
-                Duas décadas de obras que marcaram Angola — saúde, educação, energia e infra-estrutura.
+                Mais de duas décadas a construir infra-estruturas que melhoram a vida das comunidades e contribuem para o crescimento do país.
               </p>
             </div>
 
