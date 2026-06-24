@@ -8,7 +8,7 @@ export default function PortefolioPage() {
     <>
       <Nav />
       <main>
-        <PageHero title="Portefólio de Obras" imgSrc="/EN-230-omatapalo-2.jpg" position="center" eyebrow="Grupo Omatapalo · Desde 2003" outlineWord="Obras" />
+        <PageHero title="Portefólio de Obras" imgSrc="/EN-230-omatapalo-2.jpg" position="center" eyebrow="Grupo Omatapalo · Desde 2003" outlineWord="Obras" imgOpacity={0.45} />
         <PortefolioDinamico />
       </main>
       <Footer />
