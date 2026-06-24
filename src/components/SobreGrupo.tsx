@@ -8,7 +8,7 @@ const IMAGES = [
   { src: '/centro-cultural-huambo-omatapalo.png',label: 'Centro Cultural Manuel Rui - Huambo'   },
   { src: '/omatapalo-construcao-do-monumento-do-soldado-desconhecido.jpg', label: 'Monumento ao Soldado Desconhecido - Luanda' },
   { src: '/DSC_0030.jpg',                        label: 'Missão Fazer Sorrir'             },
-  { src: '/Academia-barra3.jpg',                 label: 'Academia Omatapalo'           },
+  { src: '/Academia-barra.jpg',                  label: 'Academia Omatapalo'           },
 ];
 
 const STATS = [
