@@ -12,7 +12,7 @@ const NAV = [
   { t: 'Portefólio', href: '/portefolio' },
   { t: 'Pessoas', href: '/pessoas' },
   { t: 'Sustentabilidade', href: '/sustentabilidade' },
-  { t: 'Responsabilidade Social', href: '/responsabilidade-social', sub: [
+  { t: 'R.Social', href: '/responsabilidade-social', sub: [
     { t: 'Missão Fazer Sorrir', href: '/responsabilidade-social#missao' },
     { t: 'CDH', href: '/cdh' },
   ]},
@@ -30,7 +30,7 @@ const ALL_PAGES = [
   { t: 'CDH', href: '/cdh' },
   { t: 'Media', href: '#media' },
   { t: 'Sustentabilidade', href: '/sustentabilidade' },
-  { t: 'Responsabilidade Social', href: '/responsabilidade-social' },
+  { t: 'R.Social', href: '/responsabilidade-social' },
   { t: 'Missão Fazer Sorrir', href: '/responsabilidade-social#missao' },
   { t: 'Contactos', href: '/contactos' },
 ];
