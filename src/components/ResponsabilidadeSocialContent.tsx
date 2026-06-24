@@ -172,23 +172,6 @@ export default function ResponsabilidadeSocialContent() {
         </div>
       </section>
 
-      {/* ── STATS ───────────────────────────────────────────────── */}
-      <section style={{ background: '#fff', borderBottom: '1px solid #E8EDF3' }}>
-        <div className="wrap rsa-stats" style={{ display: 'grid', gridTemplateColumns: 'repeat(5,1fr)', gap: 0 }}>
-          {[
-            { v: '720k+', l: 'Vidas Tocadas',       c: '#1a396e' },
-            { v: '500k+', l: 'Sopas Distribuídas',  c: '#DDA63A' },
-            { v: '500k+', l: 'Merendas Escolares',  c: '#4C9F38' },
-            { v: '11',    l: 'Iniciativas Activas', c: '#C5192D' },
-            { v: '2003',  l: 'Comprometidos Desde', c: '#1a396e' },
-          ].map((s, i) => (
-            <div key={i} className="rsa-stat" style={{ opacity: 0, padding: 'clamp(24px,3.5vw,40px) clamp(12px,1.5vw,20px)', textAlign: 'center', borderLeft: i > 0 ? '1px solid #E8EDF3' : 'none', borderTop: `3px solid ${s.c}` }}>
-              <div style={{ fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 'clamp(1.6rem,2.5vw,2.8rem)', color: '#0F1A2E', letterSpacing: '-0.04em', lineHeight: 1, marginBottom: 6 }}>{s.v}</div>
-              <div style={{ fontFamily: 'var(--font-label)', fontSize: 9, letterSpacing: '0.16em', textTransform: 'uppercase', color: '#94A3B8' }}>{s.l}</div>
-            </div>
-          ))}
-        </div>
-      </section>
 
       {/* ── ODS TILES 2×2 ───────────────────────────────────────── */}
       <section style={{ background: '#F6F8FB', padding: 'clamp(56px,8vh,96px) 0' }}>
