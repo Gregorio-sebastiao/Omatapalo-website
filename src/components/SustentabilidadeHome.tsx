@@ -198,14 +198,6 @@ export default function SustentabilidadeHome() {
                 borderTop: '1px solid rgba(255,255,255,0.08)',
                 borderBottom: i === CATEGORIES.length - 1 ? '1px solid rgba(255,255,255,0.08)' : 'none',
               }}>
-                <div style={{ display: 'flex', alignItems: 'baseline', gap: 10, marginBottom: 8 }}>
-                  <span style={{ fontFamily: 'var(--font-label)', fontSize: 9, letterSpacing: '0.12em', color: 'rgba(255,255,255,0.4)', flexShrink: 0 }}>
-                    {c.n}
-                  </span>
-                  <div style={{ fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 'clamp(0.75rem,0.95vw,0.9rem)', color: '#fff', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
-                    {c.t}
-                  </div>
-                </div>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
                   {c.principles.map((pr, j) => (
                     <div key={j} style={{ display: 'flex', gap: 8 }}>
