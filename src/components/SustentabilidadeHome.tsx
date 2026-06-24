@@ -4,14 +4,14 @@ import { useEffect, useRef } from 'react';
 
 const CATEGORIES = [
   {
-    n: '01–02', t: 'Direitos Humanos',
+    n: '01–02', t: 'Direitos Humanos', start: 1,
     principles: [
       'Apoiar e respeitar a protecção dos direitos humanos internacionalmente proclamados.',
       'Garantir que não sejam cúmplices de abusos de direitos humanos.',
     ],
   },
   {
-    n: '03–06', t: 'Trabalhistas',
+    n: '03–06', t: 'Trabalhistas', start: 3,
     principles: [
       'Defender a liberdade de associação e o reconhecimento efectivo do direito à negociação colectiva.',
       'Eliminação de todas as formas de trabalho forçado e obrigatório.',
@@ -20,7 +20,7 @@ const CATEGORIES = [
     ],
   },
   {
-    n: '07–09', t: 'Meio Ambiente',
+    n: '07–09', t: 'Meio Ambiente', start: 7,
     principles: [
       'Apoiar uma abordagem preventiva diante dos desafios ambientais.',
       'Empreender iniciativas para promover maior responsabilidade ambiental.',
@@ -28,7 +28,7 @@ const CATEGORIES = [
     ],
   },
   {
-    n: '10', t: 'Anticorrupção',
+    n: '10', t: 'Anticorrupção', start: 10,
     principles: [
       'Trabalhar contra a corrupção em todas as suas formas, incluindo extorsão e suborno.',
     ],
@@ -206,13 +206,18 @@ export default function SustentabilidadeHome() {
                     {c.t}
                   </div>
                 </div>
-                <ul style={{ margin: 0, paddingLeft: 14, display: 'flex', flexDirection: 'column', gap: 4 }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
                   {c.principles.map((pr, j) => (
-                    <li key={j} style={{ fontFamily: 'var(--font-sans)', fontSize: 11, color: 'rgba(255,255,255,0.6)', lineHeight: 1.6 }}>
-                      {pr}
-                    </li>
+                    <div key={j} style={{ display: 'flex', gap: 8 }}>
+                      <span style={{ fontFamily: 'var(--font-label)', fontSize: 9, color: 'rgba(255,255,255,0.35)', flexShrink: 0, paddingTop: 2, minWidth: 16 }}>
+                        {c.start + j}.
+                      </span>
+                      <span style={{ fontFamily: 'var(--font-sans)', fontSize: 11, color: 'rgba(255,255,255,0.6)', lineHeight: 1.6 }}>
+                        {pr}
+                      </span>
+                    </div>
                   ))}
-                </ul>
+                </div>
               </div>
             ))}
           </div>
