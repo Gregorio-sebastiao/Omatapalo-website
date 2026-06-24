@@ -117,7 +117,7 @@ export default function ResponsabilidadeSocialContent() {
           </div>
 
           {/* Título full-width */}
-          <h2 style={{ margin: '0 0 clamp(24px,4vh,40px)', fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 'clamp(3.5rem,8vw,9rem)', color: '#fff', letterSpacing: '-0.05em', lineHeight: 0.83, textTransform: 'uppercase' }}>
+          <h2 style={{ margin: '0 0 clamp(24px,4vh,40px)', fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 'clamp(2.4rem,5vw,5.5rem)', color: '#fff', letterSpacing: '-0.05em', lineHeight: 0.83, textTransform: 'uppercase' }}>
             Missão Fazer<br />
             <span style={{ color: 'transparent', WebkitTextStroke: '2.5px rgba(255,255,255,0.15)' }}>Sorrir</span>
           </h2>
