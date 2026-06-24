@@ -145,7 +145,6 @@ function TiltCard({ company, index }: { company: Company; index: number }) {
         <span style={{ fontFamily: 'var(--font-label)', fontSize: 9, letterSpacing: '0.12em', textTransform: 'uppercase', color: hovered ? '#1a396e' : '#94a3b8', transition: 'color .25s' }}>
           {company.area}
         </span>
-        <span style={{ fontFamily: 'var(--font-label)', fontSize: 9, letterSpacing: '0.1em', color: '#c4cdd8' }}>Est. {company.year}</span>
       </div>
     </div>
   );
