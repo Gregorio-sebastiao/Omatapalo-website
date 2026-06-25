@@ -40,6 +40,7 @@ export default function NoticiaPage({ params }: { params: Promise<{ slug: string
   const [post, setPost] = useState<Post | null>(null);
   const [prev, setPrev] = useState<{ title: string; slug: string } | null>(null);
   const [next, setNext] = useState<{ title: string; slug: string } | null>(null);
+  const [latestNews, setLatestNews] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
   const shareUrl = typeof window !== 'undefined' ? window.location.href : '';
@@ -58,6 +59,8 @@ export default function NoticiaPage({ params }: { params: Promise<{ slug: string
         setPrev(p ?? null);
         const { data: n } = await db.from('posts').select('title,slug').eq('published', true).gt('created_at', data.created_at).order('created_at', { ascending: true }).limit(1).single();
         setNext(n ?? null);
+        const { data: latest } = await db.from('posts').select('title,slug,cover_image,created_at,category').eq('published', true).neq('slug', slug).order('created_at', { ascending: false }).limit(4);
+        setLatestNews(latest ?? []);
         setLoading(false);
       });
   }, [slug]);
@@ -113,33 +116,26 @@ export default function NoticiaPage({ params }: { params: Promise<{ slug: string
               </h1>
             </div>
 
-            {/* Grid: corpo (70%) + sidebar (30%) */}
-            <div className="post-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 300px', gap: 'clamp(32px,4vw,64px)', alignItems: 'start' }}>
+            {/* Grid: sidebar esquerda · corpo · sidebar direita */}
+            <div className="post-grid" style={{ display: 'grid', gridTemplateColumns: '220px 1fr 240px', gap: 'clamp(24px,3vw,48px)', alignItems: 'start' }}>
 
-              {/* Corpo */}
-              <div>
-                {post.content && (
-                  <div className="post-content" dangerouslySetInnerHTML={{ __html: formatContent(post.content) }} />
-                )}
-              </div>
-
-              {/* Sidebar */}
-              <aside style={{ display: 'flex', flexDirection: 'column', gap: 20, position: 'sticky', top: 100 }}>
+              {/* Sidebar esquerda */}
+              <aside style={{ display: 'flex', flexDirection: 'column', gap: 16, position: 'sticky', top: 100 }}>
                 {post.cover_image && (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img src={post.cover_image} alt={post.title} style={{ width: '100%', aspectRatio: '4/3', objectFit: 'cover', borderRadius: 4, display: 'block' }} />
                 )}
 
-                <div style={{ padding: '20px', background: '#f6f8fb', borderRadius: 4 }}>
-                  <div style={{ fontFamily: 'var(--font-label)', fontSize: 10, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#64748b', marginBottom: 12 }}>Partilhar</div>
-                  <div style={{ display: 'flex', gap: 8 }}>
+                <div style={{ padding: '16px', background: '#f6f8fb', borderRadius: 4 }}>
+                  <div style={{ fontFamily: 'var(--font-label)', fontSize: 9, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#64748b', marginBottom: 10 }}>Partilhar</div>
+                  <div style={{ display: 'flex', gap: 6 }}>
                     {([
                       { net: 'facebook', url: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}` },
                       { net: 'twitter',  url: `https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(post.title)}` },
                       { net: 'linkedin', url: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}` },
                     ] as const).map(({ net, url }) => (
                       <a key={net} href={url} target="_blank" rel="noopener noreferrer"
-                        style={{ width: 36, height: 36, borderRadius: 3, background: '#1a396e', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', textDecoration: 'none', fontSize: 13, fontWeight: 700 }}
+                        style={{ width: 32, height: 32, borderRadius: 3, background: '#1a396e', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', textDecoration: 'none', fontSize: 12, fontWeight: 700 }}
                         className="share-btn"
                       >
                         {net === 'facebook' ? 'f' : net === 'twitter' ? 'X' : 'in'}
@@ -148,19 +144,48 @@ export default function NoticiaPage({ params }: { params: Promise<{ slug: string
                   </div>
                 </div>
 
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 10, padding: '20px', background: '#f6f8fb', borderRadius: 4 }}>
-                  <div style={{ fontFamily: 'var(--font-label)', fontSize: 10, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#64748b', marginBottom: 4 }}>Navegação</div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 8, padding: '16px', background: '#f6f8fb', borderRadius: 4 }}>
+                  <div style={{ fontFamily: 'var(--font-label)', fontSize: 9, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#64748b', marginBottom: 2 }}>Navegação</div>
                   {prev
-                    ? <a href={`/noticias/${prev.slug}`} style={{ fontFamily: 'var(--font-label)', fontSize: 10, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#1a396e', textDecoration: 'none', fontWeight: 700 }}>‹ Anterior</a>
+                    ? <a href={`/noticias/${prev.slug}`} style={{ fontFamily: 'var(--font-label)', fontSize: 10, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#1a396e', textDecoration: 'none', fontWeight: 700 }}>‹ Anterior</a>
                     : <span style={{ fontFamily: 'var(--font-label)', fontSize: 10, textTransform: 'uppercase', color: '#c0cad8' }}>‹ Anterior</span>}
                   {next
-                    ? <a href={`/noticias/${next.slug}`} style={{ fontFamily: 'var(--font-label)', fontSize: 10, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#1a396e', textDecoration: 'none', fontWeight: 700 }}>Seguinte ›</a>
+                    ? <a href={`/noticias/${next.slug}`} style={{ fontFamily: 'var(--font-label)', fontSize: 10, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#1a396e', textDecoration: 'none', fontWeight: 700 }}>Seguinte ›</a>
                     : <span style={{ fontFamily: 'var(--font-label)', fontSize: 10, textTransform: 'uppercase', color: '#c0cad8' }}>Seguinte ›</span>}
                 </div>
 
-                <a href="/media" style={{ display: 'block', textAlign: 'center', fontFamily: 'var(--font-label)', fontSize: 10, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#1a396e', border: '1.5px solid #1a396e', padding: '10px 18px', borderRadius: 3, textDecoration: 'none', fontWeight: 700 }} className="back-btn">
+                <a href="/media" style={{ display: 'block', textAlign: 'center', fontFamily: 'var(--font-label)', fontSize: 9, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#1a396e', border: '1.5px solid #1a396e', padding: '9px 12px', borderRadius: 3, textDecoration: 'none', fontWeight: 700 }} className="back-btn">
                   ← Voltar às notícias
                 </a>
+              </aside>
+
+              {/* Corpo central */}
+              <div>
+                {post.content && (
+                  <div className="post-content" dangerouslySetInnerHTML={{ __html: formatContent(post.content) }} />
+                )}
+              </div>
+
+              {/* Sidebar direita: últimas notícias */}
+              <aside style={{ display: 'flex', flexDirection: 'column', gap: 0, position: 'sticky', top: 100 }}>
+                <div style={{ fontFamily: 'var(--font-label)', fontSize: 9, letterSpacing: '0.16em', textTransform: 'uppercase', color: '#64748b', marginBottom: 16, paddingBottom: 10, borderBottom: '1px solid #e8edf5' }}>
+                  Últimas Notícias
+                </div>
+                {latestNews.map((n, i) => (
+                  <a key={n.slug} href={`/noticias/${n.slug}`} style={{ display: 'flex', gap: 10, textDecoration: 'none', paddingBottom: 14, marginBottom: 14, borderBottom: i < latestNews.length - 1 ? '1px solid #f1f5f9' : 'none' }} className="latest-item">
+                    {n.cover_image && (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img src={n.cover_image} alt={n.title} style={{ width: 60, height: 50, objectFit: 'cover', borderRadius: 3, flexShrink: 0 }} />
+                    )}
+                    <div>
+                      <div style={{ fontFamily: 'var(--font-label)', fontSize: 8, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#94a3b8', marginBottom: 4 }}>{fmtDate(n.created_at)}</div>
+                      <div style={{ fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: '0.72rem', color: '#0f1a2e', lineHeight: 1.3, textTransform: 'uppercase' }} className="latest-title">{n.title}</div>
+                    </div>
+                  </a>
+                ))}
+                {latestNews.length === 0 && (
+                  <span style={{ fontSize: 12, color: '#94a3b8' }}>Sem outras notícias.</span>
+                )}
               </aside>
             </div>
           </div>
@@ -169,8 +194,10 @@ export default function NoticiaPage({ params }: { params: Promise<{ slug: string
       <Footer />
 
       <style>{`
-        .post-grid { grid-template-columns: 1fr 300px; }
-        @media (max-width: 860px) { .post-grid { grid-template-columns: 1fr !important; } }
+        .post-grid { grid-template-columns: 220px 1fr 240px; }
+        @media (max-width: 1100px) { .post-grid { grid-template-columns: 200px 1fr !important; } }
+        @media (max-width: 760px)  { .post-grid { grid-template-columns: 1fr !important; } }
+        .latest-item:hover .latest-title { color: #1a396e; }
         .share-btn:hover { opacity: 0.75; }
         .back-btn:hover { background: #1a396e !important; color: #fff !important; }
         .post-content {
