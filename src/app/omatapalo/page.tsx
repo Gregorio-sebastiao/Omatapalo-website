@@ -1,4 +1,4 @@
-import Nav from '@/components/Nav';
+﻿import Nav from '@/components/Nav';
 import Footer from '@/components/Footer';
 import PageHero from '@/components/PageHero';
 import Negocios from '@/components/Negocios';
@@ -11,7 +11,7 @@ export default function OmatapaloPage() {
     <>
       <Nav />
       <main>
-        <PageHero title="Grupo Omatapalo" imgSrc="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=1600&q=80" position="center" imgOpacity={0.45} />
+        <PageHero page="omatapalo" title="Grupo Omatapalo" imgSrc="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=1600&q=80" position="center" imgOpacity={0.45} />
         <section style={{
           background: '#fff',
           paddingTop: 'clamp(100px,14vh,160px)',
@@ -26,7 +26,7 @@ export default function OmatapaloPage() {
               fontWeight: 700,
               maxWidth: '800px',
             }}>
-              A OMATAPALO é uma empresa nacional que gere um portefólio diversificado de negócios nas áreas de Engenharia e Construção, Obras Públicas, Agroindústria, Imobiliário, Minas, Pesca e Gestão Hoteleira.
+              A OMATAPALO Ã© uma empresa nacional que gere um portefÃ³lio diversificado de negÃ³cios nas Ã¡reas de Engenharia e ConstruÃ§Ã£o, Obras PÃºblicas, AgroindÃºstria, ImobiliÃ¡rio, Minas, Pesca e GestÃ£o Hoteleira.
             </p>
           </div>
         </section>
@@ -40,3 +40,4 @@ export default function OmatapaloPage() {
     </>
   );
 }
+

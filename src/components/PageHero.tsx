@@ -1,6 +1,7 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { createClient } from '@/lib/supabase/client';
 
 type PageHeroProps = {
   title: string;
@@ -9,9 +10,18 @@ type PageHeroProps = {
   position?: string;
   outlineWord?: string;
   imgOpacity?: number;
+  page?: string;
 };
 
-export default function PageHero({ title, imgSrc, eyebrow, position = 'center', outlineWord, imgOpacity = 0.18 }: PageHeroProps) {
+export default function PageHero({ title, imgSrc, eyebrow, position = 'center', outlineWord, imgOpacity = 0.18, page }: PageHeroProps) {
+  const [dynamicImg, setDynamicImg] = useState(imgSrc);
+
+  useEffect(() => {
+    if (!page) return;
+    createClient().from('site_content').select('value').eq('page', page).eq('field', 'hero_img').single()
+      .then(({ data }) => { if (data?.value) setDynamicImg(data.value); });
+  }, [page]);
+
   useEffect(() => {
     import('gsap').then(({ gsap }) => {
       import('gsap/ScrollTrigger').then(({ ScrollTrigger }) => {
@@ -32,7 +42,7 @@ export default function PageHero({ title, imgSrc, eyebrow, position = 'center', 
       {/* Photo layer */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        src={imgSrc}
+        src={dynamicImg}
         alt=""
         style={{
           position: 'absolute', inset: 0, width: '100%', height: '100%',

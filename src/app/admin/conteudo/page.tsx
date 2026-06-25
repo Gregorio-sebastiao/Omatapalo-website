@@ -1,9 +1,9 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { createClient } from '@/lib/supabase/client';
 
-type FieldType = 'text' | 'textarea' | 'url';
+type FieldType = 'text' | 'textarea' | 'url' | 'image';
 type Field = { key: string; label: string; type: FieldType; default: string };
 type PageSchema = { label: string; fields: Field[] };
 
@@ -38,6 +38,7 @@ const SCHEMAS: Record<string, PageSchema> = {
   omatapalo: {
     label: 'O Grupo',
     fields: [
+      { key: 'hero_img',      label: 'Imagem do Hero',         type: 'image',    default: 'https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=1600&q=80' },
       { key: 'hero_eyebrow',  label: 'Eyebrow hero',           type: 'text',     default: 'Grupo Omatapalo · O Grupo' },
       { key: 'hero_title',    label: 'Título hero',            type: 'text',     default: 'O Grupo' },
       { key: 'intro_heading', label: 'Título secção intro',    type: 'text',     default: 'Somos mais do que uma empresa de engenharia.' },
@@ -49,6 +50,7 @@ const SCHEMAS: Record<string, PageSchema> = {
   portefolio: {
     label: 'Portefólio',
     fields: [
+      { key: 'hero_img',      label: 'Imagem do Hero',         type: 'image',    default: '/COMPLEXO HOSPITALAR DOENÇAS CARDIO-PULMONARES CARDEAL D. ALEXANDRE DO NASCIMENTO (2).JPG' },
       { key: 'hero_eyebrow',  label: 'Eyebrow hero',           type: 'text',     default: 'Grupo Omatapalo · Portefólio' },
       { key: 'hero_title',    label: 'Título hero',            type: 'text',     default: 'Portefólio' },
       { key: 'intro',         label: 'Texto introdutório',     type: 'textarea', default: 'Obras que marcam Angola.' },
@@ -57,6 +59,7 @@ const SCHEMAS: Record<string, PageSchema> = {
   pessoas: {
     label: 'Pessoas',
     fields: [
+      { key: 'hero_img',      label: 'Imagem do Hero',         type: 'image',    default: '/Academia-barra.jpg' },
       { key: 'hero_eyebrow',  label: 'Eyebrow hero',           type: 'text',     default: 'Grupo Omatapalo · Pessoas' },
       { key: 'hero_title',    label: 'Título hero',            type: 'text',     default: 'Pessoas' },
       { key: 'intro',         label: 'Texto introdutório',     type: 'textarea', default: 'As pessoas são o coração do Grupo Omatapalo.' },
@@ -65,6 +68,7 @@ const SCHEMAS: Record<string, PageSchema> = {
   sustentabilidade: {
     label: 'Sustentabilidade',
     fields: [
+      { key: 'hero_img',      label: 'Imagem do Hero',         type: 'image',    default: 'https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=1600&q=80' },
       { key: 'hero_eyebrow',  label: 'Eyebrow hero',           type: 'text',     default: 'Grupo Omatapalo · Sustentabilidade' },
       { key: 'hero_title',    label: 'Título hero',            type: 'text',     default: 'Sustentabilidade' },
       { key: 'intro',         label: 'Texto introdutório',     type: 'textarea', default: 'Comprometidos com o futuro de Angola e do planeta.' },
@@ -73,6 +77,7 @@ const SCHEMAS: Record<string, PageSchema> = {
   'responsabilidade-social': {
     label: 'R. Social',
     fields: [
+      { key: 'hero_img',      label: 'Imagem do Hero',         type: 'image',    default: '/DSC_0030.jpg' },
       { key: 'hero_eyebrow',  label: 'Eyebrow hero',           type: 'text',     default: 'Grupo Omatapalo · Missão Fazer Sorrir' },
       { key: 'hero_title',    label: 'Título hero',            type: 'text',     default: 'Responsabilidade Social' },
       { key: 'intro',         label: 'Texto introdutório',     type: 'textarea', default: 'A responsabilidade social começa na nossa casa.' },
@@ -81,6 +86,7 @@ const SCHEMAS: Record<string, PageSchema> = {
   contactos: {
     label: 'Contactos',
     fields: [
+      { key: 'hero_img',      label: 'Imagem do Hero',         type: 'image',    default: '/Omatapalo-Contactos-web.jpg' },
       { key: 'hero_eyebrow',  label: 'Eyebrow hero',           type: 'text',     default: 'Grupo Omatapalo · Contactos' },
       { key: 'hero_title',    label: 'Título hero',            type: 'text',     default: 'Contactos' },
       { key: 'address',       label: 'Morada',                 type: 'textarea', default: 'Rua Marien Nguabi, Luanda, Angola' },
@@ -92,6 +98,7 @@ const SCHEMAS: Record<string, PageSchema> = {
   'identidade-visual': {
     label: 'Press Kit',
     fields: [
+      { key: 'hero_img',      label: 'Imagem do Hero',         type: 'image',    default: '/COMPLEXO HOSPITALAR DOENÇAS CARDIO-PULMONARES CARDEAL D. ALEXANDRE DO NASCIMENTO (2).JPG' },
       { key: 'hero_eyebrow',  label: 'Eyebrow hero',           type: 'text',     default: 'Grupo Omatapalo · Press Kit' },
       { key: 'hero_title',    label: 'Título hero',            type: 'text',     default: 'Identidade Visual' },
       { key: 'intro',         label: 'Texto introdutório',     type: 'textarea', default: 'Guia de identidade visual do Grupo Omatapalo.' },
@@ -100,6 +107,7 @@ const SCHEMAS: Record<string, PageSchema> = {
   cdh: {
     label: 'CDH',
     fields: [
+      { key: 'hero_img',      label: 'Imagem do Hero',         type: 'image',    default: 'https://images.unsplash.com/photo-1577495508048-486bbc10a1a2?w=1600&q=80' },
       { key: 'hero_eyebrow',  label: 'Eyebrow hero',           type: 'text',     default: 'Grupo Omatapalo · CDH' },
       { key: 'hero_title',    label: 'Título hero',            type: 'text',     default: 'CDH' },
       { key: 'intro',         label: 'Texto introdutório',     type: 'textarea', default: 'Clube Desportivo da Huíla.' },
@@ -111,7 +119,21 @@ export default function ConteudoPage() {
   const [activePage, setActivePage] = useState('home');
   const [values, setValues] = useState<Record<string, string>>({});
   const [saving, setSaving] = useState(false);
+  const [uploading, setUploading] = useState('');
   const [msg, setMsg] = useState('');
+  const fileRefs = useRef<Record<string, HTMLInputElement | null>>({});
+
+  async function uploadImage(fieldKey: string, file: File) {
+    setUploading(fieldKey);
+    const db = createClient();
+    const ext = file.name.split('.').pop();
+    const path = `pages/${activePage}-${fieldKey}-${Date.now()}.${ext}`;
+    const { data, error } = await db.storage.from('media').upload(path, file, { upsert: true });
+    setUploading('');
+    if (error) { setMsg('❌ Erro ao carregar: ' + error.message); return; }
+    const { data: urlData } = db.storage.from('media').getPublicUrl(data.path);
+    setValues(v => ({ ...v, [fieldKey]: urlData.publicUrl }));
+  }
 
   const schema = SCHEMAS[activePage];
 
@@ -197,7 +219,33 @@ export default function ConteudoPage() {
               <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: '#374151', marginBottom: 8, letterSpacing: '0.04em' }}>
                 {field.label}
               </label>
-              {field.type === 'textarea' ? (
+              {field.type === 'image' ? (
+                <div>
+                  {(values[field.key] || field.default) && (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={values[field.key] || field.default} alt="" style={{ width: '100%', height: 160, objectFit: 'cover', borderRadius: 4, marginBottom: 10, border: '1px solid #e2e8f0' }} />
+                  )}
+                  <div style={{ display: 'flex', gap: 8 }}>
+                    <input
+                      type="text"
+                      value={values[field.key] ?? field.default}
+                      onChange={e => setValues(v => ({ ...v, [field.key]: e.target.value }))}
+                      placeholder="URL da imagem ou carrega um ficheiro"
+                      style={{ flex: 1, padding: '10px 12px', border: '1px solid #e2e8f0', borderRadius: 4, fontSize: 13, color: '#0f172a', fontFamily: 'inherit', boxSizing: 'border-box' }}
+                    />
+                    <button
+                      onClick={() => fileRefs.current[field.key]?.click()}
+                      disabled={uploading === field.key}
+                      style={{ padding: '10px 16px', background: '#1a396e', color: '#fff', border: 'none', borderRadius: 4, fontSize: 12, fontWeight: 700, cursor: 'pointer', whiteSpace: 'nowrap' }}
+                    >
+                      {uploading === field.key ? 'A carregar…' : '⬆ Carregar foto'}
+                    </button>
+                    <input type="file" accept="image/*" style={{ display: 'none' }}
+                      ref={el => { fileRefs.current[field.key] = el; }}
+                      onChange={e => { const f = e.target.files?.[0]; if (f) uploadImage(field.key, f); }} />
+                  </div>
+                </div>
+              ) : field.type === 'textarea' ? (
                 <textarea
                   value={values[field.key] ?? field.default}
                   onChange={e => setValues(v => ({ ...v, [field.key]: e.target.value }))}

@@ -1,4 +1,4 @@
-import Nav from '@/components/Nav';
+﻿import Nav from '@/components/Nav';
 import Pessoas from '@/components/Pessoas';
 import Testemunhos from '@/components/Testemunhos';
 import Academia from '@/components/Academia';
@@ -10,7 +10,7 @@ export default function PessoasPage() {
     <>
       <Nav />
       <main>
-        <PageHero title="As nossas Pessoas" imgSrc="/Academia-barra.jpg" position="center" eyebrow="Grupo Omatapalo · +15 000 Colaboradores" outlineWord="Pessoas" imgOpacity={0.45} />
+        <PageHero page="pessoas" title="As nossas Pessoas" imgSrc="/Academia-barra.jpg" position="center" eyebrow="Grupo Omatapalo Â· +15 000 Colaboradores" outlineWord="Pessoas" imgOpacity={0.45} />
         <Pessoas />
         <Testemunhos />
         <Academia />
@@ -19,3 +19,4 @@ export default function PessoasPage() {
     </>
   );
 }
+
