@@ -58,9 +58,13 @@ export default function ConfiguracoesPage() {
 
   async function saveNav() {
     setSaving(true);
-    await createClient().from('site_settings').upsert({ key: 'nav_items', value: JSON.stringify(navItems) });
+    const { error } = await createClient().from('site_settings').upsert({ key: 'nav_items', value: JSON.stringify(navItems) });
     setSaving(false);
-    flash('Menu guardado com sucesso!');
+    if (error) {
+      flash('❌ Erro ao guardar: ' + error.message + (error.code === '42P01' ? ' — Cria a tabela site_settings no Supabase primeiro.' : ''));
+    } else {
+      flash('✅ Menu guardado com sucesso!');
+    }
   }
 
   async function uploadAsset(file: File, key: 'logo_url' | 'favicon_url') {
@@ -102,6 +106,7 @@ export default function ConfiguracoesPage() {
     setNavItems(items => items.map((it, idx) => idx === i
       ? { ...it, sub: [...(it.sub ?? []), { label: 'Sub-item', href: '/' }] }
       : it));
+    setExpanded(i);
   }
   function updateSub(i: number, j: number, field: 'label' | 'href', val: string) {
     setNavItems(items => items.map((it, idx) => idx === i
@@ -139,9 +144,15 @@ export default function ConfiguracoesPage() {
       {/* ── MENU ── */}
       {tab === 'menu' && (
         <div>
-          <p style={{ fontSize: 13, color: '#64748b', marginBottom: 20 }}>
-            Adiciona, remove ou reordena os itens do menu. Cada item pode ter sub-itens (dropdown).
+          <p style={{ fontSize: 13, color: '#64748b', marginBottom: 12 }}>
+            Adiciona, remove ou reordena os itens do menu. Cada item pode ter sub-itens (dropdown). Clica <strong>▾ 0</strong> para gerir sub-itens.
           </p>
+          <div style={{ background: '#fffbeb', border: '1px solid #fde68a', borderRadius: 4, padding: '10px 14px', marginBottom: 20, fontSize: 12, color: '#92400e' }}>
+            <strong>Pré-requisito:</strong> cria esta tabela no Supabase (SQL Editor) se ainda não existir:
+            <code style={{ display: 'block', marginTop: 6, background: '#fff', padding: '6px 10px', borderRadius: 3, fontFamily: 'monospace', fontSize: 11 }}>
+              create table site_settings (key text primary key, value text);
+            </code>
+          </div>
 
           {navItems.map((item, i) => (
             <div key={i} style={card}>
