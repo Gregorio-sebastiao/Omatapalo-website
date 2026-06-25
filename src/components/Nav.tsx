@@ -14,7 +14,6 @@ const NAV = [
   { t: 'Sustentabilidade', href: '/sustentabilidade' },
   { t: 'R.Social', href: '/responsabilidade-social', sub: [
     { t: 'Missão Fazer Sorrir', href: '/responsabilidade-social#missao' },
-    { t: 'CDH', href: '/cdh' },
   ]},
   { t: 'CDH', href: '/cdh' },
   { t: 'Media', href: '/media' },
