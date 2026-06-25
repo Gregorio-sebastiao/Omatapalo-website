@@ -6,7 +6,8 @@ import { useRouter } from 'next/navigation';
 type Project = {
   id?: string; title?: string; slug?: string; description?: string;
   category?: string; client?: string; location?: string; year?: number;
-  fiscalizacao?: string; cover_image?: string; images?: string[]; featured?: boolean; published?: boolean;
+  dona_obra?: string; arquitetura?: string; engenharia?: string; fiscalizacao?: string;
+  cover_image?: string; images?: string[]; featured?: boolean; published?: boolean;
 };
 
 const CATEGORIES = [
@@ -34,7 +35,7 @@ export default function ProjectEditor({ project }: { project?: Project }) {
   const [form, setForm] = useState({
     title: project?.title ?? '', slug: project?.slug ?? '', description: project?.description ?? '',
     category: project?.category ?? 'inst', client: project?.client ?? '',
-    location: project?.location ?? '', fiscalizacao: project?.fiscalizacao ?? '', year: project?.year ?? new Date().getFullYear(),
+    location: project?.location ?? '', dona_obra: project?.dona_obra ?? '', arquitetura: project?.arquitetura ?? '', engenharia: project?.engenharia ?? '', fiscalizacao: project?.fiscalizacao ?? '', year: project?.year ?? new Date().getFullYear(),
     cover_image: project?.cover_image ?? '', images: project?.images ?? [],
     featured: project?.featured ?? false, published: project?.published ?? false,
   });
@@ -168,6 +169,18 @@ export default function ProjectEditor({ project }: { project?: Project }) {
             <div>
               <label style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#64748b', display: 'block', marginBottom: 6 }}>Cliente</label>
               <input style={inp} value={form.client} onChange={e => set('client', e.target.value)} placeholder="Nome do cliente" />
+            </div>
+            <div>
+              <label style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#64748b', display: 'block', marginBottom: 6 }}>Dona da Obra</label>
+              <input style={inp} value={form.dona_obra} onChange={e => set('dona_obra', e.target.value)} placeholder="Entidade dona da obra" />
+            </div>
+            <div>
+              <label style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#64748b', display: 'block', marginBottom: 6 }}>Arquitetura</label>
+              <input style={inp} value={form.arquitetura} onChange={e => set('arquitetura', e.target.value)} placeholder="Gabinete de arquitetura" />
+            </div>
+            <div>
+              <label style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#64748b', display: 'block', marginBottom: 6 }}>Engenharia</label>
+              <input style={inp} value={form.engenharia} onChange={e => set('engenharia', e.target.value)} placeholder="Gabinete de engenharia" />
             </div>
             <div>
               <label style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#64748b', display: 'block', marginBottom: 6 }}>Localização</label>
