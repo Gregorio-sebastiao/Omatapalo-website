@@ -17,10 +17,8 @@ const NAV = [
     { t: 'CDH', href: '/cdh' },
   ]},
   { t: 'CDH', href: '/cdh' },
-  { t: 'Media', href: '#media', sub: [
-    { t: 'Notícias', href: '#media' },
-    { t: 'Identidade Visual', href: '/identidade-visual' },
-  ]},
+  { t: 'Media', href: '#media' },
+  { t: 'Id. Visual', href: '/identidade-visual' },
 ];
 
 const ALL_PAGES = [
