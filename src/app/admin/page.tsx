@@ -1,24 +1,29 @@
-import { createClient } from '@/lib/supabase/server';
+'use client';
+import { useEffect, useState } from 'react';
+import { createClient } from '@/lib/supabase/client';
 
-export default async function AdminDashboard() {
-  const supabase = await createClient();
-  const [
-    { count: postsCount },
-    { count: portfolioCount },
-    { count: pagesCount },
-    { count: mediaCount },
-  ] = await Promise.all([
-    supabase.from('posts').select('*', { count: 'exact', head: true }),
-    supabase.from('portfolio_projects').select('*', { count: 'exact', head: true }),
-    supabase.from('pages').select('*', { count: 'exact', head: true }),
-    supabase.from('media').select('*', { count: 'exact', head: true }),
-  ]);
+export default function AdminDashboard() {
+  const supabase = createClient();
+  const [counts, setCounts] = useState({ posts: 0, portfolio: 0, pages: 0, media: 0 });
+
+  useEffect(() => {
+    async function load() {
+      const [p, pf, pg, m] = await Promise.all([
+        supabase.from('posts').select('*', { count: 'exact', head: true }),
+        supabase.from('portfolio_projects').select('*', { count: 'exact', head: true }),
+        supabase.from('pages').select('*', { count: 'exact', head: true }),
+        supabase.from('media').select('*', { count: 'exact', head: true }),
+      ]);
+      setCounts({ posts: p.count ?? 0, portfolio: pf.count ?? 0, pages: pg.count ?? 0, media: m.count ?? 0 });
+    }
+    load();
+  }, []);
 
   const stats = [
-    { label: 'Notícias',  value: postsCount ?? 0,     href: '/admin/posts',     color: '#1a396e' },
-    { label: 'Projetos',  value: portfolioCount ?? 0,  href: '/admin/portfolio', color: '#0f766e' },
-    { label: 'Páginas',   value: pagesCount ?? 0,      href: '/admin/pages',     color: '#7c3aed' },
-    { label: 'Ficheiros', value: mediaCount ?? 0,      href: '/admin/media',     color: '#b45309' },
+    { label: 'Notícias',  value: counts.posts,     href: '/admin/posts',     color: '#1a396e' },
+    { label: 'Projetos',  value: counts.portfolio,  href: '/admin/portfolio', color: '#0f766e' },
+    { label: 'Páginas',   value: counts.pages,      href: '/admin/pages',     color: '#7c3aed' },
+    { label: 'Ficheiros', value: counts.media,      href: '/admin/media',     color: '#b45309' },
   ];
 
   return (
@@ -28,7 +33,7 @@ export default async function AdminDashboard() {
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 20, marginBottom: 40 }}>
         {stats.map(s => (
-          <a key={s.label} href={s.href} style={{ textDecoration: 'none', background: '#fff', borderRadius: 12, padding: '24px', boxShadow: '0 1px 3px rgba(0,0,0,0.08)', border: '1px solid #e2e8f0', display: 'block', transition: 'box-shadow 0.2s' }}>
+          <a key={s.label} href={s.href} style={{ textDecoration: 'none', background: '#fff', borderRadius: 12, padding: '24px', boxShadow: '0 1px 3px rgba(0,0,0,0.08)', border: '1px solid #e2e8f0', display: 'block' }}>
             <div style={{ fontSize: 36, fontWeight: 900, color: s.color, lineHeight: 1 }}>{s.value}</div>
             <div style={{ fontSize: 13, color: '#64748b', marginTop: 8, fontWeight: 500 }}>{s.label}</div>
           </a>

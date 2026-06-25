@@ -1,11 +1,18 @@
-import { createClient } from '@/lib/supabase/server';
+'use client';
+import { useEffect, useState } from 'react';
+import { createClient } from '@/lib/supabase/client';
 import PostEditor from '@/components/admin/PostEditor';
-import { notFound } from 'next/navigation';
+import { use } from 'react';
 
-export default async function EditPost({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = await params;
-  const supabase = await createClient();
-  const { data: post } = await supabase.from('posts').select('*').eq('id', id).single();
-  if (!post) notFound();
+export default function EditPost({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = use(params);
+  const supabase = createClient();
+  const [post, setPost] = useState<any>(null);
+
+  useEffect(() => {
+    supabase.from('posts').select('*').eq('id', id).single().then(({ data }) => setPost(data));
+  }, [id]);
+
+  if (!post) return <div style={{ padding: 40, color: '#64748b' }}>A carregar...</div>;
   return <PostEditor post={post} />;
 }

@@ -1,8 +1,17 @@
-import { createBrowserClient } from '@supabase/ssr';
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+import { createClient as _createClient, SupabaseClient } from '@supabase/supabase-js';
 
-export function createClient() {
-  return createBrowserClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  );
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+let _instance: SupabaseClient<any> | null = null;
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function createClient(): SupabaseClient<any> {
+  if (!_instance) {
+    _instance = _createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      { auth: { persistSession: true, storageKey: 'omt-admin-session' } }
+    );
+  }
+  return _instance;
 }

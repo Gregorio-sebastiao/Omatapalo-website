@@ -18,12 +18,25 @@ export default function AdminShell({ children }: { children: ReactNode }) {
   const router = useRouter();
   const supabase = createClient();
   const [user, setUser] = useState<User | null>(null);
+  const [checking, setChecking] = useState(true);
 
   useEffect(() => {
-    supabase.auth.getUser().then(({ data }) => setUser(data.user));
-  }, []);
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null);
+      setChecking(false);
+      if (!session && pathname !== '/admin/login') {
+        router.replace('/admin/login');
+      }
+    });
+  }, [pathname]);
 
   if (pathname === '/admin/login') return <>{children}</>;
+
+  if (checking) return (
+    <div style={{ minHeight: '100vh', background: '#07101f', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <div style={{ color: '#64748b', fontSize: 14 }}>A carregar...</div>
+    </div>
+  );
 
   async function logout() {
     await supabase.auth.signOut();

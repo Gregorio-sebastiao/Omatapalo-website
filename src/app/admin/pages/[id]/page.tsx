@@ -1,11 +1,18 @@
-import { createClient } from '@/lib/supabase/server';
+'use client';
+import { useEffect, useState } from 'react';
+import { createClient } from '@/lib/supabase/client';
 import PageEditor from '@/components/admin/PageEditor';
-import { notFound } from 'next/navigation';
+import { use } from 'react';
 
-export default async function EditPage({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = await params;
-  const supabase = await createClient();
-  const { data: page } = await supabase.from('pages').select('*').eq('id', id).single();
-  if (!page) notFound();
+export default function EditPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = use(params);
+  const supabase = createClient();
+  const [page, setPage] = useState<any>(null);
+
+  useEffect(() => {
+    supabase.from('pages').select('*').eq('id', id).single().then(({ data }) => setPage(data));
+  }, [id]);
+
+  if (!page) return <div style={{ padding: 40, color: '#64748b' }}>A carregar...</div>;
   return <PageEditor page={page} />;
 }
