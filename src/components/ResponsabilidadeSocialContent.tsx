@@ -285,8 +285,8 @@ export default function ResponsabilidadeSocialContent() {
         </div>
       </section>
 
-      {/* ── DESPORTO / CDH — Opção C ────────────────────────────── */}
-      <section style={{ background: '#07101f', position: 'relative', overflow: 'hidden' }}>
+      {/* CDH section removed */}
+      {false && <section style={{ display: 'none' }}>
 
         {/* ── Hero CDH: foto full-bleed + overlay + cores CDH ── */}
         <div style={{ position: 'relative', minHeight: 'clamp(380px,52vw,600px)', display: 'flex', alignItems: 'center', overflow: 'hidden' }}>
@@ -445,7 +445,7 @@ export default function ResponsabilidadeSocialContent() {
             </div>
           ))}
         </div>
-      </section>
+      </section>}
 
       {/* ── VIDEO LIGHTBOX ──────────────────────────────────────── */}
       {videoOpen && (
