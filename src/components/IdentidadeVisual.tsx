@@ -69,12 +69,12 @@ export default function IdentidadeVisual() {
         </div>
 
         {/* Grid */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 20 }}>
           {assets.map(asset => (
             <div
               key={asset.id}
               className="iv-card"
-              style={{ opacity: 0, background: '#e8edf5', padding: 'clamp(36px,4vw,56px)', display: 'flex', flexDirection: 'column', gap: 32, position: 'relative' }}
+              style={{ opacity: 0, background: '#e8edf5', borderRadius: 8, padding: '40px 36px 44px', display: 'flex', flexDirection: 'column', gap: 28, position: 'relative' }}
             >
               {asset.download_url ? (
                 <a
