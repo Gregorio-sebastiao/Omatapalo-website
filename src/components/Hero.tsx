@@ -16,6 +16,8 @@ const HOME_DEFAULTS = {
   stat2_value:   '+15.000', stat2_label: 'Colaboradores',
   stat3_value:   '+1.5M m²', stat3_label: 'Área Construída',
   stat4_value:   '+5.000 km', stat4_label: 'de Estrada',
+  stat5_value:   '',          stat5_label: '',
+  stat6_value:   '+14',       stat6_label: 'Hospitais',
 };
 
 const STATS = [
@@ -257,22 +259,32 @@ export default function Hero() {
           </div>
 
           {/* stats */}
-          <div ref={statsRef} style={{ opacity: 0, display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 'clamp(16px,3vw,40px)', paddingBottom: 4 }} className="hero-stats">
-            {STATS.map(s => (
-              <div key={s.label} style={{ borderTop: '1px solid rgba(255,255,255,0.12)', paddingTop: 14, textAlign: 'center' }}>
-                <div style={{ fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 'clamp(1.5rem,2.8vw,2.4rem)', color: '#fff', letterSpacing: '-0.03em', lineHeight: 1, display: 'flex', alignItems: 'baseline', justifyContent: 'center', gap: 2 }}>
-                  {s.prefix && <span style={{ fontSize: '0.6em', color: '#fff', fontFamily: 'var(--font-sans)' }}>{s.prefix}</span>}
-                  <span data-count={s.value} data-float={(s as any).decimals ? '1' : '0'} data-thousands={(s as any).thousands ? '1' : '0'}>
-                    {(s as any).thousands ? s.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') : (s as any).decimals ? s.value.toFixed(1).replace('.', ',') : s.value}
-                  </span>
-                  <span style={{ fontSize: '0.42em', color: '#fff', fontFamily: 'var(--font-sans)', fontWeight: 400, marginLeft: 2 }}>
-                    {s.suffix.includes('m²') ? <>M m<sup>2</sup></> : s.suffix}
-                  </span>
-                </div>
-                <div style={{ fontFamily: 'var(--font-label)', fontSize: 9, letterSpacing: '0.14em', color: '#fff', marginTop: 7 }}>{s.label}</div>
+          {(() => {
+            const dynStats = [
+              { value: c.stat1_value, label: c.stat1_label },
+              { value: c.stat2_value, label: c.stat2_label },
+              { value: c.stat3_value, label: c.stat3_label },
+              { value: c.stat4_value, label: c.stat4_label },
+              { value: c.stat5_value, label: c.stat5_label },
+              { value: c.stat6_value, label: c.stat6_label },
+            ].filter(s => s.value && s.label);
+            const cols = dynStats.length;
+            return (
+              <div ref={statsRef} style={{ opacity: 0, display: 'grid', gridTemplateColumns: `repeat(${cols},1fr)`, gap: 'clamp(16px,3vw,40px)', paddingBottom: 4 }} className="hero-stats">
+                {dynStats.map(s => (
+                  <div key={s.label} style={{ borderTop: '1px solid rgba(255,255,255,0.12)', paddingTop: 14, textAlign: 'center' }}>
+                    <div style={{ fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 'clamp(1.5rem,2.8vw,2.4rem)', color: '#fff', letterSpacing: '-0.03em', lineHeight: 1, display: 'flex', alignItems: 'baseline', justifyContent: 'center', gap: 2 }}>
+                      {s.value.includes('m²')
+                        ? <span>{s.value.replace('m²', '')}<sup style={{ fontSize: '0.5em' }}>m²</sup></span>
+                        : <span>{s.value}</span>
+                      }
+                    </div>
+                    <div style={{ fontFamily: 'var(--font-label)', fontSize: 9, letterSpacing: '0.14em', color: '#fff', marginTop: 7, textTransform: 'uppercase' }}>{s.label}</div>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
+            );
+          })()}
         </div>
       </div>
 

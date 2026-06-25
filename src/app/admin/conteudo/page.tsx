@@ -27,6 +27,10 @@ const SCHEMAS: Record<string, PageSchema> = {
       { key: 'stat3_label',   label: 'Estatística 3 — rótulo', type: 'text',     default: 'Área Construída' },
       { key: 'stat4_value',   label: 'Estatística 4 — valor',  type: 'text',     default: '+5.000 km' },
       { key: 'stat4_label',   label: 'Estatística 4 — rótulo', type: 'text',     default: 'de Estrada' },
+      { key: 'stat5_value',   label: 'Estatística 5 — valor',  type: 'text',     default: '' },
+      { key: 'stat5_label',   label: 'Estatística 5 — rótulo', type: 'text',     default: '' },
+      { key: 'stat6_value',   label: 'Estatística 6 — valor',  type: 'text',     default: '+14' },
+      { key: 'stat6_label',   label: 'Estatística 6 — rótulo', type: 'text',     default: 'Hospitais' },
     ],
   },
   omatapalo: {
