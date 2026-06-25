@@ -10,6 +10,7 @@ const HOME_DEFAULTS = {
   intro:         'Engenharia, Construção e Infra-estruturas. A transformar Angola há mais de duas décadas.',
   cta_primary:   'Conhecer o Grupo',
   cta_secondary: 'Falar Connosco',
+  cta_secondary_href: '#contactos',
   stat1_value:   '23',    stat1_label: 'Anos de Experiência',
   stat2_value:   '+15.000', stat2_label: 'Colaboradores',
   stat3_value:   '+1.5M m²', stat3_label: 'Área Construída',
@@ -238,7 +239,7 @@ export default function Hero() {
                 {c.cta_primary}
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
               </a>
-              <a href="#contactos" style={{
+              <a href={c.cta_secondary_href} style={{
                 display: 'inline-flex', alignItems: 'center', gap: 10,
                 background: 'transparent', color: '#fff', textDecoration: 'none',
                 fontFamily: 'var(--font-label)', fontSize: 10, letterSpacing: '0.16em', textTransform: 'uppercase',
