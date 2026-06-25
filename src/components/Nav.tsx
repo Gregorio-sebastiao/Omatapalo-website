@@ -2,8 +2,9 @@
 
 import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
+import { createClient } from '@/lib/supabase/client';
 
-const NAV = [
+const DEFAULT_NAV = [
   { t: 'O Grupo', href: '/omatapalo', sub: [
     { t: 'Omatapalo no Mundo', href: '/omatapalo#mundo' },
     { t: 'História', href: '/omatapalo' },
@@ -21,6 +22,8 @@ const NAV = [
   ]},
   { t: 'Id. Visual', href: '/identidade-visual' },
 ];
+
+type NavEntry = { t: string; href: string; sub?: { t: string; href: string }[] };
 
 const ALL_PAGES = [
   { t: 'O Grupo', href: '#top' },
@@ -42,6 +45,26 @@ export default function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const headerRef = useRef<HTMLElement>(null);
+  const [nav, setNav] = useState<NavEntry[]>(DEFAULT_NAV.map(n => ({ ...n, sub: n.sub?.map(s => ({ t: s.t, href: s.href })) })));
+  const [logoUrl, setLogoUrl] = useState('/logo/LOGO OMT 1.png');
+
+  useEffect(() => {
+    createClient().from('site_settings').select('key,value').then(({ data }) => {
+      if (!data) return;
+      for (const row of data) {
+        if (row.key === 'nav_items') {
+          try {
+            const items = JSON.parse(row.value);
+            setNav(items.map((n: { label: string; href: string; sub?: { label: string; href: string }[] }) => ({
+              t: n.label, href: n.href,
+              sub: n.sub?.map(s => ({ t: s.label, href: s.href })),
+            })));
+          } catch {}
+        }
+        if (row.key === 'logo_url') setLogoUrl(row.value);
+      }
+    });
+  }, []);
 
   useEffect(() => {
     const fn = () => setScrolled(window.scrollY > 40);
@@ -93,20 +116,17 @@ export default function Nav() {
       >
         <div className="wrap flex items-center gap-6 h-20">
           <a href="/" aria-label="Omatapalo — início">
-            <Image
-              src="/logo/LOGO OMT 1.png"
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={logoUrl}
               alt="Omatapalo"
-              width={320}
-              height={139}
-              className="w-[140px] h-auto transition-opacity duration-300"
-              style={{ filter: 'brightness(0) invert(1)' }}
-              priority
+              style={{ width: 140, height: 'auto', filter: 'brightness(0) invert(1)', display: 'block' }}
             />
           </a>
 
           {/* Desktop nav */}
           <nav className="hidden lg:flex items-center gap-5 ml-auto h-full">
-            {NAV.map((n) => (
+            {nav.map((n) => (
               <div key={n.t} className="relative h-full flex items-center group">
                 <a
                   href={n.href}

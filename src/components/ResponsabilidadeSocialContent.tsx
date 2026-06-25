@@ -415,15 +415,15 @@ export default function ResponsabilidadeSocialContent() {
               {lbIdx !== null && (
                 <div onClick={() => setLbIdx(null)} style={{ position: 'fixed', inset: 0, zIndex: 9998, background: 'rgba(0,0,0,0.94)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24 }}>
                   <button onClick={() => setLbIdx(null)} style={{ position: 'absolute', top: 20, right: 24, background: 'rgba(255,255,255,0.1)', border: 'none', color: '#fff', fontSize: 20, cursor: 'pointer', width: 36, height: 36, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', lineHeight: 1 }}>✕</button>
-                  <button onClick={e => { e.stopPropagation(); setLbIdx((lbIdx - 1 + photos.length) % photos.length); }} style={{ position: 'absolute', left: 16, background: 'rgba(255,255,255,0.1)', border: 'none', color: '#fff', fontSize: 26, cursor: 'pointer', width: 44, height: 44, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>‹</button>
+                  <button onClick={e => { e.stopPropagation(); setLbIdx(((lbIdx ?? 0) - 1 + photos.length) % photos.length); }} style={{ position: 'absolute', left: 16, background: 'rgba(255,255,255,0.1)', border: 'none', color: '#fff', fontSize: 26, cursor: 'pointer', width: 44, height: 44, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>‹</button>
                   <div onClick={e => e.stopPropagation()} style={{ maxWidth: 900, maxHeight: '80vh', width: '100%', position: 'relative' }}>
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={photos[lbIdx].src} alt={photos[lbIdx].label} style={{ width: '100%', maxHeight: '75vh', objectFit: 'contain', borderRadius: 2 }} />
+                    <img src={photos[lbIdx!].src} alt={photos[lbIdx!].label} style={{ width: '100%', maxHeight: '75vh', objectFit: 'contain', borderRadius: 2 }} />
                     <div style={{ marginTop: 12, fontFamily: 'var(--font-label)', fontSize: 10, letterSpacing: '0.18em', textTransform: 'uppercase', color: '#fff', textAlign: 'center' }}>
-                      {photos[lbIdx].label} · {lbIdx + 1}/{photos.length}
+                      {photos[lbIdx!].label} · {(lbIdx ?? 0) + 1}/{photos.length}
                     </div>
                   </div>
-                  <button onClick={e => { e.stopPropagation(); setLbIdx((lbIdx + 1) % photos.length); }} style={{ position: 'absolute', right: 16, background: 'rgba(255,255,255,0.1)', border: 'none', color: '#fff', fontSize: 26, cursor: 'pointer', width: 44, height: 44, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>›</button>
+                  <button onClick={e => { e.stopPropagation(); setLbIdx(((lbIdx ?? 0) + 1) % photos.length); }} style={{ position: 'absolute', right: 16, background: 'rgba(255,255,255,0.1)', border: 'none', color: '#fff', fontSize: 26, cursor: 'pointer', width: 44, height: 44, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>›</button>
                 </div>
               )}
             </>

@@ -49,6 +49,7 @@ export default function AdminDashboard() {
               { label: '+ Novo projeto', href: '/admin/portfolio/new' },
               { label: '+ Nova página',  href: '/admin/pages/new' },
               { label: '+ Upload media', href: '/admin/media' },
+              { label: '⚙ Configurações', href: '/admin/configuracoes' },
             ].map(a => (
               <a key={a.href} href={a.href} style={{ display: 'block', padding: '10px 14px', background: '#f8fafc', borderRadius: 8, fontSize: 14, color: '#1a396e', fontWeight: 600, textDecoration: 'none', border: '1px solid #e2e8f0' }}>
                 {a.label}

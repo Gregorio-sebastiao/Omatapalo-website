@@ -13,6 +13,7 @@ const NAV = [
   { href: '/admin/certificacoes',    label: 'Certificações',    icon: '🏅' },
   { href: '/admin/identidade-visual', label: 'Id. Visual',       icon: '🎨' },
   { href: '/admin/users',         label: 'Utilizadores',  icon: '👥' },
+  { href: '/admin/configuracoes', label: 'Configurações', icon: '⚙️' },
 ];
 
 export default function AdminShell({ children }: { children: ReactNode }) {
