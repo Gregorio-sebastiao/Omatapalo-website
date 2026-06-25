@@ -85,7 +85,7 @@ export default function ProjectPage({ params }: { params: Promise<{ slug: string
             <div>
               {project.description && (
                 <div style={{ marginBottom: 40 }}>
-                  <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', color: '#1a396e', marginBottom: 12 }}>Sobre o Projeto</div>
+                  <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', color: '#1a396e', marginBottom: 12 }}>Sobre o Projecto</div>
                   <p style={{ fontSize: 'clamp(1rem, 1.2vw, 1.15rem)', color: '#1e293b', lineHeight: 1.8, margin: 0 }}>{project.description}</p>
                 </div>
               )}
