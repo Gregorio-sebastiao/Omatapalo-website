@@ -86,83 +86,81 @@ export default function NoticiaPage({ params }: { params: Promise<{ slug: string
   return (
     <>
       <Nav />
-      <main style={{ background: '#fff' }}>
+      <main style={{ paddingTop: 80, background: '#fff' }}>
 
-        {/* ── Layout D: Hero XL + barra meta + corpo centrado ── */}
-
-        {/* Hero grande */}
-        <div style={{ position: 'relative', height: 'clamp(340px,52vh,620px)', overflow: 'hidden', background: '#0d1622' }}>
-          {post.cover_image && (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img src={post.cover_image} alt={post.title} style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.5 }} />
-          )}
-          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(7,16,31,0.88) 0%, rgba(7,16,31,0.3) 55%, transparent 100%)' }} />
-          <div className="wrap" style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: 'clamp(28px,4vw,60px)' }}>
-            {post.category && (
-              <span style={{ display: 'inline-block', fontFamily: 'var(--font-label)', fontSize: 9, letterSpacing: '0.18em', textTransform: 'uppercase', color: '#fff', background: '#1a396e', padding: '4px 12px', borderRadius: 2, marginBottom: 20 }}>
-                {post.category}
-              </span>
-            )}
-            <h1 style={{ margin: 0, fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 'clamp(1.6rem,3.5vw,3.2rem)', color: '#fff', letterSpacing: '-0.025em', lineHeight: 1.05, textTransform: 'uppercase', maxWidth: 860 }}>
-              {post.title}
-            </h1>
-          </div>
-        </div>
-
-        {/* Barra meta: data + partilhar + voltar */}
-        <div style={{ background: '#fff', borderBottom: '1px solid #e8edf5', position: 'sticky', top: 0, zIndex: 10 }}>
-          <div className="wrap" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: 56, flexWrap: 'wrap', gap: 16 }}>
-            <time style={{ fontFamily: 'var(--font-label)', fontSize: 10, letterSpacing: '0.12em', color: '#64748b' }}>{fmtDate(post.created_at)}</time>
-
-            <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                <span style={{ fontFamily: 'var(--font-label)', fontSize: 10, letterSpacing: '0.1em', color: '#64748b' }}>Partilhar</span>
-                {([
-                  { net: 'facebook', url: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}` },
-                  { net: 'twitter',  url: `https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(post.title)}` },
-                  { net: 'linkedin', url: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}` },
-                ] as const).map(({ net, url }) => (
-                  <a key={net} href={url} target="_blank" rel="noopener noreferrer"
-                    style={{ width: 28, height: 28, borderRadius: 3, background: '#1a396e', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', textDecoration: 'none', fontSize: 11, fontWeight: 700 }}
-                    className="share-btn"
-                  >
-                    {net === 'facebook' ? 'f' : net === 'twitter' ? 'X' : 'in'}
-                  </a>
-                ))}
-              </div>
-
-              <div style={{ width: 1, height: 20, background: '#e8edf5' }} />
-
-              <div style={{ display: 'flex', gap: 16 }}>
-                {prev
-                  ? <a href={`/noticias/${prev.slug}`} style={{ fontFamily: 'var(--font-label)', fontSize: 10, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#1a396e', textDecoration: 'none', fontWeight: 700 }}>‹ Anterior</a>
-                  : <span style={{ fontFamily: 'var(--font-label)', fontSize: 10, textTransform: 'uppercase', color: '#c0cad8' }}>‹ Anterior</span>}
-                {next
-                  ? <a href={`/noticias/${next.slug}`} style={{ fontFamily: 'var(--font-label)', fontSize: 10, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#1a396e', textDecoration: 'none', fontWeight: 700 }}>Seguinte ›</a>
-                  : <span style={{ fontFamily: 'var(--font-label)', fontSize: 10, textTransform: 'uppercase', color: '#c0cad8' }}>Seguinte ›</span>}
-              </div>
-
-              <div style={{ width: 1, height: 20, background: '#e8edf5' }} />
-
-              <a href="/media" style={{ fontFamily: 'var(--font-label)', fontSize: 10, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#1a396e', textDecoration: 'none', fontWeight: 700 }}>
-                ← Notícias
-              </a>
-            </div>
-          </div>
-        </div>
-
-        {/* Corpo */}
+        {/* ── Layout C: título grande full width + corpo + sidebar ── */}
         <section style={{ paddingTop: 'clamp(48px,7vh,80px)', paddingBottom: 'clamp(64px,9vh,100px)' }}>
-          <div className="wrap" style={{ maxWidth: 780 }}>
-            {post.content && (
-              <div className="post-content" dangerouslySetInnerHTML={{ __html: formatContent(post.content) }} />
-            )}
+          <div className="wrap">
+
+            {/* Topo: categoria + título */}
+            <div style={{ marginBottom: 32, paddingBottom: 28, borderBottom: '1px solid #e8edf5' }}>
+              {post.category && (
+                <span style={{ fontFamily: 'var(--font-label)', fontSize: 9, letterSpacing: '0.18em', textTransform: 'uppercase', color: '#1a396e' }}>
+                  {post.category} · <time>{fmtDate(post.created_at)}</time>
+                </span>
+              )}
+              <h1 style={{ margin: '14px 0 0', fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 'clamp(1.6rem,3.5vw,3rem)', color: '#0f1a2e', letterSpacing: '-0.02em', lineHeight: 1.1, textTransform: 'uppercase' }}>
+                {post.title}
+              </h1>
+            </div>
+
+            {/* Grid: corpo (70%) + sidebar (30%) */}
+            <div className="post-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 300px', gap: 'clamp(32px,4vw,64px)', alignItems: 'start' }}>
+
+              {/* Corpo */}
+              <div>
+                {post.content && (
+                  <div className="post-content" dangerouslySetInnerHTML={{ __html: formatContent(post.content) }} />
+                )}
+              </div>
+
+              {/* Sidebar */}
+              <aside style={{ display: 'flex', flexDirection: 'column', gap: 20, position: 'sticky', top: 100 }}>
+                {post.cover_image && (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={post.cover_image} alt={post.title} style={{ width: '100%', aspectRatio: '4/3', objectFit: 'cover', borderRadius: 4, display: 'block' }} />
+                )}
+
+                <div style={{ padding: '20px', background: '#f6f8fb', borderRadius: 4 }}>
+                  <div style={{ fontFamily: 'var(--font-label)', fontSize: 10, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#64748b', marginBottom: 12 }}>Partilhar</div>
+                  <div style={{ display: 'flex', gap: 8 }}>
+                    {([
+                      { net: 'facebook', url: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}` },
+                      { net: 'twitter',  url: `https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(post.title)}` },
+                      { net: 'linkedin', url: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}` },
+                    ] as const).map(({ net, url }) => (
+                      <a key={net} href={url} target="_blank" rel="noopener noreferrer"
+                        style={{ width: 36, height: 36, borderRadius: 3, background: '#1a396e', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', textDecoration: 'none', fontSize: 13, fontWeight: 700 }}
+                        className="share-btn"
+                      >
+                        {net === 'facebook' ? 'f' : net === 'twitter' ? 'X' : 'in'}
+                      </a>
+                    ))}
+                  </div>
+                </div>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 10, padding: '20px', background: '#f6f8fb', borderRadius: 4 }}>
+                  <div style={{ fontFamily: 'var(--font-label)', fontSize: 10, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#64748b', marginBottom: 4 }}>Navegação</div>
+                  {prev
+                    ? <a href={`/noticias/${prev.slug}`} style={{ fontFamily: 'var(--font-label)', fontSize: 10, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#1a396e', textDecoration: 'none', fontWeight: 700 }}>‹ Anterior</a>
+                    : <span style={{ fontFamily: 'var(--font-label)', fontSize: 10, textTransform: 'uppercase', color: '#c0cad8' }}>‹ Anterior</span>}
+                  {next
+                    ? <a href={`/noticias/${next.slug}`} style={{ fontFamily: 'var(--font-label)', fontSize: 10, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#1a396e', textDecoration: 'none', fontWeight: 700 }}>Seguinte ›</a>
+                    : <span style={{ fontFamily: 'var(--font-label)', fontSize: 10, textTransform: 'uppercase', color: '#c0cad8' }}>Seguinte ›</span>}
+                </div>
+
+                <a href="/media" style={{ display: 'block', textAlign: 'center', fontFamily: 'var(--font-label)', fontSize: 10, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#1a396e', border: '1.5px solid #1a396e', padding: '10px 18px', borderRadius: 3, textDecoration: 'none', fontWeight: 700 }} className="back-btn">
+                  ← Voltar às notícias
+                </a>
+              </aside>
+            </div>
           </div>
         </section>
       </main>
       <Footer />
 
       <style>{`
+        .post-grid { grid-template-columns: 1fr 300px; }
         @media (max-width: 860px) { .post-grid { grid-template-columns: 1fr !important; } }
         .share-btn:hover { opacity: 0.75; }
         .back-btn:hover { background: #1a396e !important; color: #fff !important; }
