@@ -1,16 +1,31 @@
-﻿import Image from 'next/image';
+import Image from 'next/image';
 
 const COLS = [
-  { h: 'O Grupo', links: ['O Grupo e os Negócios', 'Omatapalo no Mundo', 'História', 'Conselho de Administração'] },
-  { h: 'Atividade', links: ['Portefólio', 'Sustentabilidade', 'Media', 'Contactos'] },
-  { h: 'Pessoas', links: ['Pessoas', 'CDH', 'Missão Fazer Sorrir', 'Trabalhar connosco'] },
+  { h: 'O Grupo', links: [
+    { t: 'O Grupo e os Negócios',     href: '/omatapalo' },
+    { t: 'Omatapalo no Mundo',        href: '/omatapalo#mundo' },
+    { t: 'História',                   href: '/omatapalo' },
+    { t: 'Conselho de Administração', href: '/omatapalo#conselho' },
+  ]},
+  { h: 'Atividade', links: [
+    { t: 'Portefólio',       href: '/portefolio' },
+    { t: 'Sustentabilidade', href: '/sustentabilidade' },
+    { t: 'Media',            href: '/#media' },
+    { t: 'Contactos',        href: '/contactos' },
+  ]},
+  { h: 'Pessoas', links: [
+    { t: 'Pessoas',             href: '/pessoas' },
+    { t: 'CDH',                 href: '/cdh' },
+    { t: 'Missão Fazer Sorrir', href: '/responsabilidade-social#missao' },
+    { t: 'Trabalhar connosco',  href: '/contactos' },
+  ]},
 ];
 
 const SOCIALS = [
-  { label: 'LinkedIn', icon: 'in' },
-  { label: 'Instagram', icon: '◻' },
-  { label: 'Facebook', icon: 'f' },
-  { label: 'YouTube', icon: '▶' },
+  { label: 'LinkedIn',  icon: 'in', href: 'https://www.linkedin.com/company/grupo-omatapalo' },
+  { label: 'Instagram', icon: '◻', href: 'https://www.instagram.com/grupoomatapalo' },
+  { label: 'Facebook',  icon: 'f',  href: 'https://www.facebook.com/grupoomatapalo' },
+  { label: 'YouTube',   icon: '▶', href: 'https://www.youtube.com/@grupoomatapalo' },
 ];
 
 export default function Footer() {
@@ -32,7 +47,7 @@ export default function Footer() {
             </p>
             <div style={{ display: 'flex', gap: '10px', marginTop: 'var(--space-5)' }}>
               {SOCIALS.map((s) => (
-                <a key={s.label} href="#" aria-label={s.label} style={{
+                <a key={s.label} href={s.href} aria-label={s.label} target="_blank" rel="noopener noreferrer" style={{
                   width: '38px', height: '38px', border: '1px solid var(--border-dark)',
                   borderRadius: 'var(--radius-sm)', display: 'flex', alignItems: 'center',
                   justifyContent: 'center', color: '#fff', fontSize: '14px', fontWeight: 700,
@@ -51,8 +66,8 @@ export default function Footer() {
               <h4 style={{ fontFamily: 'var(--font-label)', fontSize: '11px', letterSpacing: '0.16em', textTransform: 'uppercase', color: '#fff', marginBottom: 'var(--space-4)' }}>{c.h}</h4>
               <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '11px' }}>
                 {c.links.map((l) => (
-                  <li key={l}>
-                    <a href="#" style={{ fontSize: 'var(--text-sm)', color: '#fff', transition: 'color 0.2s' }} className="ftr-link">{l}</a>
+                  <li key={l.t}>
+                    <a href={l.href} style={{ fontSize: 'var(--text-sm)', color: '#fff', transition: 'color 0.2s' }} className="ftr-link">{l.t}</a>
                   </li>
                 ))}
               </ul>
@@ -64,7 +79,7 @@ export default function Footer() {
           <span>© 2026 Grupo Omatapalo · Todos os direitos reservados</span>
           <div style={{ display: 'flex', gap: 'var(--space-5)' }}>
             {['Política do Sistema de Gestão Integrado', 'Termos de Uso', 'Cookies'].map((l) => (
-              <a key={l} href="#" style={{ color: '#fff', transition: 'color 0.2s' }} className="ftr-link">{l}</a>
+              <span key={l} style={{ color: '#fff', opacity: 0.6 }} className="ftr-link">{l}</span>
             ))}
           </div>
         </div>

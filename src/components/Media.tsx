@@ -90,10 +90,10 @@ export default function Media() {
               <span style={{ color: 'transparent', WebkitTextStroke: '1.5px rgba(26,57,110,0.22)' }}>Novidades</span>
             </h2>
           </div>
-          <a href="#" style={{ display: 'inline-flex', alignItems: 'center', gap: 10, fontFamily: 'var(--font-label)', fontSize: 10, letterSpacing: '0.16em', textTransform: 'uppercase', color: '#1a396e', textDecoration: 'none', paddingBottom: 4, borderBottom: '1px solid rgba(26,57,110,0.3)', transition: 'border-color .25s', whiteSpace: 'nowrap' }}>
+          <span style={{ display: 'inline-flex', alignItems: 'center', gap: 10, fontFamily: 'var(--font-label)', fontSize: 10, letterSpacing: '0.16em', textTransform: 'uppercase', color: '#1a396e', paddingBottom: 4, borderBottom: '1px solid rgba(26,57,110,0.3)', whiteSpace: 'nowrap' }}>
             Ver Todas as Notícias
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-          </a>
+          </span>
         </div>
 
         <div className="media-divider" style={{ height: 1, background: '#DDE3ED', marginBottom: 'clamp(28px,4vw,48px)' }} />
@@ -102,12 +102,11 @@ export default function Media() {
         <div style={{ display: 'grid', gridTemplateColumns: '1.4fr 1fr', gap: 'clamp(16px,2.5vw,32px)', alignItems: 'start' }} className="media-grid">
 
           {/* FEATURED */}
-          <a
-            href="#"
+          <div
             className="media-featured"
             onMouseEnter={() => setHoveredCard(0)}
             onMouseLeave={() => setHoveredCard(null)}
-            style={{ display: 'block', textDecoration: 'none', opacity: 0, overflow: 'hidden', borderRadius: 4, position: 'relative', aspectRatio: '4/3', background: '#0d1622' }}
+            style={{ display: 'block', opacity: 0, overflow: 'hidden', borderRadius: 4, position: 'relative', aspectRatio: '4/3', background: '#0d1622', cursor: 'default' }}
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={featured.img} alt={featured.title} style={{
@@ -141,18 +140,17 @@ export default function Media() {
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.6)" strokeWidth="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
               </div>
             </div>
-          </a>
+          </div>
 
           {/* SIDE CARDS */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(12px,2vw,20px)' }}>
             {side.map((n, i) => (
-              <a
+              <div
                 key={n.title}
-                href="#"
                 className="media-side"
                 onMouseEnter={() => setHoveredCard(i + 1)}
                 onMouseLeave={() => setHoveredCard(null)}
-                style={{ display: 'flex', gap: 'clamp(14px,1.5vw,20px)', textDecoration: 'none', opacity: 0, alignItems: 'stretch', background: '#fff', borderRadius: 4, overflow: 'hidden', border: `1.5px solid ${hoveredCard === i + 1 ? '#1a396e' : '#E8EDF5'}`, transition: 'border-color .25s, box-shadow .3s', boxShadow: hoveredCard === i + 1 ? '0 12px 36px rgba(26,57,110,0.12)' : 'none' }}
+                style={{ display: 'flex', gap: 'clamp(14px,1.5vw,20px)', opacity: 0, alignItems: 'stretch', background: '#fff', borderRadius: 4, overflow: 'hidden', border: `1.5px solid ${hoveredCard === i + 1 ? '#1a396e' : '#E8EDF5'}`, transition: 'border-color .25s, box-shadow .3s', boxShadow: hoveredCard === i + 1 ? '0 12px 36px rgba(26,57,110,0.12)' : 'none' }}
               >
                 {/* thumbnail */}
                 <div style={{ position: 'relative', width: 'clamp(100px,30%,160px)', flexShrink: 0, overflow: 'hidden' }}>
@@ -168,7 +166,7 @@ export default function Media() {
                   <h3 style={{ margin: 0, fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 'clamp(0.85rem,1.1vw,1rem)', color: '#0F1A2E', letterSpacing: '-0.01em', lineHeight: 1.2, textTransform: 'uppercase' }}>{n.title}</h3>
                   <p style={{ margin: 0, fontFamily: 'var(--font-sans)', fontSize: 12, color: '#64748b', lineHeight: 1.55, maxHeight: hoveredCard === i + 1 ? '60px' : '0px', overflow: 'hidden', transition: 'max-height .35s ease, opacity .25s', opacity: hoveredCard === i + 1 ? 1 : 0 }}>{n.excerpt}</p>
                 </div>
-              </a>
+              </div>
             ))}
           </div>
         </div>
