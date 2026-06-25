@@ -17,7 +17,8 @@ const HOME_DEFAULTS = {
   stat3_value:   '+1.5M m²', stat3_label: 'Área Construída',
   stat4_value:   '+5.000 km', stat4_label: 'de Estrada',
   stat5_value:   '',          stat5_label: '',
-  stat6_value:   '+14',       stat6_label: 'Hospitais',
+  stat6_value:   '',          stat6_label: '',
+  stat7_value:   '+14',       stat7_label: 'Hospitais',
 };
 
 const STATS = [
@@ -267,6 +268,7 @@ export default function Hero() {
               { value: c.stat4_value, label: c.stat4_label },
               { value: c.stat5_value, label: c.stat5_label },
               { value: c.stat6_value, label: c.stat6_label },
+              { value: c.stat7_value, label: c.stat7_label },
             ].filter(s => s.value && s.label);
             const cols = dynStats.length;
             return (
