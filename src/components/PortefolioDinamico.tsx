@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { createClient } from '@/lib/supabase/client';
+import Link from 'next/link';
 
 /* ─── Data ─── */
 const CATEGORIES = [
@@ -20,7 +21,7 @@ const CATEGORIES = [
   { id: 'energia',    label: 'Energia',                                   short: '12' },
 ];
 
-type Project = { id: string | number; title: string; location: string; year: string; area: string; cat: string; img: string };
+type Project = { id: string | number; title: string; location: string; year: string; area: string; cat: string; img: string; slug?: string };
 
 const FALLBACK_PROJECTS: Project[] = [
   { id: 21, title: 'Ministério das Finanças',             location: 'Luanda',        year: '2022', area: '35 000 m²', cat: 'inst',      img: 'https://images.unsplash.com/photo-1486325212027-8081e485255e?w=700&q=75&auto=format&fit=crop' },
@@ -49,7 +50,7 @@ const FALLBACK_PROJECTS: Project[] = [
 ];
 
 /* ─── Project card ─── */
-function ProjectCard({ project, index }: { project: Project; index: number }) {
+function ProjectCard({ project, index, slug }: { project: Project; index: number; slug?: string }) {
   const [hovered, setHovered] = useState(false);
   const imgRef = useRef<HTMLImageElement>(null);
   const cat = CATEGORIES.find(c => c.id === project.cat);
@@ -68,8 +69,12 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
     });
   }, []);
 
+  const Wrapper = slug ? Link : 'div' as any;
+  const wrapperProps = slug ? { href: `/portefolio/${slug}` } : {};
+
   return (
-    <div
+    <Wrapper
+      {...wrapperProps}
       className="pf-card"
       onMouseEnter={onEnter}
       onMouseLeave={onLeave}
@@ -86,6 +91,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
           ? '0 20px 56px rgba(26,57,110,0.14)'
           : '0 2px 8px rgba(26,57,110,0.04)',
         cursor: 'pointer',
+        textDecoration: 'none',
       }}
     >
       {/* Photo */}
@@ -136,7 +142,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
 
         <div style={{ height: 2, width: hovered ? 28 : 0, background: '#1a396e', transition: 'width 0.35s ease' }} />
       </div>
-    </div>
+    </Wrapper>
   );
 }
 
@@ -153,7 +159,7 @@ export default function PortefolioDinamico() {
   useEffect(() => {
     createClient()
       .from('portfolio_projects')
-      .select('id, title, category, location, year, cover_image, description')
+      .select('id, title, slug, category, location, year, cover_image, description')
       .eq('published', true)
       .order('created_at', { ascending: false })
       .then(({ data }) => {
@@ -161,6 +167,7 @@ export default function PortefolioDinamico() {
           setProjects(data.map((p: any) => ({
             id: p.id,
             title: p.title,
+            slug: p.slug ?? '',
             location: p.location ?? '',
             year: p.year ? String(p.year) : '',
             area: '—',
@@ -331,7 +338,7 @@ export default function PortefolioDinamico() {
               }}
             >
               {filtered.map((p, i) => (
-                <ProjectCard key={p.id} project={p} index={i} />
+                <ProjectCard key={p.id} project={p} index={i} slug={p.slug} />
               ))}
             </div>
 
