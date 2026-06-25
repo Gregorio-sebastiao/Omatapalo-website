@@ -20,7 +20,7 @@ const DEFAULT_NAV = [
   { t: 'Media', href: '#', sub: [
     { t: 'Notícias', href: '/noticias' },
   ]},
-  { t: 'Id. Visual', href: '/identidade-visual' },
+  { t: 'Press Kit', href: '/identidade-visual' },
 ];
 
 type NavEntry = { t: string; href: string; sub?: { t: string; href: string }[] };
@@ -34,7 +34,7 @@ const ALL_PAGES = [
   { t: 'Pessoas', href: '/pessoas' },
   { t: 'CDH', href: '/cdh' },
   { t: 'Media', href: '/media' },
-  { t: 'Identidade Visual', href: '/identidade-visual' },
+  { t: 'Press Kit', href: '/identidade-visual' },
   { t: 'Sustentabilidade', href: '/sustentabilidade' },
   { t: 'R.Social', href: '/responsabilidade-social' },
   { t: 'Missão Fazer Sorrir', href: '/responsabilidade-social#missao' },
