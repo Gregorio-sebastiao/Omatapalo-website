@@ -6,6 +6,8 @@ import Nav from '@/components/Nav';
 import Footer from '@/components/Footer';
 import { createClient } from '@/lib/supabase/client';
 
+type NewsCard = { title: string; slug: string; cover_image: string; created_at: string; category: string };
+
 type Post = {
   id: number;
   title: string;
@@ -40,7 +42,7 @@ export default function NoticiaPage({ params }: { params: Promise<{ slug: string
   const [post, setPost] = useState<Post | null>(null);
   const [prev, setPrev] = useState<{ title: string; slug: string } | null>(null);
   const [next, setNext] = useState<{ title: string; slug: string } | null>(null);
-  const [latestNews, setLatestNews] = useState<Post[]>([]);
+  const [latestNews, setLatestNews] = useState<NewsCard[]>([]);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
   const shareUrl = typeof window !== 'undefined' ? window.location.href : '';
