@@ -174,7 +174,7 @@ export default function ProjectPage({ params }: { params: Promise<{ slug: string
                 </div>
               ))}
               <Link href="/portefolio" style={{ display: 'block', textAlign: 'center', marginTop: 8, padding: '10px', background: '#1a396e', color: '#fff', fontSize: 13, fontWeight: 700, textDecoration: 'none', borderRadius: 6 }}>
-                ← Ver todos os projetos
+                ← Ver todos os projectos
               </Link>
             </div>
 
