@@ -8,7 +8,8 @@ const HOME_DEFAULTS = {
   title_line1:   'FAZEMOS',
   title_line2:   'ACONTECER',
   intro:         'Engenharia, Construção e Infra-estruturas. A transformar Angola há mais de duas décadas.',
-  cta_primary:   'Conhecer o Grupo',
+  cta_primary:      'Conhecer o Grupo',
+  cta_primary_href: '#grupo',
   cta_secondary: 'Falar Connosco',
   cta_secondary_href: '#contactos',
   stat1_value:   '23',    stat1_label: 'Anos de Experiência',
@@ -226,7 +227,7 @@ export default function Hero() {
               {c.intro}
             </p>
             <div ref={actionsRef} style={{ display: 'flex', gap: 14, flexWrap: 'wrap', opacity: 0 }}>
-              <a href="#grupo" style={{
+              <a href={c.cta_primary_href} style={{
                 display: 'inline-flex', alignItems: 'center', gap: 10,
                 background: '#1a396e', color: '#fff', textDecoration: 'none',
                 fontFamily: 'var(--font-label)', fontSize: 10, letterSpacing: '0.16em', textTransform: 'uppercase',
