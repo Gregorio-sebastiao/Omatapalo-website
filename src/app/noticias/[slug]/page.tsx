@@ -137,9 +137,9 @@ export default function NoticiaPage({ params }: { params: Promise<{ slug: string
 
       <style>{`
         .post-content {
-          font-size: clamp(14px, 1.1vw, 16px);
+          font-size: clamp(15px, 1.15vw, 17px);
           color: #374151;
-          line-height: 1.8;
+          line-height: 2;
         }
         .post-content h2, .post-content h3, .post-content h4 {
           font-family: var(--font-display);
@@ -147,11 +147,11 @@ export default function NoticiaPage({ params }: { params: Promise<{ slug: string
           color: #0f1a2e;
           text-transform: uppercase;
           letter-spacing: -0.02em;
-          margin: 2em 0 0.6em;
+          margin: 2.5em 0 0.8em;
         }
-        .post-content p { margin: 0 0 1.4em; }
-        .post-content ul, .post-content ol { margin: 0 0 1.4em; padding-left: 1.5em; }
-        .post-content li { margin-bottom: 0.4em; }
+        .post-content p { margin: 0 0 2em; }
+        .post-content ul, .post-content ol { margin: 0 0 2em; padding-left: 1.5em; }
+        .post-content li { margin-bottom: 0.75em; }
         .post-content a { color: #1a396e; text-decoration: underline; }
         .post-content img { max-width: 100%; height: auto; border-radius: 4px; margin: 1.5em 0; }
         .post-content strong { color: #0f1a2e; font-weight: 700; }
