@@ -113,13 +113,6 @@ export default function NoticiaPage({ params }: { params: Promise<{ slug: string
               </h1>
             )}
 
-            {/* Excerpt */}
-            {post.excerpt && (
-              <p style={{ margin: '0 0 32px', fontSize: 'clamp(15px,1.2vw,18px)', color: '#374151', lineHeight: 1.75, fontWeight: 500, borderLeft: '3px solid #1a396e', paddingLeft: 20 }}>
-                {post.excerpt}
-              </p>
-            )}
-
             {/* Body content */}
             {post.content && (
               <div
