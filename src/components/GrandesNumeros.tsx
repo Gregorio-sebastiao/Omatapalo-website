@@ -1,26 +1,48 @@
 ﻿'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { createClient } from '@/lib/supabase/client';
 
-const ITEMS = [
-  { value: 14,   label: 'Hospitais',          img: '/inauguracao.jpg'                      },
-  { value: 5000, label: 'Estradas',            img: '/EN-230-omatapalo-2.jpg', thousands: true, suffix: 'km' },
-  { value: 4,    label: 'Portos',             img: '/TOPSIDE NAMIBE.JPG'                   },
-  { value: 6,    label: 'Linhas Alta Tensão', img: '/omatapalo-electrificacao.jpg'          },
-  { value: 6,    label: 'Construções Esp.',   img: '/MINISTÉRIO DO PLANEAMENTO.JPG'        },
-  { value: 10,   label: 'Escolas',            img: '/colegio-paula-frassinetti.jpg'        },
-  { value: 2,    label: 'Aeroportos',         img: '/aeroporto-namibe.jpg'                 },
-  { value: 3500, label: 'Equipamentos',       img: '/GRUA.jpg', thousands: true            },
-  { value: 3,    label: 'Barragens',          img: '/barragem-calucuve.jpg'                },
-  { value: 8,    label: 'ETAR',               img: '/etar-huila.jpg'                       },
-  { value: 7,    label: 'Unidades Hoteleiras', img: '/FLOW HOTEL LUANDA AEROPORTO.jpeg'    },
-  { value: 14,   label: 'Centrais Solares',   img: '/parquesolar.jpg'                      },
+type GNItem = { value: string; label: string; img: string; suffix: string };
+type GNHeader = { eyebrow: string; title: string; description: string };
+
+const DEFAULT_ITEMS: GNItem[] = [
+  { value: '14',   label: 'Hospitais',          img: '/inauguracao.jpg',                     suffix: '' },
+  { value: '5000', label: 'Estradas',            img: '/EN-230-omatapalo-2.jpg',              suffix: 'km' },
+  { value: '4',    label: 'Portos',              img: '/TOPSIDE NAMIBE.JPG',                  suffix: '' },
+  { value: '6',    label: 'Linhas Alta Tensão',  img: '/omatapalo-electrificacao.jpg',         suffix: '' },
+  { value: '6',    label: 'Construções Esp.',    img: '/MINISTÉRIO DO PLANEAMENTO.JPG',        suffix: '' },
+  { value: '10',   label: 'Escolas',             img: '/colegio-paula-frassinetti.jpg',        suffix: '' },
+  { value: '2',    label: 'Aeroportos',          img: '/aeroporto-namibe.jpg',                 suffix: '' },
+  { value: '3500', label: 'Equipamentos',        img: '/GRUA.jpg',                             suffix: '' },
+  { value: '3',    label: 'Barragens',           img: '/barragem-calucuve.jpg',                suffix: '' },
+  { value: '8',    label: 'ETAR',                img: '/etar-huila.jpg',                       suffix: '' },
+  { value: '7',    label: 'Unidades Hoteleiras', img: '/FLOW HOTEL LUANDA AEROPORTO.jpeg',     suffix: '' },
+  { value: '14',   label: 'Centrais Solares',    img: '/parquesolar.jpg',                      suffix: '' },
 ];
+
+const DEFAULT_HEADER: GNHeader = {
+  eyebrow: 'O Que Construímos',
+  title: 'Grandes\nNúmeros',
+  description: 'Mais de duas décadas a construir infra-estruturas que melhoram a vida das comunidades e contribuem para o crescimento do país.',
+};
 
 export default function GrandesNumeros() {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const stripRef   = useRef<HTMLDivElement>(null);
   const [hovered, setHovered] = useState<number | null>(null);
+  const [items, setItems] = useState<GNItem[]>(DEFAULT_ITEMS);
+  const [header, setHeader] = useState<GNHeader>(DEFAULT_HEADER);
+
+  useEffect(() => {
+    createClient().from('site_content').select('field,value').eq('page', 'grandes-numeros').then(({ data }) => {
+      if (!data) return;
+      for (const row of data) {
+        if (row.field === 'items') { try { setItems(JSON.parse(row.value)); } catch {} }
+        if (row.field === 'header') { try { setHeader(JSON.parse(row.value)); } catch {} }
+      }
+    });
+  }, []);
 
   useEffect(() => {
     import('gsap').then(({ gsap }) => {
@@ -90,7 +112,7 @@ export default function GrandesNumeros() {
                 <rect width="10" height="10" fill="#1a396e" />
               </svg>
               <span style={{ fontFamily: 'var(--font-label)', fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#fff' }}>
-                O Que Construímos
+                {header.eyebrow}
               </span>
             </div>
 
@@ -100,11 +122,15 @@ export default function GrandesNumeros() {
                 fontSize: 'clamp(2.4rem,5vw,5.5rem)', textTransform: 'uppercase',
                 lineHeight: 0.9, letterSpacing: '-0.035em', color: '#fff',
               }}>
-                Grandes<br />
-                <span style={{ color: 'transparent', WebkitTextStroke: '1.5px rgba(255,255,255,0.2)' }}>Números</span>
+                {header.title.split('\n').map((line, i) => (
+                  <span key={i}>
+                    {i === 0 ? line : <span style={{ color: 'transparent', WebkitTextStroke: '1.5px rgba(255,255,255,0.2)' }}>{line}</span>}
+                    {i < header.title.split('\n').length - 1 && <br />}
+                  </span>
+                ))}
               </h2>
               <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'clamp(13px,1vw,15px)', color: '#fff', lineHeight: 1.8, maxWidth: 340, margin: 0, paddingBottom: 4 }}>
-                Mais de duas décadas a construir infra-estruturas que melhoram a vida das comunidades e contribuem para o crescimento do país.
+                {header.description}
               </p>
             </div>
 
@@ -123,7 +149,7 @@ export default function GrandesNumeros() {
                 height: '100%',
               }}
             >
-              {ITEMS.map((item, i) => (
+              {items.map((item, i) => (
                 <div
                   key={item.label}
                   onMouseEnter={() => setHovered(i)}
@@ -137,7 +163,7 @@ export default function GrandesNumeros() {
                     justifyContent: 'center',
                     paddingLeft: 'clamp(12px,1.5vw,20px)',
                     paddingRight: 'clamp(12px,1.5vw,20px)',
-                    borderRight: i < ITEMS.length - 1 ? '1px solid rgba(255,255,255,0.07)' : 'none',
+                    borderRight: i < items.length - 1 ? '1px solid rgba(255,255,255,0.07)' : 'none',
                     cursor: 'default',
                     overflow: 'hidden',
                   }}
@@ -172,20 +198,20 @@ export default function GrandesNumeros() {
                     {/* big number */}
                     <div style={{
                       fontFamily: 'var(--font-display)', fontWeight: 900,
-                      fontSize: (item as any).thousands ? 'clamp(1.8rem,3.2vw,4rem)' : 'clamp(2rem,3.8vw,5rem)', color: '#fff',
+                      fontSize: Number(item.value) >= 1000 ? 'clamp(1.8rem,3.2vw,4rem)' : 'clamp(2rem,3.8vw,5rem)', color: '#fff',
                       letterSpacing: '-0.04em', lineHeight: 1,
                       display: 'flex', alignItems: 'baseline', justifyContent: 'center',
                       transition: 'transform .3s ease',
                       transform: hovered === i ? 'translateY(-4px)' : 'none',
                     }}>
                       <span style={{ fontSize: '0.35em', color: '#fff', fontWeight: 400, fontFamily: 'var(--font-sans)', marginRight: 2, marginBottom: 6 }}>+</span>
-                      <span data-count={item.value} data-thousands={(item as any).thousands ? '1' : '0'}>
-                        {(item as any).thousands
-                          ? item.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')
+                      <span data-count={item.value} data-thousands={Number(item.value) >= 1000 ? '1' : '0'}>
+                        {Number(item.value) >= 1000
+                          ? Number(item.value).toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')
                           : item.value}
                       </span>
-                      {(item as any).suffix && (
-                        <span style={{ fontSize: '0.3em', color: '#fff', fontWeight: 400, fontFamily: 'var(--font-sans)', marginLeft: 4, marginBottom: 8 }}>{(item as any).suffix}</span>
+                      {item.suffix && (
+                        <span style={{ fontSize: '0.3em', color: '#fff', fontWeight: 400, fontFamily: 'var(--font-sans)', marginLeft: 4, marginBottom: 8 }}>{item.suffix}</span>
                       )}
                     </div>
 
