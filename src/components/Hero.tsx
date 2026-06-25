@@ -1,6 +1,20 @@
 ﻿'use client';
 
 import { useEffect, useRef } from 'react';
+import { useContent } from '@/lib/useContent';
+
+const HOME_DEFAULTS = {
+  eyebrow:       'Grupo Omatapalo · Desde 2003',
+  title_line1:   'FAZEMOS',
+  title_line2:   'ACONTECER',
+  intro:         'Engenharia, Construção e Infra-estruturas. A transformar Angola há mais de duas décadas.',
+  cta_primary:   'Conhecer o Grupo',
+  cta_secondary: 'Falar Connosco',
+  stat1_value:   '23',    stat1_label: 'Anos de Experiência',
+  stat2_value:   '+15.000', stat2_label: 'Colaboradores',
+  stat3_value:   '+1.5 Mm²', stat3_label: 'Área Construída',
+  stat4_value:   '+5.000 km', stat4_label: 'de Estrada',
+};
 
 const STATS = [
   { value: 23,   prefix: '',  suffix: '',     label: 'Anos de Experiência' },
@@ -21,6 +35,7 @@ const SQUARES = [
 ];
 
 export default function Hero() {
+  const c             = useContent('home', HOME_DEFAULTS);
   const heroRef       = useRef<HTMLElement>(null);
   const bgRef         = useRef<HTMLDivElement>(null);
   const titleRef      = useRef<HTMLDivElement>(null);
@@ -166,7 +181,7 @@ export default function Hero() {
         <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 24 }}>
           <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><rect width="10" height="10" fill="rgba(255,255,255,0.4)" /></svg>
           <span style={{ fontFamily: 'var(--font-label)', fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#fff' }}>
-            Grupo Omatapalo · Desde 2003
+            {c.eyebrow}
           </span>
         </div>
 
@@ -177,7 +192,7 @@ export default function Hero() {
             fontSize: 'clamp(72px,12.5vw,190px)', lineHeight: 0.88,
             letterSpacing: '-0.03em', textTransform: 'uppercase',
             color: '#fff', opacity: 0,
-          }}>FAZEMOS</div>
+          }}>{c.title_line1}</div>
         </div>
 
         {/* ACONTECER — outline, letter by letter */}
@@ -189,7 +204,7 @@ export default function Hero() {
             color: 'transparent', WebkitTextStroke: '1.5px rgba(255,255,255,0.22)',
             marginTop: '0.06em',
           }}>
-            {'ACONTECER'.split('').map((l, i) => (
+            {c.title_line2.split('').map((l, i) => (
               <span key={i} className="hero-anim-letter" style={{ display: 'inline-block', opacity: 0, willChange: 'transform' }}>{l}</span>
             ))}
           </div>
@@ -207,7 +222,7 @@ export default function Hero() {
               color: '#fff', marginBottom: 'clamp(24px,3vh,36px)', opacity: 0,
               fontFamily: 'var(--font-sans)',
             }}>
-              Engenharia, Construção e Infra-estruturas. A transformar Angola há mais de duas décadas.
+              {c.intro}
             </p>
             <div ref={actionsRef} style={{ display: 'flex', gap: 14, flexWrap: 'wrap', opacity: 0 }}>
               <a href="#grupo" style={{
@@ -220,7 +235,7 @@ export default function Hero() {
                 onMouseEnter={e => (e.currentTarget.style.background = '#0f2550')}
                 onMouseLeave={e => (e.currentTarget.style.background = '#1a396e')}
               >
-                Conhecer o Grupo
+                {c.cta_primary}
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
               </a>
               <a href="#contactos" style={{
@@ -234,7 +249,7 @@ export default function Hero() {
                 onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.6)'; e.currentTarget.style.background = 'rgba(255,255,255,0.05)'; }}
                 onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.25)'; e.currentTarget.style.background = 'transparent'; }}
               >
-                Falar Connosco
+                {c.cta_secondary}
               </a>
             </div>
           </div>
