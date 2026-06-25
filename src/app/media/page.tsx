@@ -74,7 +74,7 @@ export default function MediaPage() {
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '32px 28px' }} className="media-grid">
                 {posts.map((post) => (
                   <article key={post.id} style={{ background: '#fff', border: '1px solid #e8edf5', borderRadius: 4, overflow: 'hidden', display: 'flex', flexDirection: 'column' }} className="media-card">
-                    <div style={{ position: 'relative', aspectRatio: '4/3', overflow: 'hidden', background: '#f1f5f9' }}>
+                    <a href={post.slug ? `/noticias/${post.slug}` : undefined} style={{ display: 'block', position: 'relative', aspectRatio: '4/3', overflow: 'hidden', background: '#f1f5f9', textDecoration: 'none' }}>
                       {post.cover_image ? (
                         // eslint-disable-next-line @next/next/no-img-element
                         <img
@@ -86,7 +86,7 @@ export default function MediaPage() {
                       ) : (
                         <div style={{ width: '100%', height: '100%', background: '#dde3ed' }} />
                       )}
-                    </div>
+                    </a>
 
                     <div style={{ padding: '20px 22px 24px', display: 'flex', flexDirection: 'column', flex: 1 }}>
                       <h3 style={{ margin: '0 0 10px', fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: '0.97rem', color: '#0f1a2e', letterSpacing: '-0.01em', lineHeight: 1.3, textTransform: 'uppercase' }}>
