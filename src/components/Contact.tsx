@@ -63,7 +63,7 @@ function ContactForm() {
 
 export default function Contact() {
   const sectionRef = useRef<HTMLElement>(null);
-  const [phone, setPhone] = useState('+244 000 000 000');
+  const [phone, setPhone] = useState('+244 934 337 822');
   const [email, setEmail] = useState('info.ao@omatapalo.com');
 
   useEffect(() => {
