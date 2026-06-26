@@ -19,11 +19,11 @@ const SECTORS: Sector[] = [
     id: 'secundario', label: 'Sector Secundário', short: '02',
     companies: [
       { logo: '/Omatapalo-Engenharia-e-Construcao.png', name: 'Omatapalo',  year: '2003', area: 'Engenharia e Construção',  desc: 'Empresa-mãe do grupo. Líder nacional em engenharia e infraestrutura.' },
-      { logo: '/METALOSUL..png',          name: 'Metalosul',  year: '2009', area: 'Metalomecânica',           desc: 'Fabrico e montagem de estruturas metálicas.' },
-      { logo: '/GraniSul-Logotipo.jpg',   name: 'Granisul',   year: '2010', area: 'Extracção de Granito',     desc: 'Extracção e transformação de granito para construção.' },
+      { logo: '/METALOSUL. (1).png',       name: 'Metalosul',  year: '2009', area: 'Metalomecânica',           desc: 'Fabrico e montagem de estruturas metálicas.' },
+      { logo: '/GraniSul-Logotipo.png',   name: 'Granisul',   year: '2010', area: 'Extracção de Granito',     desc: 'Extracção e transformação de granito para construção.' },
       { logo: '/DRILL-GO.png',            name: 'DrillGo',    year: '2019', area: 'Geotecnia',                desc: 'Obras subterrâneas e geotecnia de precisão.' },
-      { logo: '/logo-SIEMA.png',          name: 'Siema',      year: '2012', area: 'Instalações Especiais',    desc: 'Sistemas eléctricos, AVAC e infraestruturas técnicas.' },
-      { logo: '/Planasul.png',            name: 'Planasul',   year: '2003', area: 'Engenharia e Construção',  desc: 'Construção civil e obras públicas em Angola.' },
+      { logo: '/SIEMA-1.png',             name: 'Siema',      year: '2012', area: 'Instalações Especiais',    desc: 'Sistemas eléctricos, AVAC e infraestruturas técnicas.' },
+      { logo: '/Planasul (1).png',        name: 'Planasul',   year: '2003', area: 'Engenharia e Construção',  desc: 'Construção civil e obras públicas em Angola.' },
       { logo: '/SelaGrup-Logotipo.png',   name: 'Selagrup',   year: '2020', area: 'Captação de Água',         desc: 'Furos e redes de distribuição de água.' },
       { logo: '/Emadel.png',              name: 'Emadel',     year: '2010', area: 'Carpintaria',              desc: 'Soluções em madeira para construção e decoração.' },
 
