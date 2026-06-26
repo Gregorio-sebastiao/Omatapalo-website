@@ -32,17 +32,12 @@ export default function Mundo() {
             scrollTrigger: { trigger: wrapperRef.current, start: 'top 80%', once: true } }
         );
 
-        /* reveal pins one-by-one as user scrolls through the wrapper */
-        const total = COUNTRIES.length;
+        /* reveal all pins at once when section enters viewport */
         ScrollTrigger.create({
           trigger: wrapperRef.current,
-          start: 'top top',
-          end: 'bottom bottom',
-          scrub: false,
-          onUpdate(self) {
-            const count = Math.ceil(self.progress * (total + 1));
-            setVisibleCount(Math.min(count, total));
-          },
+          start: 'top 80%',
+          once: true,
+          onEnter() { setVisibleCount(COUNTRIES.length); },
         });
 
         /* map fade in */
