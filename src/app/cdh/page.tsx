@@ -8,7 +8,7 @@ export default function CDHPage() {
     <>
       <Nav />
       <main>
-        <PageHero page="cdh" title="Clube Desportivo da HuÃ­la" imgSrc="https://images.unsplash.com/photo-1577495508048-b635879837f1?w=1600&q=80" position="center" imgOpacity={0.45} />
+        <PageHero page="cdh" title="Clube Desportivo da Huíla" imgSrc="/cdh-treino-3.jpg" position="center" imgOpacity={0.45} />
         <CDH />
       </main>
       <Footer />
