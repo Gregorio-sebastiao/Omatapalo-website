@@ -1,8 +1,9 @@
 'use client';
 
 import { useEffect, useRef, useState, useCallback } from 'react';
+import { createClient } from '@/lib/supabase/client';
 
-type Company = { logo?: string; name: string; year: string; area: string; desc: string };
+type Company = { logo?: string; name: string; year: string; area: string; desc: string; link?: string };
 type Sector  = { id: string; label: string; short: string; companies: Company[] };
 
 const SECTORS: Sector[] = [
@@ -148,6 +149,13 @@ function TiltCard({ company, index }: { company: Company; index: number }) {
         <span style={{ fontFamily: 'var(--font-label)', fontSize: 9, letterSpacing: '0.12em', textTransform: 'uppercase', color: hovered ? '#1a396e' : '#94a3b8', transition: 'color .25s' }}>
           {company.area}
         </span>
+        {company.link && (
+          <a href={company.link} target="_blank" rel="noopener noreferrer"
+            onClick={e => e.stopPropagation()}
+            style={{ fontFamily: 'var(--font-label)', fontSize: 8, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#1a396e', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 4 }}>
+            Ver site →
+          </a>
+        )}
       </div>
     </div>
   );
@@ -159,7 +167,14 @@ export default function Negocios() {
   const gridRef     = useRef<HTMLDivElement>(null);
   const bgTextRef   = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(0);
+  const [sectors, setSectors] = useState<Sector[]>(SECTORS);
   const isAnimating = useRef(false);
+
+  useEffect(() => {
+    createClient().from('site_content').select('value').eq('page', 'negocios').eq('field', 'sectors').single().then(({ data }) => {
+      if (data?.value) { try { setSectors(JSON.parse(data.value)); } catch {} }
+    });
+  }, []);
   const dirRef      = useRef<1 | -1>(1);
 
   /* entrance */
@@ -232,7 +247,7 @@ export default function Negocios() {
     });
   }, [active]);
 
-  const sector = SECTORS[active];
+  const sector = sectors[active] ?? sectors[0];
 
   return (
     <section ref={sectionRef} id="negocios" style={{ background: '#F6F8FB', paddingTop: 'clamp(72px,10vh,120px)', paddingBottom: 'clamp(72px,10vh,120px)', overflow: 'hidden' }}>
@@ -260,7 +275,7 @@ export default function Negocios() {
 
           {/* LEFT nav */}
           <div style={{ position: 'sticky', top: 'clamp(80px,10vh,120px)' }}>
-            {SECTORS.map((s, i) => {
+            {sectors.map((s, i) => {
               const isActive = i === active;
               return (
                 <button
