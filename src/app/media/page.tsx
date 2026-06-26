@@ -55,9 +55,9 @@ export default function MediaPage() {
       <Nav />
       <main>
         <PageHero
-          title="Media"
+          title="Notícias"
           eyebrow="Grupo Omatapalo · Notícias"
-          outlineWord="Media"
+          outlineWord="Notícias"
           imgSrc="/EN-230-omatapalo-2.jpg"
           imgOpacity={0.35}
           position="center"
