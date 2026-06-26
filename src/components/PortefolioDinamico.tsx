@@ -196,8 +196,8 @@ export default function PortefolioDinamico() {
             scrollTrigger: { trigger: sectionRef.current, start: 'top 80%', once: true } }
         );
         gsap.fromTo('.pf-card',
-          { opacity: 0, y: 32 },
-          { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out', stagger: 0.07,
+          { opacity: 0, y: 24 },
+          { opacity: 1, y: 0, duration: 0.45, ease: 'power3.out', stagger: 0.025,
             scrollTrigger: { trigger: sectionRef.current, start: 'top 75%', once: true } }
         );
         gsap.to(bgNumRef.current, {

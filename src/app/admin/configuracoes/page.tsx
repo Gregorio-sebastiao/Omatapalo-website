@@ -244,21 +244,63 @@ export default function ConfiguracoesPage() {
       {/* ── FAVICON ── */}
       {tab === 'favicon' && (
         <div style={card}>
-          <div style={{ fontSize: 12, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#64748b', marginBottom: 16 }}>Favicon actual</div>
-          <div style={{ background: '#f8fafc', borderRadius: 4, padding: 24, marginBottom: 20, display: 'inline-flex', alignItems: 'center', gap: 16 }}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={faviconUrl} alt="Favicon" style={{ width: 32, height: 32, objectFit: 'contain' }} />
-            <span style={{ fontSize: 12, color: '#64748b' }}>32×32px — aparece no separador do browser</span>
+          <div style={{ fontSize: 12, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#64748b', marginBottom: 20 }}>Favicon</div>
+
+          {/* Preview */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 24, marginBottom: 28, background: '#f8fafc', borderRadius: 8, padding: 24 }}>
+            <div style={{ position: 'relative', width: 80, height: 80, background: '#e2e8f0', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              {faviconUrl ? (
+                /* eslint-disable-next-line @next/next/no-img-element */
+                <img src={faviconUrl} alt="Favicon" style={{ width: 64, height: 64, objectFit: 'contain', borderRadius: 4 }} />
+              ) : (
+                <span style={{ fontSize: 28, color: '#94a3b8' }}>🖼️</span>
+              )}
+            </div>
+            <div>
+              <div style={{ fontSize: 14, fontWeight: 600, color: '#0f172a', marginBottom: 4 }}>
+                {faviconUrl ? 'Favicon activo' : 'Sem favicon definido'}
+              </div>
+              <div style={{ fontSize: 12, color: '#64748b' }}>Aparece no separador do browser e nos favoritos.</div>
+              <div style={{ fontSize: 11, color: '#94a3b8', marginTop: 4 }}>Formatos: PNG, ICO, SVG · Recomendado: 64×64px</div>
+            </div>
           </div>
-          <div>
-            <p style={{ fontSize: 13, color: '#64748b', marginBottom: 12 }}>
-              Formatos suportados: ICO, PNG, SVG. Tamanho ideal: 32×32 ou 64×64 px.
-            </p>
+
+          {/* Simulação de separador do browser */}
+          {faviconUrl && (
+            <div style={{ marginBottom: 24 }}>
+              <div style={{ fontSize: 11, color: '#94a3b8', marginBottom: 8, letterSpacing: '0.08em', textTransform: 'uppercase' }}>Pré-visualização no browser</div>
+              <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: '#e2e8f0', borderRadius: '6px 6px 0 0', padding: '8px 16px', fontSize: 12, color: '#334155' }}>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={faviconUrl} alt="" style={{ width: 16, height: 16, objectFit: 'contain' }} />
+                Grupo Omatapalo
+              </div>
+            </div>
+          )}
+
+          {/* Acções */}
+          <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
             <input ref={faviconRef} type="file" accept="image/x-icon,image/png,image/svg+xml" style={{ display: 'none' }}
               onChange={e => { const f = e.target.files?.[0]; if (f) uploadAsset(f, 'favicon_url'); }} />
-            <button onClick={() => faviconRef.current?.click()} disabled={uploading} style={{ ...btn(true), opacity: uploading ? 0.6 : 1 }}>
-              {uploading ? 'A carregar…' : 'Carregar novo favicon'}
+            <button
+              onClick={() => faviconRef.current?.click()}
+              disabled={uploading}
+              style={{ padding: '10px 20px', background: '#1a396e', color: '#fff', border: 'none', borderRadius: 6, fontSize: 13, fontWeight: 600, cursor: 'pointer', opacity: uploading ? 0.6 : 1 }}
+            >
+              {uploading ? 'A carregar…' : '+ Adicionar / Substituir Favicon'}
             </button>
+            {faviconUrl && (
+              <button
+                onClick={async () => {
+                  if (!confirm('Remover o favicon actual?')) return;
+                  await createClient().from('site_settings').upsert({ key: 'favicon_url', value: '' });
+                  setFaviconUrl('');
+                  flash('Favicon removido.');
+                }}
+                style={{ padding: '10px 20px', background: '#fff', color: '#dc2626', border: '1.5px solid #fca5a5', borderRadius: 6, fontSize: 13, fontWeight: 600, cursor: 'pointer' }}
+              >
+                Remover Favicon
+              </button>
+            )}
           </div>
         </div>
       )}
