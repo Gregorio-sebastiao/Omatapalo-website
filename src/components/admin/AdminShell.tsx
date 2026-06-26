@@ -15,6 +15,7 @@ const NAV = [
   { href: '/admin/users',         label: 'Utilizadores',  icon: '👥' },
   { href: '/admin/conteudo',        label: 'Conteúdo',       icon: '✏️' },
   { href: '/admin/grandes-numeros', label: 'Grandes Números', icon: '📊' },
+  { href: '/admin/quem-somos',      label: 'Quem Somos',      icon: '🏢' },
   { href: '/admin/configuracoes', label: 'Configurações', icon: '⚙️' },
 ];
 

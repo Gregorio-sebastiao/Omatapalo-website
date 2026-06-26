@@ -1,14 +1,21 @@
 ﻿'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { createClient } from '@/lib/supabase/client';
 
-const IMAGES = [
+const DEFAULT_IMAGES = [
   { src: '/EN-230-omatapalo-2.jpg',              label: 'Estrada Nacional 230 - Saurimo'   },
   { src: '/Salao-Protocolar-1-1.jpg',            label: 'Salão Protocolar - Luanda'             },
   { src: '/HOSPITAL MILITAR_1306202.JPG',         label: 'Hospital Militar'                        },
   { src: '/omatapalo-construcao-do-monumento-do-soldado-desconhecido.jpg', label: 'Monumento ao Soldado Desconhecido - Luanda' },
   { src: '/DSC_0030.jpg',                        label: 'Missão Fazer Sorrir'             },
   { src: '/Academia-barra.jpg',                  label: 'Academia Omatapalo'           },
+];
+
+const DEFAULT_TEXTS = [
+  'Somos um grupo empresarial angolano com presença em sectores estratégicos da economia, comprometido com a criação de valor, o desenvolvimento sustentável e o progresso de Angola.',
+  'Fundado em 2003, o Grupo Omatapalo tem vindo a consolidar uma trajectória de crescimento assente na excelência, na inovação e no impacto positivo.',
+  'Mais do que construir infra-estruturas, construímos confiança, oportunidades e futuro.',
 ];
 
 const STATS = [
@@ -22,6 +29,18 @@ export default function SobreGrupo() {
   const wrapperRef   = useRef<HTMLDivElement>(null);
   const stripRef     = useRef<HTMLDivElement>(null);
   const [videoOpen, setVideoOpen] = useState(false);
+  const [IMAGES, setImages] = useState(DEFAULT_IMAGES);
+  const [texts, setTexts] = useState(DEFAULT_TEXTS);
+
+  useEffect(() => {
+    createClient().from('site_content').select('field,value').eq('page', 'quem-somos').then(({ data }) => {
+      if (!data || data.length === 0) return;
+      const map: Record<string, string> = {};
+      for (const row of data) map[row.field] = row.value;
+      if (map['images']) setImages(JSON.parse(map['images']));
+      if (map['texts']) setTexts(JSON.parse(map['texts']));
+    });
+  }, []);
 
   useEffect(() => {
     import('gsap').then(({ gsap }) => {
@@ -137,15 +156,11 @@ export default function SobreGrupo() {
             </div>
 
             {/* body */}
-            <p className="sgc-text" style={{ opacity: 0, fontFamily: 'var(--font-sans)', fontSize: 'clamp(13px,1vw,15px)', color: '#0a0f1e', lineHeight: 1.85, marginBottom: 12 }}>
-              Somos um grupo empresarial angolano com presença em sectores estratégicos da economia, comprometido com a criação de valor, o desenvolvimento sustentável e o progresso de Angola.
-            </p>
-            <p className="sgc-text" style={{ opacity: 0, fontFamily: 'var(--font-sans)', fontSize: 'clamp(13px,1vw,15px)', color: '#0a0f1e', lineHeight: 1.85, marginBottom: 12 }}>
-              Fundado em 2003, o Grupo Omatapalo tem vindo a consolidar uma trajectória de crescimento assente na excelência, na inovação e no impacto positivo.
-            </p>
-            <p className="sgc-text" style={{ opacity: 0, fontFamily: 'var(--font-sans)', fontSize: 'clamp(13px,1vw,15px)', color: '#0a0f1e', lineHeight: 1.85, marginBottom: 32 }}>
-              Mais do que construir infra-estruturas, construímos confiança, oportunidades e futuro.
-            </p>
+            {texts.map((t, i) => (
+              <p key={i} className="sgc-text" style={{ opacity: 0, fontFamily: 'var(--font-sans)', fontSize: 'clamp(13px,1vw,15px)', color: '#0a0f1e', lineHeight: 1.85, marginBottom: i === texts.length - 1 ? 32 : 12 }}>
+                {t}
+              </p>
+            ))}
 
             {/* stats 2×2 */}
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px 24px', marginBottom: 32 }}>
