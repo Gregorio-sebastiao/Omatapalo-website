@@ -34,12 +34,13 @@ const btn = (active = false) => ({
 const DEFAULT_TICKER = ['Engenharia', 'Construção', 'Infra-estruturas', 'Mineração', 'Energia', 'Gestão Hoteleira', 'Agro-negócio', 'Imobiliário', 'Transporte', 'Pescas', 'Indústria'];
 
 export default function ConfiguracoesPage() {
-  const [tab, setTab] = useState<'menu' | 'logo' | 'favicon' | 'ticker'>('menu');
+  const [tab, setTab] = useState<'menu' | 'logo' | 'favicon' | 'ticker' | 'video'>('menu');
   const [navItems, setNavItems] = useState<NavItem[]>(DEFAULT_NAV);
   const [logoUrl, setLogoUrl] = useState('/logo/LOGO OMT 1.png');
   const [faviconUrl, setFaviconUrl] = useState('/favicon.ico');
   const [tickerItems, setTickerItems] = useState<string[]>(DEFAULT_TICKER);
   const [newTickerItem, setNewTickerItem] = useState('');
+  const [videoUrl, setVideoUrl] = useState('https://www.youtube.com/watch?v=kuVu9thTbIM');
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [msg, setMsg] = useState('');
@@ -63,6 +64,7 @@ export default function ConfiguracoesPage() {
         if (row.key === 'ticker_items') {
           try { setTickerItems(JSON.parse(row.value)); } catch {}
         }
+        if (row.key === 'video_institucional') setVideoUrl(row.value);
       }
     });
   }, []);
@@ -78,6 +80,13 @@ export default function ConfiguracoesPage() {
     } else {
       flash('✅ Menu guardado com sucesso!');
     }
+  }
+
+  async function saveVideo() {
+    setSaving(true);
+    const { error } = await createClient().from('site_settings').upsert({ key: 'video_institucional', value: videoUrl });
+    setSaving(false);
+    flash(error ? '❌ Erro: ' + error.message : '✅ Vídeo guardado!');
   }
 
   async function saveTicker() {
@@ -154,9 +163,9 @@ export default function ConfiguracoesPage() {
 
       {/* Tabs */}
       <div style={{ display: 'flex', gap: 8, marginBottom: 28, flexWrap: 'wrap' }}>
-        {(['menu', 'logo', 'favicon', 'ticker'] as const).map(t => (
+        {(['menu', 'logo', 'favicon', 'ticker', 'video'] as const).map(t => (
           <button key={t} onClick={() => setTab(t)} style={btn(tab === t)}>
-            {t === 'menu' ? 'Menu' : t === 'logo' ? 'Logotipo' : t === 'favicon' ? 'Favicon' : 'Ticker'}
+            {t === 'menu' ? 'Menu' : t === 'logo' ? 'Logotipo' : t === 'favicon' ? 'Favicon' : t === 'ticker' ? 'Ticker' : 'Vídeo'}
           </button>
         ))}
       </div>
@@ -386,6 +395,41 @@ export default function ConfiguracoesPage() {
             disabled={saving}
             style={{ padding: '12px 28px', background: '#1a396e', color: '#fff', border: 'none', borderRadius: 6, fontSize: 13, fontWeight: 700, cursor: 'pointer', opacity: saving ? 0.6 : 1 }}
           >{saving ? 'A guardar…' : 'Guardar Ticker'}</button>
+        </div>
+      )}
+
+      {/* ── VÍDEO ── */}
+      {tab === 'video' && (
+        <div style={{ background: '#fff', borderRadius: 8, padding: 28, border: '1px solid #e2e8f0' }}>
+          <div style={{ fontSize: 12, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#64748b', marginBottom: 6 }}>Vídeo Institucional</div>
+          <div style={{ fontSize: 13, color: '#94a3b8', marginBottom: 24 }}>Link do YouTube que aparece no botão "Vídeo Institucional" na página inicial.</div>
+
+          <label style={{ fontSize: 12, fontWeight: 600, color: '#374151', display: 'block', marginBottom: 8 }}>URL do YouTube</label>
+          <input
+            type="url"
+            value={videoUrl}
+            onChange={e => setVideoUrl(e.target.value)}
+            placeholder="https://www.youtube.com/watch?v=..."
+            style={{ width: '100%', padding: '12px 14px', border: '1.5px solid #e2e8f0', borderRadius: 6, fontSize: 14, outline: 'none', boxSizing: 'border-box', marginBottom: 16 }}
+          />
+
+          {/* Preview miniatura */}
+          {videoUrl.includes('youtube.com/watch?v=') || videoUrl.includes('youtu.be/') ? (() => {
+            const id = videoUrl.match(/(?:v=|youtu\.be\/)([^&?/]+)/)?.[1];
+            return id ? (
+              <div style={{ marginBottom: 20 }}>
+                <div style={{ fontSize: 11, color: '#94a3b8', marginBottom: 8, textTransform: 'uppercase', letterSpacing: '0.08em' }}>Pré-visualização</div>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={`https://img.youtube.com/vi/${id}/hqdefault.jpg`} alt="thumbnail" style={{ width: 240, borderRadius: 6, border: '1px solid #e2e8f0' }} />
+              </div>
+            ) : null;
+          })() : null}
+
+          <button
+            onClick={saveVideo}
+            disabled={saving}
+            style={{ padding: '12px 28px', background: '#1a396e', color: '#fff', border: 'none', borderRadius: 6, fontSize: 13, fontWeight: 700, cursor: 'pointer', opacity: saving ? 0.6 : 1 }}
+          >{saving ? 'A guardar…' : 'Guardar Vídeo'}</button>
         </div>
       )}
     </div>

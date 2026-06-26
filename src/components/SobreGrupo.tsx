@@ -29,16 +29,21 @@ export default function SobreGrupo() {
   const wrapperRef   = useRef<HTMLDivElement>(null);
   const stripRef     = useRef<HTMLDivElement>(null);
   const [videoOpen, setVideoOpen] = useState(false);
+  const [videoUrl, setVideoUrl] = useState('https://www.youtube.com/watch?v=kuVu9thTbIM');
   const [IMAGES, setImages] = useState(DEFAULT_IMAGES);
   const [texts, setTexts] = useState(DEFAULT_TEXTS);
 
   useEffect(() => {
-    createClient().from('site_content').select('field,value').eq('page', 'quem-somos').then(({ data }) => {
+    const db = createClient();
+    db.from('site_content').select('field,value').eq('page', 'quem-somos').then(({ data }) => {
       if (!data || data.length === 0) return;
       const map: Record<string, string> = {};
       for (const row of data) map[row.field] = row.value;
       if (map['images']) setImages(JSON.parse(map['images']));
       if (map['texts']) setTexts(JSON.parse(map['texts']));
+    });
+    db.from('site_settings').select('value').eq('key', 'video_institucional').single().then(({ data }) => {
+      if (data?.value) setVideoUrl(data.value);
     });
   }, []);
 
@@ -271,7 +276,7 @@ export default function SobreGrupo() {
             <div style={{ position: 'relative', paddingBottom: '56.25%', height: 0 }}>
               <iframe
                 style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', border: 'none' }}
-                src="https://www.youtube.com/embed/kuVu9thTbIM?autoplay=1&rel=0&modestbranding=1"
+                src={`https://www.youtube.com/embed/${videoUrl.match(/(?:v=|youtu\.be\/)([^&?/]+)/)?.[1] ?? 'kuVu9thTbIM'}?autoplay=1&rel=0&modestbranding=1`}
                 title="Vídeo Institucional Omatapalo"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
