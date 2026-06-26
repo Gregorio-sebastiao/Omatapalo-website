@@ -65,7 +65,7 @@ function CertColumn({ cert, index, hovered, onEnter, onLeave }: {
           ? `linear-gradient(135deg, ${isHov ? 'rgba(34,71,154,0.82)' : 'rgba(23,45,110,0.82)'} 0%, ${isHov ? 'rgba(14,37,84,0.88)' : 'rgba(10,26,69,0.88)'} 100%), url('/omatapalo-09.jpg') center/cover no-repeat`
           : index === 2
           ? `linear-gradient(135deg, ${isHov ? 'rgba(34,71,154,0.82)' : 'rgba(23,45,110,0.82)'} 0%, ${isHov ? 'rgba(14,37,84,0.88)' : 'rgba(10,26,69,0.88)'} 100%), url('/omatapalo.4.png') center/cover no-repeat`
-          : isHov ? 'linear-gradient(135deg, #22479a 0%, #0e2554 100%)' : 'linear-gradient(135deg, #172d6e 0%, #0a1a45 100%)',
+          : `linear-gradient(135deg, ${isHov ? 'rgba(34,71,154,0.82)' : 'rgba(23,45,110,0.82)'} 0%, ${isHov ? 'rgba(14,37,84,0.88)' : 'rgba(10,26,69,0.88)'} 100%), url('/ods%20un%20global.png') center/cover no-repeat`,
         borderRight: '1px solid rgba(255,255,255,0.07)',
         padding: 'clamp(32px,4vw,56px) clamp(20px,2.5vw,40px)',
         display: 'flex',
