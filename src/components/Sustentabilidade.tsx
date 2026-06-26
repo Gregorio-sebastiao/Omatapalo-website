@@ -11,10 +11,10 @@ const CERT_LOGOS = [
 ];
 
 const ODS = [
-  { src: '/ods-08.png', alt: 'ODS 8' },
-  { src: '/ods-09.png', alt: 'ODS 9' },
-  { src: '/ods-11.png', alt: 'ODS 11' },
-  { src: '/ods-13.png', alt: 'ODS 13' },
+  { src: '/responsabilidade-1.png', alt: 'ODS 8' },
+  { src: '/responsabilidade-2.png', alt: 'ODS 9' },
+  { src: '/responsabilidade-3.png', alt: 'ODS 11' },
+  { src: '/responsabilidade-4.png', alt: 'ODS 13' },
 ];
 
 const ESG = [
