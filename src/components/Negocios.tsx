@@ -18,7 +18,7 @@ const SECTORS: Sector[] = [
   {
     id: 'secundario', label: 'Sector Secundário', short: '02',
     companies: [
-      { logo: '/logo/LOGO%20OMT%202.png', name: 'Omatapalo',  year: '2003', area: 'Engenharia e Construção',  desc: 'Empresa-mãe do grupo. Líder nacional em engenharia e infraestrutura.' },
+      { logo: '/Omatapalo-Engenharia-e-Construcao.png', name: 'Omatapalo',  year: '2003', area: 'Engenharia e Construção',  desc: 'Empresa-mãe do grupo. Líder nacional em engenharia e infraestrutura.' },
       { logo: '/METALOSUL..png',          name: 'Metalosul',  year: '2009', area: 'Metalomecânica',           desc: 'Fabrico e montagem de estruturas metálicas.' },
       { logo: '/GraniSul-Logotipo.jpg',   name: 'Granisul',   year: '2010', area: 'Extracção de Granito',     desc: 'Extracção e transformação de granito para construção.' },
       { logo: '/DRILL-GO.png',            name: 'DrillGo',    year: '2019', area: 'Geotecnia',                desc: 'Obras subterrâneas e geotecnia de precisão.' },
