@@ -168,6 +168,8 @@ export default function Negocios() {
   const bgTextRef   = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(0);
   const [sectors, setSectors] = useState<Sector[]>(SECTORS);
+  const [title1, setTitle1] = useState('Empresas');
+  const [title2, setTitle2] = useState('do Grupo');
   const [intro, setIntro] = useState('Um ecossistema empresarial diversificado que actua nos principais sectores da economia angolana.');
   const isAnimating = useRef(false);
 
@@ -178,6 +180,8 @@ export default function Negocios() {
       for (const row of data) {
         if (row.field === 'sectors') { try { setSectors(JSON.parse(row.value)); } catch {} }
         if (row.field === 'intro') setIntro(row.value);
+        if (row.field === 'title1') setTitle1(row.value);
+        if (row.field === 'title2') setTitle2(row.value);
       }
     });
   }, []);
@@ -267,8 +271,8 @@ export default function Negocios() {
           </div>
           <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 24, flexWrap: 'wrap' }}>
             <h2 style={{ margin: 0, fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 'clamp(2rem,4vw,4.5rem)', color: '#0F1A2E', letterSpacing: '-0.035em', lineHeight: 0.95, textTransform: 'uppercase' }}>
-              Empresas<br />
-              <span style={{ color: 'transparent', WebkitTextStroke: '1.5px rgba(26,57,110,0.25)' }}>do Grupo</span>
+              {title1}<br />
+              <span style={{ color: 'transparent', WebkitTextStroke: '1.5px rgba(26,57,110,0.25)' }}>{title2}</span>
             </h2>
             <p style={{ margin: 0, fontFamily: 'var(--font-sans)', fontSize: 'clamp(13px,1vw,15px)', color: '#64748b', lineHeight: 1.8, maxWidth: 340 }}>
               {intro}

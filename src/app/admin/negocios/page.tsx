@@ -55,6 +55,8 @@ const inp = (extra?: React.CSSProperties): React.CSSProperties => ({
 
 export default function NegociosAdminPage() {
   const [sectors, setSectors] = useState<Sector[]>(DEFAULT_SECTORS);
+  const [title1, setTitle1] = useState('Empresas');
+  const [title2, setTitle2] = useState('do Grupo');
   const [intro, setIntro] = useState('Um ecossistema empresarial diversificado que actua nos principais sectores da economia angolana.');
   const [activeSector, setActiveSector] = useState('primario');
   const [saving, setSaving] = useState(false);
@@ -66,6 +68,8 @@ export default function NegociosAdminPage() {
       for (const row of data) {
         if (row.field === 'sectors') { try { setSectors(JSON.parse(row.value)); } catch {} }
         if (row.field === 'intro') setIntro(row.value);
+        if (row.field === 'title1') setTitle1(row.value);
+        if (row.field === 'title2') setTitle2(row.value);
       }
     });
   }, []);
@@ -75,12 +79,14 @@ export default function NegociosAdminPage() {
   async function save() {
     setSaving(true);
     const db = createClient();
-    const [r1, r2] = await Promise.all([
+    const [r1, r2, r3, r4] = await Promise.all([
       db.from('site_content').upsert({ page: 'negocios', field: 'sectors', value: JSON.stringify(sectors) }),
       db.from('site_content').upsert({ page: 'negocios', field: 'intro', value: intro }),
+      db.from('site_content').upsert({ page: 'negocios', field: 'title1', value: title1 }),
+      db.from('site_content').upsert({ page: 'negocios', field: 'title2', value: title2 }),
     ]);
     setSaving(false);
-    flash(r1.error || r2.error ? '❌ Erro ao guardar' : '✅ Guardado!');
+    flash(r1.error || r2.error || r3.error || r4.error ? '❌ Erro ao guardar' : '✅ Guardado!');
   }
 
   function updateCompany(sectorId: string, compIdx: number, field: keyof Company, value: string) {
@@ -104,6 +110,21 @@ export default function NegociosAdminPage() {
           {msg}
         </div>
       )}
+
+      {/* Títulos */}
+      <div style={{ background: '#fff', border: '1px solid #e2e8f0', borderRadius: 8, padding: 20, marginBottom: 16 }}>
+        <label style={{ fontSize: 11, fontWeight: 700, color: '#64748b', letterSpacing: '0.08em', textTransform: 'uppercase', display: 'block', marginBottom: 12 }}>Título da secção</label>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+          <div>
+            <label style={{ fontSize: 11, color: '#94a3b8', display: 'block', marginBottom: 4 }}>Linha 1 (destaque)</label>
+            <input value={title1} onChange={e => setTitle1(e.target.value)} style={{ width: '100%', padding: '8px 10px', border: '1px solid #e2e8f0', borderRadius: 5, fontSize: 13, outline: 'none', boxSizing: 'border-box' }} />
+          </div>
+          <div>
+            <label style={{ fontSize: 11, color: '#94a3b8', display: 'block', marginBottom: 4 }}>Linha 2 (contorno)</label>
+            <input value={title2} onChange={e => setTitle2(e.target.value)} style={{ width: '100%', padding: '8px 10px', border: '1px solid #e2e8f0', borderRadius: 5, fontSize: 13, outline: 'none', boxSizing: 'border-box' }} />
+          </div>
+        </div>
+      </div>
 
       {/* Texto introdutório */}
       <div style={{ background: '#fff', border: '1px solid #e2e8f0', borderRadius: 8, padding: 20, marginBottom: 28 }}>
