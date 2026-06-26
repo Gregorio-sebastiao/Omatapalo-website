@@ -55,13 +55,18 @@ const inp = (extra?: React.CSSProperties): React.CSSProperties => ({
 
 export default function NegociosAdminPage() {
   const [sectors, setSectors] = useState<Sector[]>(DEFAULT_SECTORS);
+  const [intro, setIntro] = useState('Um ecossistema empresarial diversificado que actua nos principais sectores da economia angolana.');
   const [activeSector, setActiveSector] = useState('primario');
   const [saving, setSaving] = useState(false);
   const [msg, setMsg] = useState('');
 
   useEffect(() => {
-    createClient().from('site_content').select('value').eq('page', 'negocios').eq('field', 'sectors').single().then(({ data }) => {
-      if (data?.value) { try { setSectors(JSON.parse(data.value)); } catch {} }
+    createClient().from('site_content').select('field,value').eq('page', 'negocios').then(({ data }) => {
+      if (!data) return;
+      for (const row of data) {
+        if (row.field === 'sectors') { try { setSectors(JSON.parse(row.value)); } catch {} }
+        if (row.field === 'intro') setIntro(row.value);
+      }
     });
   }, []);
 
@@ -69,9 +74,13 @@ export default function NegociosAdminPage() {
 
   async function save() {
     setSaving(true);
-    const { error } = await createClient().from('site_content').upsert({ page: 'negocios', field: 'sectors', value: JSON.stringify(sectors) });
+    const db = createClient();
+    const [r1, r2] = await Promise.all([
+      db.from('site_content').upsert({ page: 'negocios', field: 'sectors', value: JSON.stringify(sectors) }),
+      db.from('site_content').upsert({ page: 'negocios', field: 'intro', value: intro }),
+    ]);
     setSaving(false);
-    flash(error ? '❌ ' + error.message : '✅ Guardado!');
+    flash(r1.error || r2.error ? '❌ Erro ao guardar' : '✅ Guardado!');
   }
 
   function updateCompany(sectorId: string, compIdx: number, field: keyof Company, value: string) {
@@ -95,6 +104,17 @@ export default function NegociosAdminPage() {
           {msg}
         </div>
       )}
+
+      {/* Texto introdutório */}
+      <div style={{ background: '#fff', border: '1px solid #e2e8f0', borderRadius: 8, padding: 20, marginBottom: 28 }}>
+        <label style={{ fontSize: 11, fontWeight: 700, color: '#64748b', letterSpacing: '0.08em', textTransform: 'uppercase', display: 'block', marginBottom: 8 }}>Texto introdutório da secção</label>
+        <textarea
+          value={intro}
+          onChange={e => setIntro(e.target.value)}
+          rows={3}
+          style={{ width: '100%', padding: '10px 12px', border: '1.5px solid #bfdbfe', borderRadius: 6, fontSize: 14, outline: 'none', resize: 'vertical', boxSizing: 'border-box', background: '#f0f7ff', lineHeight: 1.6 }}
+        />
+      </div>
 
       {/* Tabs de sector */}
       <div style={{ display: 'flex', gap: 8, marginBottom: 28 }}>

@@ -168,11 +168,17 @@ export default function Negocios() {
   const bgTextRef   = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(0);
   const [sectors, setSectors] = useState<Sector[]>(SECTORS);
+  const [intro, setIntro] = useState('Um ecossistema empresarial diversificado que actua nos principais sectores da economia angolana.');
   const isAnimating = useRef(false);
 
   useEffect(() => {
-    createClient().from('site_content').select('value').eq('page', 'negocios').eq('field', 'sectors').single().then(({ data }) => {
-      if (data?.value) { try { setSectors(JSON.parse(data.value)); } catch {} }
+    const db = createClient();
+    db.from('site_content').select('field,value').eq('page', 'negocios').then(({ data }) => {
+      if (!data) return;
+      for (const row of data) {
+        if (row.field === 'sectors') { try { setSectors(JSON.parse(row.value)); } catch {} }
+        if (row.field === 'intro') setIntro(row.value);
+      }
     });
   }, []);
   const dirRef      = useRef<1 | -1>(1);
@@ -265,7 +271,7 @@ export default function Negocios() {
               <span style={{ color: 'transparent', WebkitTextStroke: '1.5px rgba(26,57,110,0.25)' }}>do Grupo</span>
             </h2>
             <p style={{ margin: 0, fontFamily: 'var(--font-sans)', fontSize: 'clamp(13px,1vw,15px)', color: '#64748b', lineHeight: 1.8, maxWidth: 340 }}>
-              Um ecossistema empresarial diversificado que actua nos principais sectores da economia angolana.
+              {intro}
             </p>
           </div>
         </div>
