@@ -1,4 +1,7 @@
-﻿import Nav from '@/components/Nav';
+'use client';
+import { useEffect, useState } from 'react';
+import { createClient } from '@/lib/supabase/client';
+import Nav from '@/components/Nav';
 import Footer from '@/components/Footer';
 import PageHero from '@/components/PageHero';
 import Negocios from '@/components/Negocios';
@@ -6,7 +9,17 @@ import Mundo from '@/components/Mundo';
 import Historia from '@/components/Historia';
 import ConselhoAdministracao from '@/components/ConselhoAdministracao';
 
+const DEFAULT_INTRO = 'A OMATAPALO é uma empresa nacional que gere um portefólio diversificado de negócios nas áreas de Engenharia e Construção, Obras Públicas, Agroindústria, Imobiliário, Minas, Pesca e Gestão Hoteleira.';
+
 export default function OmatapaloPage() {
+  const [intro, setIntro] = useState(DEFAULT_INTRO);
+
+  useEffect(() => {
+    createClient().from('site_content').select('value').eq('page', 'omatapalo').eq('field', 'intro_destaque').single().then(({ data }) => {
+      if (data?.value) setIntro(data.value);
+    });
+  }, []);
+
   return (
     <>
       <Nav />
@@ -26,7 +39,7 @@ export default function OmatapaloPage() {
               fontWeight: 700,
               maxWidth: '800px',
             }}>
-              A OMATAPALO Ã© uma empresa nacional que gere um portefÃ³lio diversificado de negÃ³cios nas Ã¡reas de Engenharia e ConstruÃ§Ã£o, Obras PÃºblicas, AgroindÃºstria, ImobiliÃ¡rio, Minas, Pesca e GestÃ£o Hoteleira.
+              {intro}
             </p>
           </div>
         </section>
@@ -40,4 +53,3 @@ export default function OmatapaloPage() {
     </>
   );
 }
-

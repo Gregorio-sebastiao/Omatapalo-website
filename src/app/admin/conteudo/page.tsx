@@ -43,6 +43,7 @@ const SCHEMAS: Record<string, PageSchema> = {
       { key: 'hero_title',    label: 'Título hero',            type: 'text',     default: 'O Grupo' },
       { key: 'intro_heading', label: 'Título secção intro',    type: 'text',     default: 'Somos mais do que uma empresa de engenharia.' },
       { key: 'intro_text',    label: 'Texto intro',            type: 'textarea', default: 'A OMATAPALO é um grupo angolano de referência, com mais de duas décadas de experiência em Engenharia, Construção e Infra-estruturas.' },
+      { key: 'intro_destaque', label: 'Parágrafo destaque (abaixo do hero)', type: 'textarea', default: 'A OMATAPALO é uma empresa nacional que gere um portefólio diversificado de negócios nas áreas de Engenharia e Construção, Obras Públicas, Agroindústria, Imobiliário, Minas, Pesca e Gestão Hoteleira.' },
       { key: 'mission',       label: 'Missão',                 type: 'textarea', default: 'Construir Angola com excelência, inovação e responsabilidade social.' },
       { key: 'vision',        label: 'Visão',                  type: 'textarea', default: 'Ser o grupo de referência em Engenharia e Construção em Angola e África.' },
     ],
