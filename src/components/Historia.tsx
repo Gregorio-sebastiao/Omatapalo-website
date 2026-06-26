@@ -1,8 +1,11 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { createClient } from '@/lib/supabase/client';
 
-const EVENTOS = [
+type Evento = { year: string; title: string; desc: string };
+
+const DEFAULT_eventos: Evento[] = [
   { year: '2003', title: 'Fundação OMATAPALO', desc: 'A OMATAPALO - Engenharia e Construção, SA é fundada na cidade de Lubango, província do Huíla, fruto de uma união de esforços e vontade entre a empresa portuguesa de construção civil Carlos José Fernandes e Cª., com mais de 70 anos de experiência, e a CNS Norte.' },
   { year: '2004', title: 'Início de Actividade', desc: 'Ano em que a OMATAPALO inicia efectivamente a sua actividade em Angola, a partir da qual conheceu um forte crescimento e expansão nas suas áreas de actuação no sector de obras públicas e privadas.' },
   { year: '2005', title: 'Expansão para o Namibe', desc: 'O forte crescimento nas suas áreas de actuação levou à expansão para o Namibe, onde a OMATAPALO possui reservas permanentes de materiais, maquinaria, peças, combustível e outros elementos integrantes do processo de produção.' },
@@ -30,12 +33,19 @@ export default function Historia() {
   const sectionRef = useRef<HTMLElement>(null);
   const [index, setIndex]   = useState(0);
   const [active, setActive] = useState(0);
+  const [eventos, setEventos] = useState<Evento[]>(DEFAULT_eventos);
 
-  const max  = EVENTOS.length - VISIBLE;
+  useEffect(() => {
+    createClient().from('site_settings').select('value').eq('key', 'historia_eventos').single().then(({ data }) => {
+      if (data?.value) { try { setEventos(JSON.parse(data.value)); } catch {} }
+    });
+  }, []);
+
+  const max  = eventos.length - VISIBLE;
   const prev = () => { const ni = Math.max(0, index - 1); setIndex(ni); setActive(ni); };
   const next = () => { const ni = Math.min(max, index + 1); setIndex(ni); setActive(ni); };
 
-  const visible = EVENTOS.slice(index, index + VISIBLE);
+  const visible = eventos.slice(index, index + VISIBLE);
 
   useEffect(() => {
     import('gsap').then(({ gsap }) => {
@@ -85,7 +95,7 @@ export default function Historia() {
           {/* Counter + Nav */}
           <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
             <span style={{ fontFamily: 'var(--font-label)', fontSize: 10, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#94a3b8', marginRight: 8 }}>
-              {String(index + 1).padStart(2, '0')} — {String(Math.min(index + VISIBLE, EVENTOS.length)).padStart(2, '0')} / {String(EVENTOS.length).padStart(2, '0')}
+              {String(index + 1).padStart(2, '0')} — {String(Math.min(index + VISIBLE, eventos.length)).padStart(2, '0')} / {String(eventos.length).padStart(2, '0')}
             </span>
             <button
               onClick={prev}
@@ -199,14 +209,14 @@ export default function Historia() {
             <div style={{ flex: 1, height: 2, background: '#e2e8f0', borderRadius: 1, overflow: 'hidden' }}>
               <div style={{
                 height: '100%',
-                width: `${((index + VISIBLE) / EVENTOS.length) * 100}%`,
+                width: `${((index + VISIBLE) / eventos.length) * 100}%`,
                 background: '#1a396e',
                 borderRadius: 1,
                 transition: 'width 0.4s ease',
               }} />
             </div>
             <span style={{ fontFamily: 'var(--font-label)', fontSize: 10, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#94a3b8', whiteSpace: 'nowrap' }}>
-              {Math.round(((index + VISIBLE) / EVENTOS.length) * 100)}%
+              {Math.round(((index + VISIBLE) / eventos.length) * 100)}%
             </span>
           </div>
         </div>
