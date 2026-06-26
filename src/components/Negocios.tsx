@@ -115,11 +115,11 @@ function TiltCard({ company, index }: { company: Company; index: number }) {
       </div>
 
       {/* Logo */}
-      <div style={{ height: 44, display: 'flex', alignItems: 'center', transform: 'translateZ(16px)' }}>
+      <div style={{ height: 64, display: 'flex', alignItems: 'center', transform: 'translateZ(16px)' }}>
         {company.logo ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img src={company.logo} alt={company.name}
-            style={{ maxHeight: 40, maxWidth: 110, objectFit: 'contain', objectPosition: 'left center',
+            style={{ maxHeight: 60, maxWidth: 150, objectFit: 'contain', objectPosition: 'left center',
               transition: 'transform .3s', transform: hovered ? 'scale(1.06)' : 'scale(1)' }}
             onError={e => { e.currentTarget.style.display = 'none'; }} />
         ) : (
