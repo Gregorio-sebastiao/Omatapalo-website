@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
+import { createClient } from '@/lib/supabase/client';
 
 const DEPARTMENTS = [
   { label: 'Geral',                    email: 'geral@omatapalo.ao' },
@@ -62,6 +63,22 @@ function ContactForm() {
 
 export default function Contact() {
   const sectionRef = useRef<HTMLElement>(null);
+  const [phone, setPhone] = useState('+244 000 000 000');
+  const [email, setEmail] = useState('geral@omatapalo.ao');
+
+  useEffect(() => {
+    createClient()
+      .from('site_content')
+      .select('field,value')
+      .eq('page', 'contactos')
+      .in('field', ['phone', 'email'])
+      .then(({ data }) => {
+        data?.forEach(({ field, value }) => {
+          if (field === 'phone') setPhone(value);
+          if (field === 'email') setEmail(value);
+        });
+      });
+  }, []);
 
   useEffect(() => {
     import('gsap').then(({ gsap }) => {
@@ -93,8 +110,8 @@ export default function Contact() {
               {[
                 { icon: '📍', label: 'Sede Lubango', value: 'Bairro do Tchioco, Zona Industrial II, Lubango – Angola' },
                 { icon: '📍', label: 'Escritório Marginal Luanda', value: 'Avenida 4 de Fevereiro, Nº 93, Marginal de Luanda' },
-                { icon: '004-message', label: 'Email', value: 'geral@omatapalo.ao' },
-                { icon: 'telephone', label: 'Telefone', value: '+244 000 000 000' },
+                { icon: '004-message', label: 'Email', value: email },
+                { icon: 'telephone', label: 'Telefone', value: phone },
               ].map((c) => (
                 <div key={c.label} style={{ display: 'grid', gridTemplateColumns: '28px 1fr', gap: '14px', alignItems: 'start' }}>
                   {c.label === 'Email'
