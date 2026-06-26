@@ -64,34 +64,36 @@ export default function Mundo() {
         }} />
 
         {/* ── World map SVG background ── */}
-        <div className="mundo-map-bg" style={{ position: 'absolute', inset: 0, zIndex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="https://upload.wikimedia.org/wikipedia/commons/8/80/World_map_-_low_resolution.svg"
-            alt=""
-            style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.07, filter: 'invert(1)' }}
-          />
-          {/* vignette overlay */}
-          <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at center, transparent 30%, #1a396e 85%)' }} />
-        </div>
+        {/* map + pins share the same aspect-ratio box so coords stay aligned */}
+        <div className="mundo-map-bg" style={{
+          position: 'absolute', inset: 0, zIndex: 1,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+        }}>
+          {/* fixed-ratio container: world map is ~2:1 */}
+          <div style={{ position: 'relative', width: '100%', maxHeight: '100%', aspectRatio: '2/1', margin: 'auto' }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="https://upload.wikimedia.org/wikipedia/commons/8/80/World_map_-_low_resolution.svg"
+              alt=""
+              style={{ width: '100%', height: '100%', objectFit: 'fill', opacity: 0.07, filter: 'invert(1)', display: 'block' }}
+            />
 
-        {/* ── Pins on map ── */}
-        <div style={{ position: 'absolute', inset: 0, zIndex: 2 }}>
-          {COUNTRIES.map((c, i) => {
-            const visible = i < visibleCount;
-            const isHov   = hoveredPin === i;
-            return (
-              <div
-                key={c.code}
-                onMouseEnter={() => setHoveredPin(i)}
-                onMouseLeave={() => setHoveredPin(null)}
-                style={{
-                  position: 'absolute',
-                  left: `${c.x}%`,
-                  top:  `${c.y}%`,
-                  transform: 'translate(-50%, -50%)',
-                  zIndex: isHov ? 10 : 3,
-                }}
+            {/* ── Pins on map ── */}
+            {COUNTRIES.map((c, i) => {
+              const visible = i < visibleCount;
+              const isHov   = hoveredPin === i;
+              return (
+                <div
+                  key={c.code}
+                  onMouseEnter={() => setHoveredPin(i)}
+                  onMouseLeave={() => setHoveredPin(null)}
+                  style={{
+                    position: 'absolute',
+                    left: `${c.x}%`,
+                    top:  `${c.y}%`,
+                    transform: 'translate(-50%, -50%)',
+                    zIndex: isHov ? 10 : 3,
+                  }}
               >
                 {/* pulse ring */}
                 {visible && (
@@ -149,7 +151,11 @@ export default function Mundo() {
               </div>
             );
           })}
-        </div>
+
+            {/* vignette overlay */}
+            <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at center, transparent 30%, #1a396e 85%)', pointerEvents: 'none' }} />
+          </div>{/* end aspect-ratio container */}
+        </div>{/* end mundo-map-bg */}
 
         {/* ── UI overlay ── */}
         <div style={{ position: 'absolute', inset: 0, zIndex: 4, pointerEvents: 'none', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', padding: 'clamp(32px,5vw,64px)' }}>
