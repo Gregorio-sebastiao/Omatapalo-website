@@ -224,6 +224,20 @@ export default function SobreGrupo() {
 
           {/* ── RIGHT: horizontal image strip ── */}
           <div className="sgc-right" style={{ flex: 1, overflow: 'hidden', position: 'relative' }}>
+            {/* Seta → mais imagens */}
+            <div style={{
+              position: 'absolute', bottom: 28, right: 28, zIndex: 10,
+              width: 44, height: 44, borderRadius: '50%',
+              border: '1.5px solid rgba(255,255,255,0.35)',
+              background: 'rgba(26,57,110,0.55)',
+              backdropFilter: 'blur(6px)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              pointerEvents: 'none',
+            }}>
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                <path d="M4 9h10M10 5l4 4-4 4" stroke="#fff" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </div>
             <div ref={stripRef} className="sgc-strip" style={{ display: 'flex', gap: 'clamp(12px,1.5vw,20px)', height: '100%', paddingInline: 'clamp(20px,2.5vw,40px)', alignItems: 'center', willChange: 'transform' }}>
               {IMAGES.map((img, i) => (
                 <div key={i} style={{
