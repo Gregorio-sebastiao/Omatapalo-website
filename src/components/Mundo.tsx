@@ -16,7 +16,7 @@ const COUNTRIES = [
 export default function Mundo() {
   const wrapperRef  = useRef<HTMLDivElement>(null);
   const stickyRef   = useRef<HTMLDivElement>(null);
-  const [visibleCount, setVisibleCount] = useState(0);
+  const [visibleCount, setVisibleCount] = useState(COUNTRIES.length);
   const [hoveredPin, setHoveredPin]     = useState<number | null>(null);
 
   useEffect(() => {
@@ -32,16 +32,13 @@ export default function Mundo() {
             scrollTrigger: { trigger: wrapperRef.current, start: 'top 80%', once: true } }
         );
 
-        /* reveal pins one-by-one as user scrolls through the wrapper */
-        const total = COUNTRIES.length;
+        /* reveal all pins at once when section enters viewport */
         ScrollTrigger.create({
           trigger: wrapperRef.current,
-          start: 'top top',
-          end: 'bottom bottom',
-          scrub: false,
-          onUpdate(self) {
-            const count = Math.ceil(self.progress * (total + 1));
-            setVisibleCount(Math.min(count, total));
+          start: 'top 80%',
+          once: true,
+          onEnter() {
+            setVisibleCount(COUNTRIES.length);
           },
         });
 
@@ -56,9 +53,8 @@ export default function Mundo() {
   }, []);
 
   return (
-    /* tall wrapper gives scroll room for pin reveals */
-    <div ref={wrapperRef} id="mundo" style={{ height: `${100 + COUNTRIES.length * 18}vh`, position: 'relative' }}>
-      <div ref={stickyRef} style={{ position: 'sticky', top: 0, height: '100vh', overflow: 'hidden', background: '#1a396e' }}>
+    <div ref={wrapperRef} id="mundo" style={{ position: 'relative' }}>
+      <div ref={stickyRef} style={{ height: '100vh', overflow: 'hidden', background: '#1a396e' }}>
 
         {/* grid texture */}
         <div style={{
@@ -182,18 +178,9 @@ export default function Mundo() {
               ))}
             </div>
 
-            {/* scroll progress indicator */}
-            <div className="mundo-hdr-el" style={{ opacity: 0, display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 8 }}>
-              <div style={{ fontFamily: 'var(--font-label)', fontSize: 9, letterSpacing: '0.16em', textTransform: 'uppercase', color: '#fff' }}>
-                {visibleCount}/{COUNTRIES.length} países
-              </div>
-              <div style={{ width: 80, height: 1, background: 'rgba(255,255,255,0.3)', borderRadius: 1, overflow: 'hidden' }}>
-                <div style={{ height: '100%', background: '#fff', width: `${(visibleCount / COUNTRIES.length) * 100}%`, transition: 'width .3s ease' }} />
-              </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><rect width="10" height="10" fill="#fff" /></svg>
-                <span style={{ fontFamily: 'var(--font-label)', fontSize: 9, letterSpacing: '0.16em', textTransform: 'uppercase', color: '#fff' }}>Deslize para explorar</span>
-              </div>
+            <div className="mundo-hdr-el" style={{ opacity: 0, display: 'flex', alignItems: 'center', gap: 8 }}>
+              <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><rect width="10" height="10" fill="#fff" /></svg>
+              <span style={{ fontFamily: 'var(--font-label)', fontSize: 9, letterSpacing: '0.16em', textTransform: 'uppercase', color: '#fff' }}>{COUNTRIES.length} países</span>
             </div>
           </div>
         </div>
