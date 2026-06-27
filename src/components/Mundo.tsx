@@ -93,10 +93,10 @@ export default function Mundo() {
               >
                 {/* pulse ring */}
                 {visible && (
-                  <div style={{
+                  <div className="pin-ring" style={{
                     position: 'absolute', top: '50%', left: '50%',
                     transform: 'translate(-50%,-50%)',
-                    width: 36, height: 36, borderRadius: '50%',
+                    borderRadius: '50%',
                     border: `1px solid ${c.anchor ? 'rgba(255,255,255,0.5)' : 'rgba(255,255,255,0.25)'}`,
                     animation: 'pin-pulse 2.2s ease-out infinite',
                     animationDelay: `${i * 0.2}s`,
@@ -105,12 +105,7 @@ export default function Mundo() {
                 )}
 
                 {/* dot */}
-                <div style={{
-                  width: c.anchor ? 10 : 7,
-                  height: c.anchor ? 10 : 7,
-                  borderRadius: '50%',
-                  background: c.anchor ? '#fff' : 'rgba(255,255,255,0.65)',
-                  boxShadow: c.anchor ? '0 0 16px rgba(255,255,255,0.6)' : '0 0 8px rgba(255,255,255,0.3)',
+                <div className={c.anchor ? 'pin-dot pin-dot--anchor' : 'pin-dot'} style={{
                   transition: 'transform .3s ease, box-shadow .3s',
                   transform: visible ? (isHov ? 'scale(1.8)' : 'scale(1)') : 'scale(0)',
                   cursor: 'default',
@@ -203,6 +198,14 @@ export default function Mundo() {
         @keyframes tooltip-in {
           from { opacity: 0; transform: translateX(-50%) translateY(6px); }
           to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+        }
+        .pin-dot { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,0.65); box-shadow: 0 0 8px rgba(255,255,255,0.3); }
+        .pin-dot--anchor { width: 10px; height: 10px; background: #fff; box-shadow: 0 0 16px rgba(255,255,255,0.6); }
+        .pin-ring { width: 36px; height: 36px; }
+        @media (max-width: 768px) {
+          .pin-dot { width: 4px; height: 4px; }
+          .pin-dot--anchor { width: 6px; height: 6px; }
+          .pin-ring { width: 20px; height: 20px; }
         }
       `}</style>
     </div>
