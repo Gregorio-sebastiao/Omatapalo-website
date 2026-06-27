@@ -154,7 +154,7 @@ function TiltCard({ company, index }: { company: Company; index: number }) {
           {company.area}
         </span>
         {company.link && (
-          <span style={{ fontFamily: 'var(--font-label)', fontSize: 8, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#1a396e' }}>
+          <span style={{ position: 'absolute', bottom: 'clamp(14px,2vw,22px)', right: 'clamp(14px,2vw,22px)', fontFamily: 'var(--font-label)', fontSize: 8, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#1a396e' }}>
             Ver site →
           </span>
         )}
