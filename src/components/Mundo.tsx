@@ -126,13 +126,13 @@ export default function Mundo() {
                 }}>
                   <div style={{
                     fontFamily: 'var(--font-display)', fontWeight: 900,
-                    fontSize: 'clamp(0.6rem,0.85vw,0.85rem)',
+                    fontSize: 'clamp(0.35rem,0.55vw,0.55rem)',
                     textTransform: 'uppercase', letterSpacing: '-0.01em',
                     color: isHov ? '#fff' : 'rgba(255,255,255,0.75)',
                     transition: 'color .25s',
                   }}>{c.name}</div>
                   <div style={{
-                    fontFamily: 'var(--font-label)', fontSize: 8,
+                    fontFamily: 'var(--font-label)', fontSize: 5,
                     letterSpacing: '0.12em', textTransform: 'uppercase',
                     color: 'rgba(255,255,255,0.3)',
                     marginTop: 2,
@@ -203,9 +203,9 @@ export default function Mundo() {
         .pin-dot--anchor { width: 10px; height: 10px; background: #fff; box-shadow: 0 0 16px rgba(255,255,255,0.6); }
         .pin-ring { width: 36px; height: 36px; }
         @media (max-width: 768px) {
-          .pin-dot { width: 2px; height: 2px; }
-          .pin-dot--anchor { width: 3px; height: 3px; }
-          .pin-ring { width: 10px; height: 10px; }
+          .pin-dot { width: 1.5px; height: 1.5px; }
+          .pin-dot--anchor { width: 2px; height: 2px; }
+          .pin-ring { width: 7px; height: 7px; }
         }
       `}</style>
     </div>
