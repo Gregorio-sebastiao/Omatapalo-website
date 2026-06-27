@@ -1,30 +1,42 @@
+'use client';
+
+import { useEffect, useState, use } from 'react';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import { getCompany, ALL_COMPANIES } from '@/data/empresas';
-export const dynamic = 'force-dynamic';
+import { getCompany } from '@/data/empresas';
 
-export default async function EmpresaPage({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params;
+const SUPABASE_URL = 'https://rsbzgeqgfseyeogexkwk.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJzYnpnZXFnZnNleWVvZ2V4a3drIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIzNTkxOTYsImV4cCI6MjA5NzkzNTE5Nn0.QsQjaOPnUj5GyEk5Qb_l0vLFOZQ96hO_QrQI382wZaE';
+
+export default function EmpresaPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = use(params);
   const company = getCompany(slug);
-  if (!company) notFound();
 
-  const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://rsbzgeqgfseyeogexkwk.supabase.co';
-  const SUPABASE_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJzYnpnZXFnZnNleWVvZ2V4a3drIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIzNTkxOTYsImV4cCI6MjA5NzkzNTE5Nn0.QsQjaOPnUj5GyEk5Qb_l0vLFOZQ96hO_QrQI382wZaE';
-  let description = company.desc || '';
-  let gallery: string[] = [];
-  try {
-    const res = await fetch(
-      `${SUPABASE_URL}/rest/v1/empresas?select=full_description,gallery&slug=eq.${slug}`,
-      { headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` }, next: { revalidate: 60 } }
-    );
-    const rows = await res.json();
-    if (rows?.[0]) {
-      if (rows[0].full_description) description = rows[0].full_description;
-      if (rows[0].gallery) gallery = rows[0].gallery;
-    }
-  } catch {}
+  const [description, setDescription] = useState('');
+  const [gallery, setGallery] = useState<string[]>([]);
+  const [loaded, setLoaded] = useState(false);
 
-  const paragraphs = description.split('\n').filter((p: string) => p.trim());
+  useEffect(() => {
+    if (!company) return;
+    fetch(`${SUPABASE_URL}/rest/v1/empresas?select=full_description,gallery&slug=eq.${slug}`, {
+      headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` },
+    })
+      .then(r => r.json())
+      .then(rows => {
+        if (rows?.[0]) {
+          setDescription(rows[0].full_description || company.desc || '');
+          setGallery(rows[0].gallery || []);
+        } else {
+          setDescription(company.desc || '');
+        }
+      })
+      .catch(() => setDescription(company.desc || ''))
+      .finally(() => setLoaded(true));
+  }, [slug]);
+
+  if (!company) return notFound();
+
+  const paragraphs = description.split('\n').filter(p => p.trim());
 
   return (
     <main style={{ background: '#F6F8FB', minHeight: '100vh' }}>
@@ -73,14 +85,18 @@ export default async function EmpresaPage({ params }: { params: Promise<{ slug: 
               <span style={{ fontFamily: 'var(--font-label)', fontSize: 11, letterSpacing: '0.18em', textTransform: 'uppercase', color: '#1a396e' }}>Sobre a empresa</span>
             </div>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 20, marginBottom: 48 }}>
-              {paragraphs.length > 0
-                ? paragraphs.map((p: string, i: number) => (
-                    <p key={i} style={{ fontFamily: 'var(--font-sans)', fontSize: 'clamp(0.95rem,1.2vw,1.1rem)', color: '#334155', lineHeight: 1.8, margin: 0 }}>{p}</p>
-                  ))
-                : <p style={{ fontFamily: 'var(--font-sans)', fontSize: '1rem', color: '#94a3b8', margin: 0 }}>Informação em breve.</p>
-              }
-            </div>
+            {!loaded ? (
+              <div style={{ color: '#94a3b8', fontSize: 14 }}>A carregar...</div>
+            ) : (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 20, marginBottom: 48 }}>
+                {paragraphs.length > 0
+                  ? paragraphs.map((p, i) => (
+                      <p key={i} style={{ fontFamily: 'var(--font-sans)', fontSize: 'clamp(0.95rem,1.2vw,1.1rem)', color: '#334155', lineHeight: 1.8, margin: 0 }}>{p}</p>
+                    ))
+                  : <p style={{ fontFamily: 'var(--font-sans)', fontSize: '1rem', color: '#94a3b8', margin: 0 }}>Informação em breve.</p>
+                }
+              </div>
+            )}
 
             {/* Gallery */}
             {gallery.length > 0 && (
