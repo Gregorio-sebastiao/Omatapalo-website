@@ -100,7 +100,7 @@ const SCHEMAS: Record<string, PageSchema> = {
     fields: [
       { key: 'hero_img',      label: 'Imagem do Hero',         type: 'image',    default: '/COMPLEXO HOSPITALAR DOENÇAS CARDIO-PULMONARES CARDEAL D. ALEXANDRE DO NASCIMENTO (2).JPG' },
       { key: 'hero_eyebrow',  label: 'Eyebrow hero',           type: 'text',     default: 'Grupo Omatapalo · Press Kit' },
-      { key: 'hero_title',    label: 'Título hero',            type: 'text',     default: 'Identidade Visual' },
+      { key: 'hero_title',    label: 'Título hero',            type: 'text',     default: 'Press Kit' },
       { key: 'intro',         label: 'Texto introdutório',     type: 'textarea', default: 'Guia de identidade visual do Grupo Omatapalo.' },
     ],
   },

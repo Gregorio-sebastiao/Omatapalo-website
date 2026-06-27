@@ -58,13 +58,13 @@ export default function IdentidadeVisual() {
         {/* Header */}
         <div style={{ marginBottom: 'clamp(32px,5vw,56px)' }}>
           <h2 style={{ fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 'clamp(1.8rem,3.5vw,3rem)', color: '#0F1A2E', letterSpacing: '-0.02em', margin: '0 0 20px' }}>
-            Identidade Visual
+            Press Kit
           </h2>
           <p style={{ fontSize: 'clamp(14px,1.1vw,16px)', color: '#374151', lineHeight: 1.8, maxWidth: 860, margin: '0 0 12px' }}>
             Para assegurar a correcta aplicação do nosso logotipo é essencial baixá-lo nas versões com o perfil de cores adequado a cada tipo de trabalho. Seja para impressões de alta qualidade ou para uso digital, o uso correcto das cores garante que a nossa marca seja representada de maneira uniforme e profissional.
           </p>
           <p style={{ fontSize: 'clamp(14px,1.1vw,16px)', color: '#1a396e', lineHeight: 1.8, maxWidth: 860, margin: 0, fontWeight: 600 }}>
-            Faça o download dos arquivos nas versões correcta e contribua para Manter a integridade da nossa Identidade Visual.
+            Faça o download dos arquivos nas versões correcta e contribua para Manter a integridade da nossa Press Kit.
           </p>
         </div>
 

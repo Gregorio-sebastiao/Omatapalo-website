@@ -9,9 +9,9 @@ export default function IdentidadeVisualPage() {
       <Nav />
       <main>
         <PageHero page="identidade-visual"
-          title="Identidade Visual"
-          eyebrow="Grupo Omatapalo Â· Marca"
-          outlineWord="Visual"
+          title="Press Kit"
+          eyebrow="Grupo Omatapalo · Marca"
+          outlineWord="Kit"
           imgSrc="/COMPLEXO HOSPITALAR DOENÃ‡AS CARDIO-PULMONARES CARDEAL D. ALEXANDRE DO NASCIMENTO (2).JPG"
           imgOpacity={0.3}
           position="center"
