@@ -46,36 +46,23 @@ const SECTORS: Sector[] = [
   },
 ];
 
-/* ── 3D tilt card ──────────────────────────────────────────── */
+/* ── Company card ──────────────────────────────────────────── */
 function TiltCard({ company, index }: { company: Company; index: number }) {
-  const cardRef  = useRef<HTMLDivElement>(null);
-  const glowRef  = useRef<HTMLDivElement>(null);
+  const imgRef = useRef<HTMLImageElement>(null);
   const [hovered, setHovered] = useState(false);
 
-  const onMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
-    const el = cardRef.current;
-    const glow = glowRef.current;
-    if (!el) return;
-    const rect = el.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    const cx = rect.width  / 2;
-    const cy = rect.height / 2;
-    const rotX =  ((y - cy) / cy) * -12;   // ±12°
-    const rotY =  ((x - cx) / cx) *  12;
-    el.style.transform = `perspective(800px) rotateX(${rotX}deg) rotateY(${rotY}deg) translateZ(12px)`;
-    if (glow) {
-      glow.style.background = `radial-gradient(circle at ${x}px ${y}px, rgba(26,57,110,0.12) 0%, transparent 70%)`;
-    }
+  const onEnter = useCallback(() => {
+    setHovered(true);
+    import('gsap').then(({ gsap }) => {
+      if (imgRef.current) gsap.to(imgRef.current, { scale: 1.06, duration: 0.6, ease: 'power2.out' });
+    });
   }, []);
 
   const onLeave = useCallback(() => {
-    const el = cardRef.current;
-    if (!el) return;
-    import('gsap').then(({ gsap }) => {
-      gsap.to(el, { rotateX: 0, rotateY: 0, translateZ: 0, duration: 0.6, ease: 'elastic.out(1, 0.5)', overwrite: 'auto' });
-    });
     setHovered(false);
+    import('gsap').then(({ gsap }) => {
+      if (imgRef.current) gsap.to(imgRef.current, { scale: 1, duration: 0.7, ease: 'power2.out' });
+    });
   }, []);
 
   const Tag = company.link ? 'a' : 'div';
@@ -84,80 +71,59 @@ function TiltCard({ company, index }: { company: Company; index: number }) {
   return (
     <Tag
       {...(linkProps as any)}
-      ref={cardRef as any}
       className="neg-card"
-      onMouseMove={onMove}
-      onMouseEnter={() => setHovered(true)}
+      onMouseEnter={onEnter}
       onMouseLeave={onLeave}
       style={{
-        position: 'relative',
         background: '#fff',
         border: `1.5px solid ${hovered ? '#1a396e' : '#E8EDF5'}`,
         borderRadius: 6,
-        padding: 'clamp(18px,2vw,26px)',
-        display: 'flex', flexDirection: 'column', gap: 14, minHeight: 260,
+        overflow: 'hidden',
+        display: 'flex', flexDirection: 'column',
         transition: 'border-color .25s, box-shadow .3s',
-        boxShadow: hovered
-          ? '0 24px 56px rgba(26,57,110,0.18), 0 4px 16px rgba(26,57,110,0.10)'
-          : '0 2px 8px rgba(26,57,110,0.04)',
+        boxShadow: hovered ? '0 20px 56px rgba(26,57,110,0.14)' : '0 2px 8px rgba(26,57,110,0.04)',
         cursor: company.link ? 'pointer' : 'default',
-        willChange: 'transform',
-        transformStyle: 'preserve-3d',
         textDecoration: 'none',
       }}
     >
-      {/* glow overlay */}
-      <div ref={glowRef} style={{ position: 'absolute', inset: 0, borderRadius: 6, pointerEvents: 'none', transition: 'background .1s' }} />
-
-      {/* floating index chip */}
-      <div style={{
-        position: 'absolute', top: 14, right: 14,
-        fontFamily: 'var(--font-label)', fontSize: 9, letterSpacing: '0.16em',
-        color: 'rgba(26,57,110,0.2)', userSelect: 'none',
-        transform: 'translateZ(8px)',
-      }}>
-        {String(index + 1).padStart(2, '0')}
+      {/* Image area — navy bg with centred logo */}
+      <div style={{ position: 'relative', aspectRatio: '16/9', overflow: 'hidden', background: '#0d1d35', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          ref={imgRef}
+          src={company.logo ?? ''}
+          alt={company.name}
+          style={{ maxHeight: '55%', maxWidth: '65%', objectFit: 'contain', filter: 'brightness(0) invert(1)', opacity: 0.9 }}
+          onError={e => { e.currentTarget.style.display = 'none'; }}
+        />
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, transparent 40%, rgba(7,16,31,0.45) 100%)' }} />
+        <div style={{ position: 'absolute', top: 12, right: 12, fontFamily: 'var(--font-label)', fontSize: 9, letterSpacing: '0.16em', color: 'rgba(255,255,255,0.5)' }}>
+          {String(index + 1).padStart(2, '0')}
+        </div>
       </div>
 
-      {/* Logo */}
-      <div style={{ height: 64, display: 'flex', alignItems: 'center', transform: 'translateZ(16px)' }}>
-        {company.logo ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img src={company.logo} alt={company.name}
-            style={{ maxHeight: 60, maxWidth: 150, objectFit: 'contain', objectPosition: 'left center',
-              transition: 'transform .3s', transform: hovered ? 'scale(1.06)' : 'scale(1)' }}
-            onError={e => { e.currentTarget.style.display = 'none'; }} />
-        ) : (
-          <span style={{ fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 15, color: '#1a396e' }}>{company.name}</span>
-        )}
-      </div>
+      {/* Info */}
+      <div style={{ padding: 'clamp(14px,1.6vw,20px)', flex: 1, display: 'flex', flexDirection: 'column', gap: 8 }}>
+        <div style={{
+          fontFamily: 'var(--font-display)', fontWeight: 900,
+          fontSize: 'clamp(0.8rem,1vw,0.95rem)', color: '#0F1A2E',
+          textTransform: 'uppercase', letterSpacing: '-0.01em', lineHeight: 1.2,
+          transform: hovered ? 'translateY(-2px)' : 'translateY(0)',
+          transition: 'transform 0.3s ease',
+        }}>{company.name}</div>
 
-      {/* Name */}
-      <div style={{ fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 'clamp(0.8rem,1vw,0.95rem)', color: '#0F1A2E', letterSpacing: '-0.01em', lineHeight: 1.2, transform: 'translateZ(12px)' }}>
-        {company.name}
-      </div>
-
-      {/* Desc — slides in on hover */}
-      <div style={{
-        overflow: 'hidden',
-        maxHeight: hovered ? '80px' : '0px',
-        opacity: hovered ? 1 : 0,
-        transition: 'max-height 0.35s ease, opacity 0.25s ease',
-        transform: 'translateZ(8px)',
-      }}>
-        <p style={{ fontFamily: 'var(--font-sans)', fontSize: 12, color: '#64748b', lineHeight: 1.6, margin: 0 }}>{company.desc}</p>
-      </div>
-
-      {/* Footer */}
-      <div style={{ marginTop: 'auto', paddingTop: 20, borderTop: '1px solid #F1F5F9', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', transform: 'translateZ(8px)' }}>
-        <span style={{ fontFamily: 'var(--font-label)', fontSize: 9, letterSpacing: '0.12em', textTransform: 'uppercase', color: hovered ? '#1a396e' : '#94a3b8', transition: 'color .25s' }}>
-          {company.area}
-        </span>
-        {company.link && (
-          <span style={{ position: 'absolute', bottom: 'clamp(14px,2vw,22px)', right: 'clamp(14px,2vw,22px)', fontFamily: 'var(--font-label)', fontSize: 8, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#1a396e' }}>
-            Ver site →
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 'auto' }}>
+          <span style={{ fontFamily: 'var(--font-label)', fontSize: 9, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#94a3b8' }}>
+            {company.area}
           </span>
-        )}
+          {company.link && (
+            <span style={{ marginLeft: 'auto', fontFamily: 'var(--font-label)', fontSize: 8, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#1a396e' }}>
+              Ver site →
+            </span>
+          )}
+        </div>
+
+        <div style={{ height: 2, width: hovered ? 28 : 0, background: '#1a396e', transition: 'width 0.35s ease' }} />
       </div>
     </Tag>
   );
