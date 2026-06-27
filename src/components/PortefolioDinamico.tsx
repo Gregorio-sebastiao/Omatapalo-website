@@ -236,7 +236,7 @@ export default function PortefolioDinamico() {
         duration: 0.5, ease: 'power3.out',
       });
     });
-  }, [active]);
+  }, [active, PROJECTS]);
 
   const activeCat = CATEGORIES.find(c => c.id === active)!;
 
