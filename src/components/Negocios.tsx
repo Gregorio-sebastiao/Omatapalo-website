@@ -308,8 +308,8 @@ export default function Negocios() {
               ref={gridRef}
               style={{
                 display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fill, minmax(clamp(160px,20%,220px), 1fr))',
-                gap: 'clamp(10px,1.4vw,18px)',
+                gridTemplateColumns: 'repeat(2, 1fr)',
+                gap: 'clamp(16px,2vw,28px)',
                 position: 'relative', zIndex: 1,
                 transformStyle: 'preserve-3d',
               }}
