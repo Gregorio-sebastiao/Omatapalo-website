@@ -192,7 +192,8 @@ export default function Nav() {
         aria-hidden={!open}
       >
         <div className="flex items-center justify-between mb-12">
-          <span className="text-white font-black uppercase" style={{ fontFamily: 'var(--font-display)', fontSize: '20px', letterSpacing: '-0.02em' }}>OMATAPALO</span>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={logoUrl} alt="Omatapalo" style={{ width: 130, height: 'auto', filter: 'brightness(0) invert(1)' }} />
           <button onClick={() => setOpen(false)} aria-label="Fechar" className="text-white p-2">
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <line x1="18" y1="6" x2="6" y2="18" />
