@@ -1,11 +1,7 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { getCompany, ALL_COMPANIES } from '@/data/empresas';
-export async function generateStaticParams() {
-  return ALL_COMPANIES.map(c => ({ slug: c.slug }));
-}
-
-export const revalidate = 60;
+export const dynamic = 'force-dynamic';
 
 export default async function EmpresaPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
