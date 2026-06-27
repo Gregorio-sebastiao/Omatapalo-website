@@ -206,15 +206,12 @@ export default function Nav() {
               key={p.t}
               href={p.href}
               onClick={() => setOpen(false)}
-              className="flex items-center justify-between py-3 border-b border-white/10 hover:pl-2.5 transition-all duration-200 group"
+              className="flex items-center py-3 border-b border-white/10 hover:pl-2.5 transition-all duration-200 group"
             >
               <span
                 className="font-black uppercase text-white group-hover:text-[var(--navy-200)] transition-colors"
-                style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(22px,4.4vw,34px)', letterSpacing: '-0.02em' }}>
+                style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(16px,2.8vw,22px)', letterSpacing: '-0.01em' }}>
                 {p.t}
-              </span>
-              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '12px', color: 'var(--navy-400)' }}>
-                {String(i).padStart(2, '0')}
               </span>
             </a>
           ))}
