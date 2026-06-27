@@ -73,9 +73,11 @@ function TiltCard({ company, index }: { company: Company; index: number }) {
           <span style={{ fontFamily: 'var(--font-label)', fontSize: 9, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#94a3b8' }}>
             {company.area}
           </span>
-          <span style={{ marginLeft: 'auto', fontFamily: 'var(--font-label)', fontSize: 8, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#1a396e' }}>
-            Ver mais →
-          </span>
+          {company.link && (
+            <span style={{ marginLeft: 'auto', fontFamily: 'var(--font-label)', fontSize: 8, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#1a396e' }}>
+              Visitar site →
+            </span>
+          )}
         </div>
 
         <div style={{ height: 2, width: hovered ? 28 : 0, background: '#1a396e', transition: 'width 0.35s ease' }} />
