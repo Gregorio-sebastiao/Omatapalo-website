@@ -90,7 +90,6 @@ export default function Footer() {
 
           {cols.map((c) => (
             <div key={c.h}>
-              <h4 style={{ fontFamily: 'var(--font-label)', fontSize: '11px', letterSpacing: '0.16em', textTransform: 'uppercase', color: '#fff', marginBottom: 'var(--space-4)' }}>{c.h}</h4>
               <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '11px' }}>
                 {c.links.map((l) => (
                   <li key={l.t}>
