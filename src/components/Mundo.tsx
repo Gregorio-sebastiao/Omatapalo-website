@@ -62,20 +62,19 @@ export default function Mundo() {
           backgroundSize: '60px 60px', zIndex: 0,
         }} />
 
-        {/* ── World map SVG background ── */}
+        {/* ── World map + Pins (same coordinate system) ── */}
         <div className="mundo-map-bg" style={{ position: 'absolute', inset: 0, zIndex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="https://upload.wikimedia.org/wikipedia/commons/8/80/World_map_-_low_resolution.svg"
-            alt=""
-            style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.07, filter: 'invert(1)' }}
-          />
-          {/* vignette overlay */}
-          <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at center, transparent 30%, #1a396e 85%)' }} />
-        </div>
+          <div style={{ position: 'relative', width: '100%', maxWidth: '177.8vh', aspectRatio: '16/9', margin: '0 auto' }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="https://upload.wikimedia.org/wikipedia/commons/8/80/World_map_-_low_resolution.svg"
+              alt=""
+              style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'fill', opacity: 0.07, filter: 'invert(1)' }}
+            />
+            {/* vignette overlay */}
+            <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at center, transparent 30%, #1a396e 85%)' }} />
 
         {/* ── Pins on map ── */}
-        <div style={{ position: 'absolute', inset: 0, zIndex: 2 }}>
           {COUNTRIES.map((c, i) => {
             const visible = i < visibleCount;
             const isHov   = hoveredPin === i;
@@ -148,7 +147,8 @@ export default function Mundo() {
               </div>
             );
           })}
-        </div>
+          </div>{/* end map+pins wrapper */}
+        </div>{/* end mundo-map-bg */}
 
         {/* ── UI overlay ── */}
         <div style={{ position: 'absolute', inset: 0, zIndex: 4, pointerEvents: 'none', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', padding: 'clamp(32px,5vw,64px)' }}>
