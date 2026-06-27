@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { getCompany, ALL_COMPANIES } from '@/data/empresas';
-import { createClient } from '@/lib/supabase/server';
+import { createAdminClient } from '@/lib/supabase/server';
 
 export async function generateStaticParams() {
   return ALL_COMPANIES.map(c => ({ slug: c.slug }));
@@ -14,7 +14,7 @@ export default async function EmpresaPage({ params }: { params: Promise<{ slug: 
   const company = getCompany(slug);
   if (!company) notFound();
 
-  const supabase = await createClient();
+  const supabase = await createAdminClient();
   const { data: extra } = await supabase
     .from('empresas')
     .select('full_description, gallery')
