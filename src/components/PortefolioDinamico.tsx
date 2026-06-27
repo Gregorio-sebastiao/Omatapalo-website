@@ -331,7 +331,7 @@ export default function PortefolioDinamico() {
               ref={gridRef}
               style={{
                 display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fill, minmax(clamp(300px,44%,520px), 1fr))',
+                gridTemplateColumns: 'repeat(auto-fill, minmax(clamp(220px,28%,380px), 1fr))',
                 gap: 'clamp(16px,2vw,28px)',
                 position: 'relative', zIndex: 1,
               }}
