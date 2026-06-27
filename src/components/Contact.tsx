@@ -4,17 +4,8 @@ import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import { createClient } from '@/lib/supabase/client';
 
-const DEPARTMENTS = [
-  { label: 'Geral',                    email: 'geral@omatapalo.ao' },
-  { label: 'Recursos Humanos',         email: 'rh@omatapalo.ao' },
-  { label: 'Marketing e Comunicação',  email: 'marketing@omatapalo.ao' },
-  { label: 'Responsabilidade Social',  email: 'rsc@omatapalo.ao' },
-  { label: 'Comercial',                email: 'comercial@omatapalo.ao' },
-];
-
 function ContactForm() {
   const [sent, setSent] = useState(false);
-  const [dept, setDept] = useState(DEPARTMENTS[0]);
 
   if (sent) {
     return (
@@ -32,21 +23,6 @@ function ContactForm() {
       style={{ background: '#fff', borderRadius: 'var(--radius-lg)', padding: 'var(--space-7)', boxShadow: 'var(--shadow-xl)', display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}
     >
       <h3 style={{ fontFamily: 'var(--font-display)', fontWeight: 900, textTransform: 'uppercase', fontSize: 'var(--text-h3)', color: 'var(--text-strong)', letterSpacing: '-0.01em' }}>Fale connosco</h3>
-      <div className="field">
-        <label className="field__label">Departamento <span style={{ color: 'var(--navy-400)' }}>*</span></label>
-        <div style={{ position: 'relative' }}>
-          <select
-            className="field__input"
-            required
-            value={dept.label}
-            onChange={(e) => setDept(DEPARTMENTS.find(d => d.label === e.target.value)!)}
-            style={{ appearance: 'none', paddingRight: '28px', cursor: 'pointer' }}
-          >
-            {DEPARTMENTS.map(d => <option key={d.label} value={d.label}>{d.label}</option>)}
-          </select>
-          <svg style={{ position: 'absolute', right: '6px', top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none', color: 'var(--navy-500)' }} width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="6 9 12 15 18 9"/></svg>
-        </div>
-      </div>
       <div className="field"><label className="field__label">Nome</label><input className="field__input" required placeholder="O seu nome" /></div>
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-4)' }} className="form-row">
         <div className="field"><label className="field__label">Email</label><input className="field__input" type="email" required placeholder="email@empresa.ao" /></div>
@@ -104,7 +80,7 @@ export default function Contact() {
               Construímos<span style={{ color: 'transparent', WebkitTextStroke: '2px rgba(26,57,110,0.22)', display: 'block' }}>O Seu Futuro</span>
             </h2>
             <p style={{ color: '#374151', fontSize: 'var(--text-lg)', lineHeight: 1.6, maxWidth: '46ch', marginTop: 'var(--space-5)' }}>
-              Para contactos com a OMATAPALO utilize, por favor, o formulário escolhendo o departamento que deseja contactar:
+              Para contactos com o Grupo OMATAPALO utilize, por favor, o formulário ao lado. A nossa equipa responderá com a maior brevidade possível.
             </p>
             <div style={{ marginTop: 'var(--space-7)', display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
               {[
