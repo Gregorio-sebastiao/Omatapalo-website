@@ -23,6 +23,7 @@ export default function MediaPicker({ onSelect, onClose }: Props) {
   const [search, setSearch]     = useState('');
   const [uploading, setUploading] = useState(false);
   const [dragOver, setDragOver] = useState(false);
+  const [uploadErr, setUploadErr] = useState('');
   const fileRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => { load(); }, []);
@@ -36,12 +37,16 @@ export default function MediaPicker({ onSelect, onClose }: Props) {
     const list = Array.from(files).filter(f => f.type.startsWith('image/'));
     if (!list.length) return;
     setUploading(true);
+    setUploadErr('');
     for (const file of list) {
-      const path = `uploads/${Date.now()}-${file.name}`;
-      const { data, error } = await supabase.storage.from('cms-media').upload(path, file, { upsert: true });
-      if (!error && data) {
+      const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
+      const path = `uploads/${Date.now()}-${safeName}`;
+      const { data, error: storageErr } = await supabase.storage.from('cms-media').upload(path, file, { upsert: true });
+      if (storageErr) { setUploadErr(`Erro storage: ${storageErr.message}`); setUploading(false); return; }
+      if (data) {
         const { data: { publicUrl } } = supabase.storage.from('cms-media').getPublicUrl(data.path);
-        await supabase.from('media').insert({ name: file.name, url: publicUrl, mime_type: file.type, size: file.size });
+        const { error: dbErr } = await supabase.from('media').insert({ name: file.name, url: publicUrl, mime_type: file.type, size: file.size });
+        if (dbErr) { setUploadErr(`Erro base de dados: ${dbErr.message}`); setUploading(false); return; }
       }
     }
     setUploading(false);
@@ -149,6 +154,7 @@ export default function MediaPicker({ onSelect, onClose }: Props) {
                 </div>
               </div>
               <input ref={fileRef} type="file" multiple accept="image/*" style={{ display: 'none' }} onChange={e => { if (e.target.files) upload(e.target.files); }} />
+              {uploadErr && <div style={{ background: '#fee2e2', border: '1px solid #fca5a5', borderRadius: 6, padding: '10px 16px', fontSize: 13, color: '#dc2626', fontWeight: 600, maxWidth: 560, width: '100%' }}>{uploadErr}</div>}
               <div style={{ fontSize: 12, color: '#94a3b8' }}>Formatos suportados: JPG, PNG, WebP, GIF · Sem limite de tamanho</div>
             </div>
           )}
