@@ -9,6 +9,7 @@ export default function MediaPage() {
   const [media, setMedia] = useState<MediaItem[]>([]);
   const [uploading, setUploading] = useState(false);
   const [copied, setCopied] = useState('');
+  const [uploadError, setUploadError] = useState('');
 
   useEffect(() => { load(); }, []);
 
@@ -20,12 +21,15 @@ export default function MediaPage() {
   async function upload(e: React.ChangeEvent<HTMLInputElement>) {
     const files = Array.from(e.target.files ?? []); if (!files.length) return;
     setUploading(true);
+    setUploadError('');
     for (const file of files) {
-      const path = `uploads/${Date.now()}-${file.name}`;
-      const { data, error } = await supabase.storage.from('cms-media').upload(path, file, { upsert: true });
-      if (!error && data) {
+      const path = `uploads/${Date.now()}-${file.name.replace(/[^a-zA-Z0-9._-]/g, '_')}`;
+      const { data, error: storageErr } = await supabase.storage.from('cms-media').upload(path, file, { upsert: true });
+      if (storageErr) { setUploadError(`Erro storage: ${storageErr.message}`); setUploading(false); return; }
+      if (data) {
         const { data: { publicUrl } } = supabase.storage.from('cms-media').getPublicUrl(data.path);
-        await supabase.from('media').insert({ name: file.name, url: publicUrl, mime_type: file.type, size: file.size });
+        const { error: dbErr } = await supabase.from('media').insert({ name: file.name, url: publicUrl, mime_type: file.type, size: file.size });
+        if (dbErr) { setUploadError(`Erro base de dados: ${dbErr.message}`); setUploading(false); return; }
       }
     }
     setUploading(false);
@@ -63,6 +67,12 @@ export default function MediaPage() {
           <input type="file" multiple accept="image/*,video/*,.pdf" onChange={upload} style={{ display: 'none' }} />
         </label>
       </div>
+
+      {uploadError && (
+        <div style={{ background: '#fee2e2', border: '1px solid #fca5a5', borderRadius: 6, padding: '10px 16px', marginBottom: 20, fontSize: 13, color: '#dc2626', fontWeight: 600 }}>
+          {uploadError}
+        </div>
+      )}
 
       {media.length === 0 && !uploading && (
         <div style={{ textAlign: 'center', padding: 80, color: '#94a3b8', fontSize: 14 }}>
