@@ -69,7 +69,7 @@ export default function IdentidadeVisual() {
         </div>
 
         {/* Grid */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 20 }}>
+        <div className="iv-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 20 }}>
           {assets.map(asset => (
             <div
               key={asset.id}
@@ -104,6 +104,10 @@ export default function IdentidadeVisual() {
         </div>
 
       </div>
+      <style>{`
+        @media (max-width: 760px) { .iv-grid { grid-template-columns: 1fr !important; } }
+        @media (min-width: 761px) and (max-width: 1024px) { .iv-grid { grid-template-columns: repeat(2, 1fr) !important; } }
+      `}</style>
     </section>
   );
 }
