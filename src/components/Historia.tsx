@@ -35,10 +35,16 @@ export default function Historia() {
   const [index, setIndex]   = useState(0);
   const [active, setActive] = useState(0);
   const [eventos, setEventos] = useState<Evento[]>(DEFAULT_eventos);
+  const [palavra1, setPalavra1] = useState('Marcos');
+  const [palavra2, setPalavra2] = useState('Históricos');
 
   useEffect(() => {
-    createClient().from('site_settings').select('value').eq('key', 'historia_eventos').single().then(({ data }) => {
+    const db = createClient();
+    db.from('site_settings').select('value').eq('key', 'historia_eventos').single().then(({ data }) => {
       if (data?.value) { try { setEventos(JSON.parse(data.value)); } catch {} }
+    });
+    db.from('site_settings').select('value').eq('key', 'historia_titulo').single().then(({ data }) => {
+      if (data?.value) { try { const t = JSON.parse(data.value); if (t.p1) setPalavra1(t.p1); if (t.p2) setPalavra2(t.p2); } catch {} }
     });
   }, []);
 
@@ -88,8 +94,8 @@ export default function Historia() {
               <span style={{ fontFamily: 'var(--font-label)', fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#1a396e' }}>História</span>
             </div>
             <h2 style={{ margin: 0, fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 'clamp(2rem,4vw,4.5rem)', color: '#0F1A2E', letterSpacing: '-0.035em', lineHeight: 0.92, textTransform: 'uppercase' }}>
-              {eventos.length} Marcos<br />
-              <span style={{ color: 'transparent', WebkitTextStroke: '1.5px rgba(26,57,110,0.22)' }}>Históricos</span>
+              {eventos.length} {palavra1}<br />
+              <span style={{ color: 'transparent', WebkitTextStroke: '1.5px rgba(26,57,110,0.22)' }}>{palavra2}</span>
             </h2>
           </div>
 

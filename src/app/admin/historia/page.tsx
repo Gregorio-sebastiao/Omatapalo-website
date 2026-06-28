@@ -30,12 +30,18 @@ const inp = { padding: '9px 12px', border: '1.5px solid #e2e8f0', borderRadius: 
 
 export default function HistoriaAdminPage() {
   const [eventos, setEventos] = useState<Evento[]>(DEFAULT_EVENTOS);
+  const [palavra1, setPalavra1] = useState('Marcos');
+  const [palavra2, setPalavra2] = useState('Históricos');
   const [saving, setSaving]   = useState(false);
   const [msg, setMsg]         = useState('');
 
   useEffect(() => {
-    createClient().from('site_settings').select('value').eq('key', 'historia_eventos').single().then(({ data }) => {
+    const db = createClient();
+    db.from('site_settings').select('value').eq('key', 'historia_eventos').single().then(({ data }) => {
       if (data?.value) { try { setEventos(JSON.parse(data.value)); } catch {} }
+    });
+    db.from('site_settings').select('value').eq('key', 'historia_titulo').single().then(({ data }) => {
+      if (data?.value) { try { const t = JSON.parse(data.value); if (t.p1) setPalavra1(t.p1); if (t.p2) setPalavra2(t.p2); } catch {} }
     });
   }, []);
 
@@ -43,9 +49,13 @@ export default function HistoriaAdminPage() {
 
   async function save() {
     setSaving(true);
-    const { error } = await createClient().from('site_settings').upsert({ key: 'historia_eventos', value: JSON.stringify(eventos) });
+    const db = createClient();
+    const [r1, r2] = await Promise.all([
+      db.from('site_settings').upsert({ key: 'historia_eventos', value: JSON.stringify(eventos) }),
+      db.from('site_settings').upsert({ key: 'historia_titulo', value: JSON.stringify({ p1: palavra1, p2: palavra2 }) }),
+    ]);
     setSaving(false);
-    flash(error ? '❌ Erro: ' + error.message : '✅ História guardada!');
+    flash(r1.error || r2.error ? '❌ Erro ao guardar' : '✅ História guardada!');
   }
 
   function update(i: number, field: keyof Evento, val: string) {
@@ -87,6 +97,22 @@ export default function HistoriaAdminPage() {
           {msg}
         </div>
       )}
+
+      {/* Título da secção */}
+      <div style={{ background: '#fff', border: '1px solid #e2e8f0', borderRadius: 8, padding: 20, marginBottom: 24 }}>
+        <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#94a3b8', marginBottom: 14 }}>Título da secção</div>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+          <div>
+            <label style={{ fontSize: 12, fontWeight: 600, color: '#475569', display: 'block', marginBottom: 6 }}>Palavra 1 (ex: Marcos)</label>
+            <input value={palavra1} onChange={e => setPalavra1(e.target.value)} style={inp} placeholder="Marcos" />
+          </div>
+          <div>
+            <label style={{ fontSize: 12, fontWeight: 600, color: '#475569', display: 'block', marginBottom: 6 }}>Palavra 2 — contorno (ex: Históricos)</label>
+            <input value={palavra2} onChange={e => setPalavra2(e.target.value)} style={inp} placeholder="Históricos" />
+          </div>
+        </div>
+        <p style={{ margin: '10px 0 0', fontSize: 12, color: '#94a3b8' }}>O número é automático ({eventos.length} marcos). Aparece como: <strong>{eventos.length} {palavra1} / {palavra2}</strong></p>
+      </div>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 20 }}>
         {eventos.map((e, i) => (
