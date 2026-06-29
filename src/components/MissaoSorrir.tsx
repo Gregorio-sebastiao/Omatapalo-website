@@ -142,7 +142,7 @@ export default function MissaoSorrir() {
   }, []);
 
   return (
-    <section id="missao" ref={sectionRef} style={{ background: '#07101f', overflow: 'hidden', position: 'relative' }}>
+    <section id="missao" ref={sectionRef} style={{ background: '#07101f', overflow: 'hidden', position: 'relative', maxWidth: '100vw' }}>
 
       {/* ── HERO ─────────────────────────────────────────── */}
       <div className="ms-hero wrap" style={{ paddingTop: 'clamp(80px,10vw,140px)', paddingBottom: 'clamp(56px,7vw,80px)' }}>
@@ -154,7 +154,7 @@ export default function MissaoSorrir() {
         </div>
 
         {/* Title + quote — two columns */}
-        <div className="ms-lead ms-grid2" style={{ opacity: 0, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'clamp(32px,6vw,96px)', alignItems: 'flex-start' }}>
+        <div className="ms-lead ms-grid2" style={{ opacity: 0, display: 'grid', gap: 'clamp(32px,6vw,96px)', alignItems: 'flex-start' }}>
           <h2 style={{
             fontFamily: 'var(--font-display)', fontWeight: 900, textTransform: 'uppercase',
             fontSize: 'clamp(2rem,4vw,4.5rem)', lineHeight: 0.95,
@@ -244,7 +244,7 @@ export default function MissaoSorrir() {
       {/* ── ODS INTRO ───────────────────────────────────── */}
       <div style={{ borderTop: '1px solid rgba(255,255,255,0.08)', background: '#07101f' }}>
         <div className="wrap" style={{ paddingTop: 'clamp(64px,8vw,96px)', paddingBottom: 'clamp(64px,8vw,96px)' }}>
-          <div className="ms-grid2" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'clamp(32px,6vw,96px)', alignItems: 'center' }}>
+          <div className="ms-grid2" style={{ display: 'grid', gap: 'clamp(32px,6vw,96px)', alignItems: 'center' }}>
             <div>
               <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 20 }}>
                 <svg width="10" height="10" viewBox="0 0 10 10" fill="none" style={{ flexShrink: 0 }}><rect width="10" height="10" fill="#1a396e" /></svg>
@@ -304,8 +304,9 @@ export default function MissaoSorrir() {
       )}
 
       <style>{`
+        .ms-grid2 { grid-template-columns: 1fr 1fr; }
         @media (max-width: 880px) {
-          .ms-grid2 { grid-template-columns: 1fr !important; }
+          .ms-grid2 { grid-template-columns: 1fr; }
           .ms-cards-section .wrap > div:last-child { grid-template-columns: 1fr !important; }
           .ms-split > .wrap { grid-template-columns: 1fr !important; }
         }
