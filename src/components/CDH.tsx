@@ -218,7 +218,7 @@ export default function CDH() {
 
       {/* ── Redes Sociais ── */}
       {(cfg.facebook_url || cfg.instagram_url) && (
-        <div style={{ background: '#07101f', borderTop: '1px solid rgba(255,255,255,0.06)', padding: 'clamp(36px,5vw,56px) 0' }}>
+        <div style={{ background: '#0a1a0a', borderTop: '1px solid rgba(255,255,255,0.06)', padding: 'clamp(36px,5vw,56px) 0' }}>
           <div className="wrap" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 24, textAlign: 'center' }}>
             <div>
               <div style={{ fontFamily: 'var(--font-label)', fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', marginBottom: 8 }}>Segue o CDH</div>
