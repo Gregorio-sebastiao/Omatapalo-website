@@ -197,7 +197,7 @@ export default function CDH() {
                 <div style={{ width: 28, height: 3, background: '#C8102E' }} />
                 <span style={{ fontFamily: 'var(--font-label)', fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.5)' }}>CDH · Vídeo oficial</span>
               </div>
-              <p style={{ margin: '0 0 clamp(24px,3vw,36px)', fontFamily: 'var(--font-sans)', fontSize: 'clamp(13px,1vw,15px)', color: 'rgba(255,255,255,0.6)', lineHeight: 1.8 }}>
+              <p style={{ margin: '0 0 clamp(24px,3vw,36px)', fontFamily: 'var(--font-sans)', fontSize: 'clamp(13px,1vw,15px)', color: '#fff', lineHeight: 1.8 }}>
                 Fica a conhecer o impacto do Clube Desportivo da Huíla e a parceria com o Grupo Omatapalo no desenvolvimento do desporto angolano.
               </p>
               <button
