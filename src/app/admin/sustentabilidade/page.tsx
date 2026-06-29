@@ -42,6 +42,7 @@ export default function SustentabilidadeAdmin() {
   const [cfg, setCfg]     = useState<Cfg>(DEFAULT);
   const [saving, setSaving] = useState(false);
   const [msg, setMsg]       = useState('');
+  const [heroPicker, setHeroPicker] = useState(false);
 
   useEffect(() => {
     createClient().from('site_settings').select('value').eq('key', KEY).single().then(({ data }) => {
@@ -97,8 +98,9 @@ export default function SustentabilidadeAdmin() {
           // eslint-disable-next-line @next/next/no-img-element
           <img src={cfg.hero_img} alt="Foto de destaque" style={{ width: '100%', maxHeight: 220, objectFit: 'cover', borderRadius: 6, marginBottom: 12 }} />
         )}
-        <MediaPicker value={cfg.hero_img} onChange={url => set('hero_img', url)} label="Trocar foto" />
+        <button onClick={() => setHeroPicker(true)} style={{ padding: '9px 16px', background: '#f8fafc', border: '1.5px solid #e2e8f0', borderRadius: 6, fontSize: 12, fontWeight: 600, cursor: 'pointer', color: '#475569' }}>🖼 Trocar foto</button>
       </div>
+      {heroPicker && <MediaPicker onSelect={url => { set('hero_img', url); setHeroPicker(false); }} onClose={() => setHeroPicker(false)} />}
 
       {/* Intro */}
       {section('Introdução')}
