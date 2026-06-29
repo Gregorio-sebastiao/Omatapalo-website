@@ -7,7 +7,7 @@ import { createClient } from '@/lib/supabase/client';
 const DEFAULTS = {
   body_p1: 'Contando com mais de 15.000 colaboradores directos, a OMATAPALO possui no seu quadro técnico áreas de conhecimento relacionadas com a sua actividade.',
   body_p2: 'A empresa assenta a sua actuação em níveis de empenho, diligência na execução, responsabilidade na sua conduta, formando uma equipa pluridisciplinar capaz de conduzir processos, produzir resultados e garantir padrões de qualidade, cumprimento de prazos rigorosos, para uma sociedade que, cada vez mais, exige soluções mais céleres.',
-  section_img: '/COLABORADORES OMTP.png',
+  section_img: '/COLABORADORES ARMAZÉM (53) 1 (1).JPG',
 };
 
 export default function Pessoas() {
