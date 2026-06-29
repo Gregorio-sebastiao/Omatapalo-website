@@ -8,7 +8,7 @@ export default function ContactosPage() {
     <>
       <Nav />
       <main>
-        <PageHero page="contactos" title="Contactos" imgSrc="/Omatapalo-Contactos-web.jpg" position="center top" imgOpacity={0.45} />
+        <PageHero page="contactos" title="Contactos" imgSrc="/Omatapalo (2).JPG" position="center top" imgOpacity={0.45} />
         <Contact />
       </main>
       <Footer />
