@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import Image from 'next/image';
+
 import { createClient } from '@/lib/supabase/client';
 
 const DEFAULTS = {
@@ -72,11 +72,11 @@ export default function Pessoas() {
           </div>
 
           <div className="reveal-p" style={{ position: 'relative', borderRadius: 'var(--radius-lg)', overflow: 'hidden', aspectRatio: '4/3', background: 'var(--gray-100)', opacity: 0 }}>
-            <Image
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
               src={content.section_img}
               alt="Equipa Omatapalo"
-              fill
-              className="object-cover"
+              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
             />
           </div>
         </div>
