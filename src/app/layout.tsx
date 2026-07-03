@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import GoogleAnalytics from '@/components/GoogleAnalytics';
+import { LanguageProvider } from '@/lib/i18n/LanguageContext';
 
 export const metadata: Metadata = {
   title: "Grupo Omatapalo — Fazemos Acontecer",
@@ -32,7 +33,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html lang="pt" className="h-full">
       <body className="min-h-full">
-        {children}
+        <LanguageProvider>
+          {children}
+        </LanguageProvider>
         <GoogleAnalytics gaId={gaId} />
       </body>
     </html>

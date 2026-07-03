@@ -3,6 +3,14 @@
 import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import { createClient } from '@/lib/supabase/client';
+import { useLanguage } from '@/lib/i18n/LanguageContext';
+import type { Locale } from '@/lib/i18n/translations';
+
+const FLAGS: { locale: Locale; flag: string; label: string }[] = [
+  { locale: 'pt', flag: '🇵🇹', label: 'PT' },
+  { locale: 'en', flag: '🇬🇧', label: 'EN' },
+  { locale: 'fr', flag: '🇫🇷', label: 'FR' },
+];
 
 const DEFAULT_NAV = [
   { t: 'O Grupo', href: '/omatapalo', sub: [
@@ -42,6 +50,7 @@ const ALL_PAGES = [
 ];
 
 export default function Nav() {
+  const { locale, setLocale, t } = useLanguage();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const headerRef = useRef<HTMLElement>(null);
@@ -166,8 +175,28 @@ export default function Nav() {
             <a href="/contactos"
               className="btn btn-ghost-white ml-2"
               style={{ height: '40px', paddingInline: '20px', fontSize: '13px', textTransform: 'uppercase' }}>
-              Contactos
+              {t.nav.contactos}
             </a>
+
+            {/* Language switcher */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginLeft: 8 }}>
+              {FLAGS.map(({ locale: l, flag, label }) => (
+                <button
+                  key={l}
+                  onClick={() => setLocale(l)}
+                  title={label}
+                  style={{
+                    background: 'none', border: 'none', cursor: 'pointer',
+                    padding: '4px 6px', borderRadius: 4,
+                    fontSize: 18, lineHeight: 1,
+                    opacity: locale === l ? 1 : 0.45,
+                    transition: 'opacity .2s',
+                  }}
+                >
+                  {flag}
+                </button>
+              ))}
+            </div>
           </nav>
 
           {/* Burger */}
@@ -201,6 +230,28 @@ export default function Nav() {
             </svg>
           </button>
         </div>
+        {/* Language switcher mobile */}
+        <div style={{ display: 'flex', gap: 12, marginBottom: 24 }}>
+          {FLAGS.map(({ locale: l, flag, label }) => (
+            <button
+              key={l}
+              onClick={() => setLocale(l)}
+              style={{
+                background: locale === l ? 'rgba(255,255,255,0.12)' : 'none',
+                border: '1px solid rgba(255,255,255,0.15)',
+                borderRadius: 8, cursor: 'pointer',
+                padding: '6px 12px',
+                display: 'flex', alignItems: 'center', gap: 6,
+                color: '#fff', fontSize: 13, fontWeight: 700,
+                opacity: locale === l ? 1 : 0.5,
+                transition: 'all .2s',
+              }}
+            >
+              <span style={{ fontSize: 20 }}>{flag}</span> {label}
+            </button>
+          ))}
+        </div>
+
         <nav className="flex flex-col">
           {ALL_PAGES.map((p, i) => (
             <a
