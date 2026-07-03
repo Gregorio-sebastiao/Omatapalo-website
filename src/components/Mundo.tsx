@@ -1,6 +1,7 @@
 ﻿'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { useLanguage } from '@/lib/i18n/LanguageContext';
 
 const COUNTRIES = [
   { name: 'Angola',      code: 'AO', continent: 'África',   sub: 'Sede · Lubango — todas as províncias', x: 52,   y: 60,  anchor: true, labelLeft: true },
@@ -14,6 +15,7 @@ const COUNTRIES = [
 ];
 
 export default function Mundo() {
+  const { t } = useLanguage();
   const wrapperRef  = useRef<HTMLDivElement>(null);
   const stickyRef   = useRef<HTMLDivElement>(null);
   const [visibleCount, setVisibleCount] = useState(0);
@@ -152,11 +154,11 @@ export default function Mundo() {
           <div style={{ pointerEvents: 'auto' }}>
             <div className="mundo-hdr-el" style={{ opacity: 0, display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
               <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><rect width="10" height="10" fill="rgba(255,255,255,0.3)" /></svg>
-              <span style={{ fontFamily: 'var(--font-label)', fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#fff' }}>Omatapalo no Mundo</span>
+              <span style={{ fontFamily: 'var(--font-label)', fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#fff' }}>{t.mundo.eyebrow}</span>
             </div>
             <h2 className="mundo-hdr-el" style={{ opacity: 0, margin: 0, fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 'clamp(2rem,4vw,4.5rem)', color: '#fff', letterSpacing: '-0.035em', lineHeight: 0.92, textTransform: 'uppercase' }}>
-              Onde<br />
-              <span style={{ color: 'transparent', WebkitTextStroke: '1.5px rgba(255,255,255,0.2)' }}>Estamos</span>
+              {t.mundo.title1}<br />
+              <span style={{ color: 'transparent', WebkitTextStroke: '1.5px rgba(255,255,255,0.2)' }}>{t.mundo.title2}</span>
             </h2>
           </div>
 
@@ -164,7 +166,7 @@ export default function Mundo() {
           <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', pointerEvents: 'auto' }}>
             {/* stats */}
             <div className="mundo-hdr-el" style={{ opacity: 0, display: 'flex', gap: 'clamp(24px,4vw,56px)' }}>
-              {[['3', 'Continentes'], ['8', 'Países'], ['23', 'Anos']].map(([n, l]) => (
+              {[['3', t.mundo.continentes], ['8', t.mundo.paises], ['23', t.mundo.anos]].map(([n, l]) => (
                 <div key={l}>
                   <div style={{ fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 'clamp(2rem,3.5vw,3.5rem)', color: '#fff', letterSpacing: '-0.04em', lineHeight: 1 }}>{n}</div>
                   <div style={{ fontFamily: 'var(--font-label)', fontSize: 9, letterSpacing: '0.16em', textTransform: 'uppercase', color: '#fff', marginTop: 4 }}>{l}</div>
@@ -182,7 +184,7 @@ export default function Mundo() {
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                 <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><rect width="10" height="10" fill="#fff" /></svg>
-                <span style={{ fontFamily: 'var(--font-label)', fontSize: 9, letterSpacing: '0.16em', textTransform: 'uppercase', color: '#fff' }}>Deslize para explorar</span>
+                <span style={{ fontFamily: 'var(--font-label)', fontSize: 9, letterSpacing: '0.16em', textTransform: 'uppercase', color: '#fff' }}>{t.mundo.scrollHint}</span>
               </div>
             </div>
           </div>

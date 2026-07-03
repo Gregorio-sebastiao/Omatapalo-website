@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { createClient } from '@/lib/supabase/client';
+import { useLanguage } from '@/lib/i18n/LanguageContext';
 
 type Post = {
   id: number;
@@ -18,6 +19,7 @@ function fmtDate(iso: string) {
 }
 
 export default function Media() {
+  const { t } = useLanguage();
   const sectionRef = useRef<HTMLElement>(null);
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
   const [posts, setPosts] = useState<Post[]>([]);
@@ -130,7 +132,7 @@ export default function Media() {
                     }}>{featured.excerpt}</p>
                   )}
                   <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 16, opacity: hoveredCard === 0 ? 1 : 0, transition: 'opacity .3s', transform: hoveredCard === 0 ? 'translateY(0)' : 'translateY(8px)' }}>
-                    <span style={{ fontFamily: 'var(--font-label)', fontSize: 9, letterSpacing: '0.16em', textTransform: 'uppercase', color: '#fff' }}>Ler mais</span>
+                    <span style={{ fontFamily: 'var(--font-label)', fontSize: 9, letterSpacing: '0.16em', textTransform: 'uppercase', color: '#fff' }}>{t.noticias.readMore}</span>
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.6)" strokeWidth="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
                   </div>
                 </div>

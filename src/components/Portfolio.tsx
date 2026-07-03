@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { createClient } from '@/lib/supabase/client';
+import { useLanguage } from '@/lib/i18n/LanguageContext';
 
 const FALLBACK = [
   { id: 'f1', cover_image: 'https://images.unsplash.com/photo-1487958449943-2429e8be8625?w=1200&q=72&auto=format&fit=crop', category: 'Saúde',           title: 'Centro Hospitalar de Referência',  location: 'Luanda',   year: 2023, description: '' },
@@ -24,6 +25,7 @@ const CAT_LABELS: Record<string, string> = {
 function label(cat: string) { return CAT_LABELS[cat] ?? cat; }
 
 export default function Portfolio() {
+  const { t } = useLanguage();
   const sectionRef = useRef<HTMLElement>(null);
   const [projects, setProjects] = useState<any[]>([]);
 
@@ -126,7 +128,7 @@ export default function Portfolio() {
 
         <div className="reveal-pf" style={{ textAlign: 'center', marginTop: 'var(--space-9)', opacity: 0 }}>
           <Link href="/portefolio" className="btn btn-primary">
-            Ver todos os projectos
+            {t.portefolio.viewAll}
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
           </Link>
         </div>

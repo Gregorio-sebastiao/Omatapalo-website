@@ -3,16 +3,17 @@
 import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import { createClient } from '@/lib/supabase/client';
+import { useLanguage } from '@/lib/i18n/LanguageContext';
 
 function ContactForm() {
+  const { t } = useLanguage();
   const [sent, setSent] = useState(false);
 
   if (sent) {
     return (
       <div style={{ background: '#fff', borderRadius: 'var(--radius-lg)', padding: 'var(--space-7)', boxShadow: 'var(--shadow-xl)', textAlign: 'center' }}>
         <div style={{ width: '56px', height: '56px', borderRadius: '50%', background: '#E6F3EC', color: '#1F7A52', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', marginBottom: 'var(--space-4)', fontSize: '28px' }}>✓</div>
-        <h3 style={{ fontFamily: 'var(--font-display)', fontWeight: 900, textTransform: 'uppercase', fontSize: 'var(--text-h3)', color: 'var(--text-strong)', marginBottom: '8px' }}>Mensagem enviada</h3>
-        <p style={{ color: 'var(--text-muted)' }}>Obrigado. A nossa equipa entrará em contacto brevemente.</p>
+        <h3 style={{ fontFamily: 'var(--font-display)', fontWeight: 900, textTransform: 'uppercase', fontSize: 'var(--text-h3)', color: 'var(--text-strong)', marginBottom: '8px' }}>{t.contact.success}</h3>
       </div>
     );
   }
@@ -22,15 +23,15 @@ function ContactForm() {
       onSubmit={(e) => { e.preventDefault(); setSent(true); }}
       style={{ background: '#fff', borderRadius: 'var(--radius-lg)', padding: 'var(--space-7)', boxShadow: 'var(--shadow-xl)', display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}
     >
-      <h3 style={{ fontFamily: 'var(--font-display)', fontWeight: 900, textTransform: 'uppercase', fontSize: 'var(--text-h3)', color: 'var(--text-strong)', letterSpacing: '-0.01em' }}>Fale connosco</h3>
-      <div className="field"><label className="field__label">Nome</label><input className="field__input" required placeholder="O seu nome" /></div>
+      <h3 style={{ fontFamily: 'var(--font-display)', fontWeight: 900, textTransform: 'uppercase', fontSize: 'var(--text-h3)', color: 'var(--text-strong)', letterSpacing: '-0.01em' }}>{t.contact.title.replace('\n', ' ')}</h3>
+      <div className="field"><label className="field__label">{t.contact.name}</label><input className="field__input" required placeholder={t.contact.namePlaceholder} /></div>
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-4)' }} className="form-row">
-        <div className="field"><label className="field__label">Email</label><input className="field__input" type="email" required placeholder="email@empresa.ao" /></div>
-        <div className="field"><label className="field__label">Telefone</label><input className="field__input" placeholder="+244 …" /></div>
+        <div className="field"><label className="field__label">{t.contact.email}</label><input className="field__input" type="email" required placeholder={t.contact.emailPlaceholder} /></div>
+        <div className="field"><label className="field__label">{t.contact.subject}</label><input className="field__input" placeholder={t.contact.subjectPlaceholder} /></div>
       </div>
-      <div className="field"><label className="field__label">Mensagem</label><textarea className="field__textarea" required placeholder="Conte-nos sobre o seu projecto" /></div>
+      <div className="field"><label className="field__label">{t.contact.message}</label><textarea className="field__textarea" required placeholder={t.contact.messagePlaceholder} /></div>
       <button type="submit" className="btn btn-primary" style={{ height: '52px' }}>
-        Enviar mensagem
+        {t.contact.send}
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
       </button>
     </form>

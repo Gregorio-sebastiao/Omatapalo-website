@@ -2,6 +2,7 @@
 import Image from 'next/image';
 import { useEffect, useState, type ReactElement } from 'react';
 import { createClient } from '@/lib/supabase/client';
+import { useLanguage } from '@/lib/i18n/LanguageContext';
 
 const DEFAULT_COLS = [
   { h: 'O Grupo', links: [
@@ -41,6 +42,7 @@ const DEFAULT_SOCIALS = {
 };
 
 export default function Footer() {
+  const { t } = useLanguage();
   const [socials, setSocials] = useState(DEFAULT_SOCIALS);
   const [cols, setCols]       = useState(DEFAULT_COLS);
   const [desc, setDesc]       = useState(DEFAULT_DESC);
@@ -102,7 +104,7 @@ export default function Footer() {
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--space-4)', flexWrap: 'wrap', marginTop: 'var(--space-9)', paddingTop: 'var(--space-5)', borderTop: '1px solid var(--border-dark)', fontSize: 'var(--text-xs)', color: '#fff' }}>
-          <span>© 2026 Grupo Omatapalo · Todos os direitos reservados</span>
+          <span>© 2026 Grupo Omatapalo · {t.footer.rights}</span>
           <div style={{ display: 'flex', gap: 'var(--space-5)' }}>
             <a href="https://rsbzgeqgfseyeogexkwk.supabase.co/storage/v1/object/public/cms-media/uploads/1782502445398-Politica-Gestao_2023-10-27.pdf" target="_blank" rel="noopener noreferrer" style={{ color: '#fff', opacity: 0.6, textDecoration: 'none' }} className="ftr-link">Política do Sistema de Gestão Integrado</a>
             {['Termos de Uso', 'Cookies'].map((l) => (
