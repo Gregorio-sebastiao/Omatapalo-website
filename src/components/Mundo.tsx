@@ -126,7 +126,7 @@ export default function Mundo() {
                 }}>
                   <div style={{
                     fontFamily: 'var(--font-display)', fontWeight: 900,
-                    fontSize: 'clamp(0.2rem,0.35vw,0.35rem)',
+                    fontSize: 'clamp(0.55rem,0.75vw,0.8rem)',
                     textTransform: 'uppercase', letterSpacing: '-0.01em',
                     color: isHov ? '#fff' : 'rgba(255,255,255,0.75)',
                     transition: 'color .25s',
