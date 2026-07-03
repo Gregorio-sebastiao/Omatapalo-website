@@ -91,7 +91,7 @@ function TiltCard({ company, index, visitarSite }: { company: Company; index: nu
 
 /* ── Main ──────────────────────────────────────────────────── */
 export default function Negocios() {
-  const { t } = useLanguage();
+  const { t, locale } = useLanguage();
   const sectionRef  = useRef<HTMLElement>(null);
   const gridRef     = useRef<HTMLDivElement>(null);
   const bgTextRef   = useRef<HTMLDivElement>(null);
@@ -103,8 +103,14 @@ export default function Negocios() {
   const isAnimating = useRef(false);
 
   useEffect(() => {
-    const db = createClient();
-    db.from('site_content').select('field,value').eq('page', 'negocios').then(({ data }) => {
+    const supabase = createClient();
+    const page = locale !== 'pt' ? `negocios-${locale}` : 'negocios';
+
+    async function load() {
+      let { data } = await supabase.from('site_content').select('field,value').eq('page', page);
+      if ((!data || data.length === 0) && locale !== 'pt') {
+        ({ data } = await supabase.from('site_content').select('field,value').eq('page', 'negocios'));
+      }
       if (!data) return;
       for (const row of data) {
         if (row.field === 'sectors') { try { setSectors(JSON.parse(row.value)); } catch {} }
@@ -112,8 +118,9 @@ export default function Negocios() {
         if (row.field === 'title1') setTitle1(row.value);
         if (row.field === 'title2') setTitle2(row.value);
       }
-    });
-  }, []);
+    }
+    load();
+  }, [locale]);
   const dirRef      = useRef<1 | -1>(1);
 
   /* entrance */
