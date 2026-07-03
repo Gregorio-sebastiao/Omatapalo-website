@@ -31,6 +31,7 @@ export const translations = {
     },
     sobreGrupo: {
       eyebrow: 'Sobre o Grupo',
+      titleWords: ['Quem', 'Somos'],
     },
     negocios: {
       eyebrow: 'O Grupo e os Negócios',
@@ -39,6 +40,8 @@ export const translations = {
     },
     stats: {
       eyebrow: 'Grupo Omatapalo em Números',
+      labels: ['Anos de Actividade', 'Colaboradores', 'Área Construída', 'de Estrada', 'Áreas de Negócio', 'Certificações ISO'],
+      subs: ['Fundado em 1994', 'Em Angola e África', 'Edifícios e infraestrutura', 'Obras públicas', 'Diversificação estratégica', '9001 · 14001 · 45001'],
     },
     contact: {
       eyebrow: 'Entre em Contacto',
@@ -134,6 +137,7 @@ export const translations = {
     },
     sobreGrupo: {
       eyebrow: 'About the Group',
+      titleWords: ['Who', 'We Are'],
     },
     negocios: {
       eyebrow: 'The Group and its Businesses',
@@ -142,6 +146,8 @@ export const translations = {
     },
     stats: {
       eyebrow: 'Omatapalo Group in Numbers',
+      labels: ['Years of Activity', 'Employees', 'Built Area', 'of Road', 'Business Areas', 'ISO Certifications'],
+      subs: ['Founded in 1994', 'In Angola and Africa', 'Buildings and infrastructure', 'Public works', 'Strategic diversification', '9001 · 14001 · 45001'],
     },
     contact: {
       eyebrow: 'Get in Touch',
@@ -237,6 +243,7 @@ export const translations = {
     },
     sobreGrupo: {
       eyebrow: 'À Propos du Groupe',
+      titleWords: ['Qui', 'Sommes-Nous'],
     },
     negocios: {
       eyebrow: 'Le Groupe et ses Activités',
@@ -245,6 +252,8 @@ export const translations = {
     },
     stats: {
       eyebrow: 'Groupe Omatapalo en Chiffres',
+      labels: ['Années d\'Activité', 'Collaborateurs', 'Surface Construite', 'de Route', 'Secteurs d\'Activité', 'Certifications ISO'],
+      subs: ['Fondé en 1994', 'En Angola et en Afrique', 'Bâtiments et infrastructure', 'Travaux publics', 'Diversification stratégique', '9001 · 14001 · 45001'],
     },
     contact: {
       eyebrow: 'Contactez-Nous',

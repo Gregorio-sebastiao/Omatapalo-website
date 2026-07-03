@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { createClient } from '@/lib/supabase/client';
+import { useLanguage } from '@/lib/i18n/LanguageContext';
 
 const DEFAULT_IMAGES = [
   { src: '/EN-230-omatapalo-2.jpg',              label: 'Estrada Nacional 230 - Saurimo'   },
@@ -26,6 +27,7 @@ const STATS = [
 ];
 
 export default function SobreGrupo() {
+  const { locale, t } = useLanguage();
   const wrapperRef   = useRef<HTMLDivElement>(null);
   const stripRef     = useRef<HTMLDivElement>(null);
   const [videoOpen, setVideoOpen] = useState(false);
@@ -35,17 +37,26 @@ export default function SobreGrupo() {
 
   useEffect(() => {
     const db = createClient();
-    db.from('site_content').select('field,value').eq('page', 'quem-somos').then(({ data }) => {
-      if (!data || data.length === 0) return;
-      const map: Record<string, string> = {};
-      for (const row of data) map[row.field] = row.value;
-      if (map['images']) setImages(JSON.parse(map['images']));
-      if (map['texts']) setTexts(JSON.parse(map['texts']));
-    });
+    const page = locale !== 'pt' ? `quem-somos-${locale}` : 'quem-somos';
+
+    async function load() {
+      let { data } = await db.from('site_content').select('field,value').eq('page', page);
+      if ((!data || data.length === 0) && locale !== 'pt') {
+        ({ data } = await db.from('site_content').select('field,value').eq('page', 'quem-somos'));
+      }
+      if (data && data.length > 0) {
+        const map: Record<string, string> = {};
+        for (const row of data) map[row.field] = row.value;
+        if (map['images']) setImages(JSON.parse(map['images']));
+        if (map['texts']) setTexts(JSON.parse(map['texts']));
+      }
+    }
+    load();
+
     db.from('site_settings').select('value').eq('key', 'video_institucional').single().then(({ data }) => {
       if (data?.value) setVideoUrl(data.value);
     });
-  }, []);
+  }, [locale]);
 
   useEffect(() => {
     import('gsap').then(({ gsap }) => {
@@ -143,15 +154,15 @@ export default function SobreGrupo() {
             <div className="sgc-eyebrow" style={{ opacity: 1, display: 'flex', alignItems: 'center', gap: 12, marginBottom: 28 }}>
               <svg width="10" height="10" viewBox="0 0 10 10" fill="none" style={{ flexShrink: 0 }}><rect width="10" height="10" fill="#1a396e" /></svg>
               <span style={{ fontFamily: 'var(--font-label)', fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#1a396e' }}>
-                Grupo Omatapalo · Desde 2003
+                {t.sobreGrupo.eyebrow}
               </span>
             </div>
 
             {/* title */}
             <div style={{ overflow: 'visible', marginBottom: 28, paddingTop: 8 }}>
               <h2 style={{ margin: 0, fontFamily: 'var(--font-display)', fontWeight: 900, textTransform: 'uppercase', lineHeight: 1, letterSpacing: '-0.035em', fontSize: 'clamp(1.8rem,3.5vw,5rem)' }}>
-                {['Quem', 'Somos'].map((w, i) => (
-                  <span key={w} className="sgc-word" style={{
+                {t.sobreGrupo.titleWords.map((w, i) => (
+                  <span key={i} className="sgc-word" style={{
                     display: 'block', opacity: 0,
                     color: i === 0 ? '#1a396e' : 'transparent',
                     WebkitTextStroke: i === 0 ? '0px' : '2px rgba(26,57,110,0.55)',
@@ -161,9 +172,9 @@ export default function SobreGrupo() {
             </div>
 
             {/* body */}
-            {texts.map((t, i) => (
+            {texts.map((txt, i) => (
               <p key={i} className="sgc-text" style={{ opacity: 0, fontFamily: 'var(--font-sans)', fontSize: 'clamp(13px,1vw,15px)', color: '#0a0f1e', lineHeight: 1.85, marginBottom: i === texts.length - 1 ? 32 : 12 }}>
-                {t}
+                {txt}
               </p>
             ))}
 

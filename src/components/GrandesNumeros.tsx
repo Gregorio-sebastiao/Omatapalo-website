@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { createClient } from '@/lib/supabase/client';
+import { useLanguage } from '@/lib/i18n/LanguageContext';
 
 type GNItem = { value: string; label: string; img: string; suffix: string };
 type GNHeader = { eyebrow: string; title: string; description: string };
@@ -28,6 +29,7 @@ const DEFAULT_HEADER: GNHeader = {
 };
 
 export default function GrandesNumeros() {
+  const { locale } = useLanguage();
   const wrapperRef = useRef<HTMLDivElement>(null);
   const stripRef   = useRef<HTMLDivElement>(null);
   const [hovered, setHovered] = useState<number | null>(null);
@@ -35,14 +37,22 @@ export default function GrandesNumeros() {
   const [header, setHeader] = useState<GNHeader>(DEFAULT_HEADER);
 
   useEffect(() => {
-    createClient().from('site_content').select('field,value').eq('page', 'grandes-numeros').then(({ data }) => {
+    const db = createClient();
+    const page = locale !== 'pt' ? `grandes-numeros-${locale}` : 'grandes-numeros';
+
+    async function load() {
+      let { data } = await db.from('site_content').select('field,value').eq('page', page);
+      if ((!data || data.length === 0) && locale !== 'pt') {
+        ({ data } = await db.from('site_content').select('field,value').eq('page', 'grandes-numeros'));
+      }
       if (!data) return;
       for (const row of data) {
         if (row.field === 'items') { try { setItems(JSON.parse(row.value)); } catch {} }
         if (row.field === 'header') { try { setHeader(JSON.parse(row.value)); } catch {} }
       }
-    });
-  }, []);
+    }
+    load();
+  }, [locale]);
 
   useEffect(() => {
     import('gsap').then(({ gsap }) => {

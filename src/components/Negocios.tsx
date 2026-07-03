@@ -4,9 +4,10 @@ import { useEffect, useRef, useState, useCallback } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import Link from 'next/link';
 import { SECTORS, type Company, type Sector } from '@/data/empresas';
+import { useLanguage } from '@/lib/i18n/LanguageContext';
 
 /* ── Company card ──────────────────────────────────────────── */
-function TiltCard({ company, index }: { company: Company; index: number }) {
+function TiltCard({ company, index, visitarSite }: { company: Company; index: number; visitarSite: string }) {
   const imgRef = useRef<HTMLImageElement>(null);
   const [hovered, setHovered] = useState(false);
 
@@ -77,7 +78,7 @@ function TiltCard({ company, index }: { company: Company; index: number }) {
           </span>
           {company.link && (
             <span style={{ marginLeft: 'auto', fontFamily: 'var(--font-label)', fontSize: 8, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#1a396e' }}>
-              Visitar site →
+              {visitarSite}
             </span>
           )}
         </div>
@@ -90,6 +91,7 @@ function TiltCard({ company, index }: { company: Company; index: number }) {
 
 /* ── Main ──────────────────────────────────────────────────── */
 export default function Negocios() {
+  const { t } = useLanguage();
   const sectionRef  = useRef<HTMLElement>(null);
   const gridRef     = useRef<HTMLDivElement>(null);
   const bgTextRef   = useRef<HTMLDivElement>(null);
@@ -194,7 +196,7 @@ export default function Negocios() {
         <div style={{ marginBottom: 'clamp(40px,6vw,72px)' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 18 }}>
             <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><rect width="10" height="10" fill="#1a396e" /></svg>
-            <span style={{ fontFamily: 'var(--font-label)', fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#1a396e' }}>O Grupo e os Negócios</span>
+            <span style={{ fontFamily: 'var(--font-label)', fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#1a396e' }}>{t.negocios.eyebrow}</span>
           </div>
           <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 24, flexWrap: 'wrap' }}>
             <h2 style={{ margin: 0, fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 'clamp(2rem,4vw,4.5rem)', color: '#0F1A2E', letterSpacing: '-0.035em', lineHeight: 0.95, textTransform: 'uppercase' }}>
@@ -240,7 +242,7 @@ export default function Negocios() {
                       }}>{s.label}</div>
                       <div style={{ height: 2, background: '#1a396e', width: isActive ? '100%' : '0%', transition: 'width 0.45s ease', marginBottom: 8 }} />
                       <div style={{ fontFamily: 'var(--font-label)', fontSize: 9, letterSpacing: '0.16em', textTransform: 'uppercase', color: isActive ? '#1a396e' : '#c4cdd8', transition: 'color 0.3s' }}>
-                        {s.companies.length} empresas
+                        {s.companies.length} {t.negocios.empresas}
                       </div>
                     </div>
                   </div>
@@ -274,7 +276,7 @@ export default function Negocios() {
               }}
             >
               {sector.companies.map((c, i) => (
-                <TiltCard key={c.name} company={c} index={i} />
+                <TiltCard key={c.name} company={c} index={i} visitarSite={t.negocios.visitarSite} />
               ))}
             </div>
           </div>

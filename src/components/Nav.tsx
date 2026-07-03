@@ -49,13 +49,55 @@ const ALL_PAGES = [
   { t: 'Contactos', href: '/contactos' },
 ];
 
+function buildTranslatedNav(tNav: typeof import('@/lib/i18n/translations').translations['pt']['nav']): NavEntry[] {
+  return [
+    { t: tNav.grupo, href: '/omatapalo', sub: [
+      { t: tNav.mundo, href: '/omatapalo#mundo' },
+      { t: tNav.historia, href: '/omatapalo' },
+      { t: tNav.conselho, href: '/omatapalo#conselho' },
+    ]},
+    { t: tNav.portefolio, href: '/portefolio' },
+    { t: tNav.pessoas, href: '/pessoas' },
+    { t: tNav.sustentabilidade, href: '/sustentabilidade' },
+    { t: tNav.rsocial, href: '/responsabilidade-social', sub: [
+      { t: tNav.missaoSorrir, href: '/responsabilidade-social#missao' },
+    ]},
+    { t: tNav.cdh, href: '/cdh' },
+    { t: tNav.media, href: '#', sub: [
+      { t: tNav.noticias, href: '/noticias' },
+    ]},
+    { t: tNav.pressKit, href: '/press-kit' },
+  ];
+}
+
+function buildTranslatedPages(tNav: typeof import('@/lib/i18n/translations').translations['pt']['nav']) {
+  return [
+    { t: tNav.grupo, href: '/omatapalo' },
+    { t: tNav.mundo, href: '/omatapalo#mundo' },
+    { t: tNav.historia, href: '/omatapalo' },
+    { t: tNav.conselho, href: '/omatapalo#conselho' },
+    { t: tNav.portefolio, href: '/portefolio' },
+    { t: tNav.pessoas, href: '/pessoas' },
+    { t: tNav.cdh, href: '/cdh' },
+    { t: tNav.media, href: '/media' },
+    { t: tNav.pressKit, href: '/press-kit' },
+    { t: tNav.sustentabilidade, href: '/sustentabilidade' },
+    { t: tNav.rsocial, href: '/responsabilidade-social' },
+    { t: tNav.missaoSorrir, href: '/responsabilidade-social#missao' },
+    { t: tNav.contactos, href: '/contactos' },
+  ];
+}
+
 export default function Nav() {
   const { locale, setLocale, t } = useLanguage();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const headerRef = useRef<HTMLElement>(null);
-  const [nav, setNav] = useState<NavEntry[]>(DEFAULT_NAV.map(n => ({ ...n, sub: n.sub?.map(s => ({ t: s.t, href: s.href })) })));
+  const [ptNav, setPtNav] = useState<NavEntry[]>(DEFAULT_NAV.map(n => ({ ...n, sub: n.sub?.map(s => ({ t: s.t, href: s.href })) })));
   const [logoUrl, setLogoUrl] = useState('/logo/LOGO OMT 1.png');
+
+  const nav = locale === 'pt' ? ptNav : buildTranslatedNav(t.nav);
+  const allPages = locale === 'pt' ? ALL_PAGES : buildTranslatedPages(t.nav);
 
   useEffect(() => {
     createClient().from('site_settings').select('key,value').then(({ data }) => {
@@ -64,7 +106,7 @@ export default function Nav() {
         if (row.key === 'nav_items') {
           try {
             const items = JSON.parse(row.value);
-            setNav(items.map((n: { label: string; href: string; sub?: { label: string; href: string }[] }) => ({
+            setPtNav(items.map((n: { label: string; href: string; sub?: { label: string; href: string }[] }) => ({
               t: n.label, href: n.href,
               sub: n.sub?.map(s => ({ t: s.label, href: s.href })),
             })));
@@ -253,7 +295,7 @@ export default function Nav() {
         </div>
 
         <nav className="flex flex-col">
-          {ALL_PAGES.map((p, i) => (
+          {allPages.map((p, i) => (
             <a
               key={p.t}
               href={p.href}

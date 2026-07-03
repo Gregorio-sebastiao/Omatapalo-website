@@ -2,8 +2,10 @@
 import { useEffect, useRef, useState } from 'react';
 import AdminShell from '@/components/admin/AdminShell';
 import { createClient } from '@/lib/supabase/client';
+import LangTabs from '@/components/admin/LangTabs';
 
-const PAGE = 'quem-somos';
+type Lang = 'pt' | 'en' | 'fr';
+const BASE_PAGE = 'quem-somos';
 
 type ImageItem = { src: string; label: string };
 
@@ -28,6 +30,7 @@ const btn = (color = '#1a396e'): React.CSSProperties => ({
 });
 
 export default function AdminQuemSomos() {
+  const [lang, setLang] = useState<Lang>('pt');
   const [texts, setTexts] = useState<string[]>(DEFAULT_TEXTS);
   const [images, setImages] = useState<ImageItem[]>(DEFAULT_IMAGES);
   const [saving, setSaving] = useState(false);
@@ -35,16 +38,18 @@ export default function AdminQuemSomos() {
   const [uploading, setUploading] = useState<number | null>(null);
   const fileRefs = useRef<(HTMLInputElement | null)[]>([]);
 
+  const PAGE = lang === 'pt' ? BASE_PAGE : `${BASE_PAGE}-${lang}`;
+
   useEffect(() => {
     const db = createClient();
     db.from('site_content').select('field,value').eq('page', PAGE).then(({ data }) => {
-      if (!data || data.length === 0) return;
+      if (!data || data.length === 0) { setTexts(DEFAULT_TEXTS); setImages(DEFAULT_IMAGES); return; }
       const map: Record<string, string> = {};
       for (const row of data) map[row.field] = row.value;
-      if (map['texts']) setTexts(JSON.parse(map['texts']));
-      if (map['images']) setImages(JSON.parse(map['images']));
+      if (map['texts']) setTexts(JSON.parse(map['texts'])); else setTexts(DEFAULT_TEXTS);
+      if (map['images']) setImages(JSON.parse(map['images'])); else setImages(DEFAULT_IMAGES);
     });
-  }, []);
+  }, [PAGE]);
 
   async function save() {
     setSaving(true); setMsg('');
@@ -79,7 +84,8 @@ export default function AdminQuemSomos() {
     <AdminShell>
       <div style={{ maxWidth: 860, margin: '0 auto', padding: '32px 24px' }}>
         <h1 style={{ fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: '1.6rem', color: '#0f172a', marginBottom: 8 }}>Quem Somos</h1>
-        <p style={{ fontSize: 13, color: '#64748b', marginBottom: 32 }}>Edita os textos e as fotos da secção "Quem Somos" na homepage.</p>
+        <p style={{ fontSize: 13, color: '#64748b', marginBottom: 24 }}>Edita os textos e as fotos da secção "Quem Somos" na homepage.</p>
+        <LangTabs lang={lang} onChange={setLang} />
 
         {/* TEXTOS */}
         <div style={{ background: '#fff', border: '1px solid #e2e8f0', borderRadius: 8, padding: 24, marginBottom: 24 }}>

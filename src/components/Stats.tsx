@@ -2,14 +2,15 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { motion, useInView } from 'framer-motion';
+import { useLanguage } from '@/lib/i18n/LanguageContext';
 
-const stats = [
-  { value: 30, suffix: '+', label: 'Anos de Actividade', icon: '◆', sub: 'Fundado em 1994' },
-  { value: 15000, suffix: '+', label: 'Colaboradores', icon: '◉', sub: 'Em Angola e África' },
-  { value: 1500000, suffix: ' m²', label: 'Área Construída', icon: '◈', sub: 'Edifícios e infraestrutura' },
-  { value: 5000, suffix: '+km', label: 'de Estrada', icon: '◬', sub: 'Obras públicas' },
-  { value: 8, suffix: '', label: 'Áreas de Negócio', icon: '◌', sub: 'Diversificação estratégica' },
-  { value: 3, suffix: '', label: 'Certificações ISO', icon: '◇', sub: '9001 · 14001 · 45001' },
+const STATS_BASE = [
+  { value: 30, suffix: '+', icon: '◆' },
+  { value: 15000, suffix: '+', icon: '◉' },
+  { value: 1500000, suffix: ' m²', icon: '◈' },
+  { value: 5000, suffix: '+km', icon: '◬' },
+  { value: 8, suffix: '', icon: '◌' },
+  { value: 3, suffix: '', icon: '◇' },
 ];
 
 function Counter({ value, suffix }: { value: number; suffix: string }) {
@@ -42,6 +43,8 @@ function Counter({ value, suffix }: { value: number; suffix: string }) {
 export default function Stats() {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: '-80px' });
+  const { t } = useLanguage();
+  const stats = STATS_BASE.map((s, i) => ({ ...s, label: t.stats.labels[i], sub: t.stats.subs[i] }));
 
   return (
     <section ref={ref} className="bg-[var(--brand-navy)] relative overflow-hidden">

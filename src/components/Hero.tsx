@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { useContent } from '@/lib/useContent';
+import { useLanguage } from '@/lib/i18n/LanguageContext';
 import { createClient } from '@/lib/supabase/client';
 
 const HOME_DEFAULTS = {
@@ -41,7 +42,10 @@ const SQUARES = [
 ];
 
 export default function Hero() {
-  const c             = useContent('home', HOME_DEFAULTS);
+  const { locale, t } = useLanguage();
+  const page = locale !== 'pt' ? `home-${locale}` : 'home';
+  const c             = useContent(page, HOME_DEFAULTS);
+  const eyebrow = locale !== 'pt' ? t.hero.eyebrow : c.eyebrow;
   const [ticker, setTicker] = useState<string[]>(DEFAULT_TICKER);
   const heroRef       = useRef<HTMLElement>(null);
   const bgRef         = useRef<HTMLDivElement>(null);
@@ -194,7 +198,7 @@ export default function Hero() {
         <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 24 }}>
           <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><rect width="10" height="10" fill="rgba(255,255,255,0.4)" /></svg>
           <span style={{ fontFamily: 'var(--font-label)', fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#fff' }}>
-            {c.eyebrow}
+            {eyebrow}
           </span>
         </div>
 
