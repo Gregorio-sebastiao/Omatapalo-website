@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { createClient } from '@/lib/supabase/client';
+import { useLanguage } from '@/lib/i18n/LanguageContext';
+import { gtx } from '@/lib/i18n/gtx';
 
 type Evento = { year: string; title: string; desc: string };
 
@@ -30,23 +32,50 @@ const DEFAULT_eventos: Evento[] = [
 
 const VISIBLE = 3;
 
+const EYEBROW: Record<string, string> = { pt: 'História', en: 'History', fr: 'Histoire' };
+const TITULO: Record<string, { p1: string; p2: string }> = {
+  pt: { p1: 'Marcos', p2: 'Históricos' },
+  en: { p1: 'Key', p2: 'Milestones' },
+  fr: { p1: 'Jalons', p2: 'Historiques' },
+};
+
 export default function Historia() {
+  const { locale } = useLanguage();
   const sectionRef = useRef<HTMLElement>(null);
   const [index, setIndex]   = useState(0);
   const [active, setActive] = useState(0);
+  const [rawEventos, setRawEventos] = useState<Evento[]>(DEFAULT_eventos);
   const [eventos, setEventos] = useState<Evento[]>(DEFAULT_eventos);
+  const [rawPalavra1, setRawPalavra1] = useState('Marcos');
+  const [rawPalavra2, setRawPalavra2] = useState('Históricos');
   const [palavra1, setPalavra1] = useState('Marcos');
   const [palavra2, setPalavra2] = useState('Históricos');
 
   useEffect(() => {
     const db = createClient();
     db.from('site_settings').select('value').eq('key', 'historia_eventos').single().then(({ data }) => {
-      if (data?.value) { try { setEventos(JSON.parse(data.value)); } catch {} }
+      if (data?.value) { try { setRawEventos(JSON.parse(data.value)); } catch {} }
     });
     db.from('site_settings').select('value').eq('key', 'historia_titulo').single().then(({ data }) => {
-      if (data?.value) { try { const t = JSON.parse(data.value); if (t.p1) setPalavra1(t.p1); if (t.p2) setPalavra2(t.p2); } catch {} }
+      if (data?.value) { try { const t = JSON.parse(data.value); if (t.p1) setRawPalavra1(t.p1); if (t.p2) setRawPalavra2(t.p2); } catch {} }
     });
   }, []);
+
+  useEffect(() => {
+    if (locale === 'pt') {
+      setEventos(rawEventos);
+      setPalavra1(rawPalavra1);
+      setPalavra2(rawPalavra2);
+      return;
+    }
+    const t = TITULO[locale];
+    if (t) { setPalavra1(t.p1); setPalavra2(t.p2); }
+    Promise.all(rawEventos.map(async e => ({
+      ...e,
+      title: await gtx(e.title, locale),
+      desc:  await gtx(e.desc,  locale),
+    }))).then(setEventos);
+  }, [rawEventos, rawPalavra1, rawPalavra2, locale]);
 
   const max  = eventos.length - VISIBLE;
   const prev = () => { const ni = Math.max(0, index - 1); setIndex(ni); setActive(ni); };
@@ -91,7 +120,7 @@ export default function Historia() {
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
               <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><rect width="10" height="10" fill="#1a396e" /></svg>
-              <span style={{ fontFamily: 'var(--font-label)', fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#1a396e' }}>História</span>
+              <span style={{ fontFamily: 'var(--font-label)', fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#1a396e' }}>{EYEBROW[locale] ?? 'História'}</span>
             </div>
             <h2 style={{ margin: 0, fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 'clamp(2rem,4vw,4.5rem)', color: '#0F1A2E', letterSpacing: '-0.035em', lineHeight: 0.92, textTransform: 'uppercase' }}>
               {palavra1}<br />
