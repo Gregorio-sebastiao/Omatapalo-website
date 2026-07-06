@@ -3,6 +3,22 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import Link from 'next/link';
+import { useLanguage } from '@/lib/i18n/LanguageContext';
+
+/* ─── Google Translate helper ─── */
+const gtCache = new Map<string, string>();
+async function gtx(text: string, lang: string): Promise<string> {
+  if (!text) return text;
+  const key = `${lang}:${text.slice(0, 60)}`;
+  if (gtCache.has(key)) return gtCache.get(key)!;
+  const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=pt&tl=${lang}&dt=t&q=${encodeURIComponent(text)}`;
+  try {
+    const data = await fetch(url).then(r => r.json());
+    const result = data[0]?.map((c: [string]) => c[0]).join('') ?? text;
+    gtCache.set(key, result);
+    return result;
+  } catch { return text; }
+}
 
 /* ─── Data ─── */
 const CATEGORIES = [
@@ -147,11 +163,13 @@ function ProjectCard({ project, index, slug }: { project: Project; index: number
 
 /* ─── Main ─── */
 export default function PortefolioDinamico() {
+  const { t, locale } = useLanguage();
   const sectionRef  = useRef<HTMLElement>(null);
   const gridRef     = useRef<HTMLDivElement>(null);
   const bgNumRef    = useRef<HTMLDivElement>(null);
   const [active, setActive]   = useState('todos');
   const [PROJECTS, setProjects] = useState<Project[]>([]);
+  const [displayProjects, setDisplayProjects] = useState<Project[]>([]);
   const isAnimating = useRef(false);
   const dirRef      = useRef<1 | -1>(1);
 
@@ -179,7 +197,18 @@ export default function PortefolioDinamico() {
       });
   }, []);
 
-  const allProjects = PROJECTS.length > 0 ? PROJECTS : FALLBACK_PROJECTS;
+  /* translate projects when locale or projects change */
+  useEffect(() => {
+    const source = PROJECTS.length > 0 ? PROJECTS : FALLBACK_PROJECTS;
+    if (locale === 'pt') { setDisplayProjects(source); return; }
+    Promise.all(source.map(async p => ({
+      ...p,
+      title: await gtx(p.title, locale),
+      location: await gtx(p.location, locale),
+    }))).then(setDisplayProjects);
+  }, [PROJECTS, locale]);
+
+  const allProjects = displayProjects.length > 0 ? displayProjects : (PROJECTS.length > 0 ? PROJECTS : FALLBACK_PROJECTS);
   const filtered = active === 'todos' ? allProjects : allProjects.filter(p => p.cat === active);
 
   /* entrance */
@@ -304,7 +333,7 @@ export default function PortefolioDinamico() {
                         letterSpacing: '-0.01em', lineHeight: 1.2,
                         color: isAct ? '#0F1A2E' : '#94a3b8',
                         transition: 'color 0.3s', marginBottom: 5,
-                      }}>{cat.label}</div>
+                      }}>{t.portefolio.categories[i]}</div>
                       <div style={{ height: 2, background: '#1a396e', width: isAct ? '100%' : '0%', transition: 'width 0.4s ease', marginBottom: 5 }} />
                       <div style={{ fontFamily: 'var(--font-label)', fontSize: 8.5, letterSpacing: '0.14em', textTransform: 'uppercase', color: isAct ? '#1a396e' : '#c4cdd8', transition: 'color 0.3s' }}>
                         {count} {count === 1 ? 'projecto' : 'projectos'}
@@ -343,7 +372,7 @@ export default function PortefolioDinamico() {
 
             {filtered.length === 0 && (
               <div style={{ textAlign: 'center', padding: '64px 0', fontFamily: 'var(--font-label)', fontSize: 11, letterSpacing: '0.18em', textTransform: 'uppercase', color: '#94a3b8' }}>
-                Nenhum projecto nesta categoria
+                {t.portefolio.noResults}
               </div>
             )}
           </div>
