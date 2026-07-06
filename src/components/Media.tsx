@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
 import type { Locale } from '@/lib/i18n/translations';
+import { gtx } from '@/lib/i18n/gtx';
 
 type Post = {
   id: number;
@@ -22,15 +23,6 @@ function fmtDate(iso: string, locale: Locale) {
 
 // Cache: locale → postId → { title, excerpt }
 const translateCache = new Map<string, { title: string; excerpt: string }>();
-
-async function gtx(text: string, lang: string): Promise<string> {
-  if (!text) return text;
-  const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=pt&tl=${lang}&dt=t&q=${encodeURIComponent(text)}`;
-  try {
-    const data = await fetch(url).then(r => r.json());
-    return data[0]?.map((c: [string]) => c[0]).join('') ?? text;
-  } catch { return text; }
-}
 
 async function translatePosts(posts: Post[], lang: string): Promise<Post[]> {
   return Promise.all(posts.map(async p => {

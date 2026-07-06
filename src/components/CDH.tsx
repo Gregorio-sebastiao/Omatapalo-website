@@ -4,19 +4,7 @@ import { useState, useEffect } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
 
-const gtCache = new Map<string, string>();
-async function gtx(text: string, lang: string): Promise<string> {
-  if (!text) return text;
-  const key = `${lang}:${text.slice(0, 60)}`;
-  if (gtCache.has(key)) return gtCache.get(key)!;
-  const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=pt&tl=${lang}&dt=t&q=${encodeURIComponent(text)}`;
-  try {
-    const data = await fetch(url).then(r => r.json());
-    const result = data[0]?.map((c: [string]) => c[0]).join('') ?? text;
-    gtCache.set(key, result);
-    return result;
-  } catch { return text; }
-}
+import { gtx } from '@/lib/i18n/gtx';
 
 const DEF_CFG = {
   hero_text: 'Através do apoio ao Clube Desportivo da Huíla, Grupo Omatapalo reafirma o seu compromisso com o desenvolvimento do desporto angolano, investindo na formação de talentos, na promoção de valores positivos e na criação de oportunidades para as futuras gerações. Acreditamos que o desporto é uma poderosa ferramenta de inclusão social, educação e transformação das comunidades.',

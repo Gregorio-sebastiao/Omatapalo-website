@@ -19,20 +19,7 @@ const DEF_STATS = [
 ];
 const DEF_CFG = { paragraph: 'ACADEMIA OMATAPALO, inaugurada em 2021, tem como objetivo primordial a formação de quadros e funcionários do Grupo, com vista ao desenvolvimento e especialização dos seus profissionais.', badge: 'Desde 2021', stats: DEF_STATS, gallery: DEF_GALLERY, hero_img: '/Academia-barra.jpg' };
 
-// Cache: key → translated text
-const gtCache = new Map<string, string>();
-async function gtx(text: string, lang: string): Promise<string> {
-  if (!text) return text;
-  const key = `${lang}:${text.slice(0, 40)}`;
-  if (gtCache.has(key)) return gtCache.get(key)!;
-  const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=pt&tl=${lang}&dt=t&q=${encodeURIComponent(text)}`;
-  try {
-    const data = await fetch(url).then(r => r.json());
-    const result = data[0]?.map((c: [string]) => c[0]).join('') ?? text;
-    gtCache.set(key, result);
-    return result;
-  } catch { return text; }
-}
+import { gtx } from '@/lib/i18n/gtx';
 
 function useCountUp(target: number, duration = 1800, active = false) {
   const [count, setCount] = useState(0);
