@@ -6,12 +6,12 @@ import { useLanguage } from '@/lib/i18n/LanguageContext';
 import { gtx } from '@/lib/i18n/gtx';
 
 const DEFAULT_IMAGES = [
-  { src: '/EN-230-omatapalo-2.jpg',              label: 'Estrada Nacional 230 - Saurimo'   },
-  { src: '/Salao-Protocolar-1-1.jpg',            label: 'Salão Protocolar - Luanda'             },
-  { src: '/HOSPITAL MILITAR_1306202.JPG',         label: 'Hospital Militar'                        },
-  { src: '/omatapalo-construcao-do-monumento-do-soldado-desconhecido.jpg', label: 'Monumento ao Soldado Desconhecido - Luanda' },
-  { src: '/DSC_0030.jpg',                        label: 'Missão Fazer Sorrir'             },
-  { src: '/Academia-barra.jpg',                  label: 'Academia Omatapalo'           },
+  { src: '/EN-230-omatapalo-2.jpg',              label: 'Estrada Nacional 230 - Saurimo',   labelEn: 'National Road 230 - Saurimo',   labelFr: 'Route Nationale 230 - Saurimo'   },
+  { src: '/Salao-Protocolar-1-1.jpg',            label: 'Salão Protocolar - Luanda',         labelEn: 'Protocol Hall - Luanda',         labelFr: 'Salle Protocolaire - Luanda'     },
+  { src: '/HOSPITAL MILITAR_1306202.JPG',         label: 'Hospital Militar',                  labelEn: 'Military Hospital',              labelFr: 'Hôpital Militaire'               },
+  { src: '/omatapalo-construcao-do-monumento-do-soldado-desconhecido.jpg', label: 'Monumento ao Soldado Desconhecido - Luanda', labelEn: 'Monument to the Unknown Soldier - Luanda', labelFr: 'Monument au Soldat Inconnu - Luanda' },
+  { src: '/DSC_0030.jpg',                        label: 'Missão Fazer Sorrir',               labelEn: 'Mission Make Smile',             labelFr: 'Mission Faire Sourire'           },
+  { src: '/Academia-barra.jpg',                  label: 'Academia Omatapalo',                labelEn: 'Omatapalo Academy',              labelFr: 'Académie Omatapalo'              },
 ];
 
 const DEFAULT_TEXTS = [
@@ -33,7 +33,13 @@ export default function SobreGrupo() {
   const stripRef     = useRef<HTMLDivElement>(null);
   const [videoOpen, setVideoOpen] = useState(false);
   const [videoUrl, setVideoUrl] = useState('https://www.youtube.com/watch?v=kuVu9thTbIM');
-  const [IMAGES, setImages] = useState(DEFAULT_IMAGES);
+  const [IMAGES, setImages] = useState<typeof DEFAULT_IMAGES>(DEFAULT_IMAGES);
+
+  function imgLabel(img: { label: string; labelEn?: string; labelFr?: string }) {
+    if (locale === 'en' && img.labelEn) return img.labelEn;
+    if (locale === 'fr' && img.labelFr) return img.labelFr;
+    return img.label;
+  }
   const [texts, setTexts] = useState(DEFAULT_TEXTS);
 
   useEffect(() => {
@@ -276,7 +282,7 @@ export default function SobreGrupo() {
                   <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, transparent 55%, rgba(7,16,31,0.7) 100%)', pointerEvents: 'none' }} />
                   {/* label */}
                   <div style={{ position: 'absolute', bottom: 18, left: '10%', fontFamily: 'var(--font-label)', fontSize: 10, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#fff' }}>
-                    {img.label}
+                    {imgLabel(img)}
                   </div>
                 </div>
               ))}
