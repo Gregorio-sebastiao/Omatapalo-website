@@ -2,6 +2,10 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { createClient } from '@/lib/supabase/client';
+import LangTabs from '@/components/admin/LangTabs';
+
+type Lang = 'pt' | 'en' | 'fr';
+const BASE_PAGE = 'grandes-numeros';
 
 type GNItem = {
   value: string;
@@ -37,6 +41,9 @@ const btn = (active = false) => ({
 });
 
 export default function GrandesNumerosAdmin() {
+  const [lang, setLang] = useState<Lang>('pt');
+  const PAGE = lang === 'pt' ? BASE_PAGE : `${BASE_PAGE}-${lang}`;
+
   const [items, setItems] = useState<GNItem[]>(DEFAULT_ITEMS);
   const [header, setHeader] = useState(DEFAULT_HEADER);
   const [saving, setSaving] = useState(false);
@@ -45,26 +52,22 @@ export default function GrandesNumerosAdmin() {
   const fileRefs = useRef<(HTMLInputElement | null)[]>([]);
 
   useEffect(() => {
-    createClient().from('site_content').select('field,value').eq('page', 'grandes-numeros').then(({ data }) => {
-      if (!data) return;
+    createClient().from('site_content').select('field,value').eq('page', PAGE).then(({ data }) => {
+      if (!data || data.length === 0) { setItems(DEFAULT_ITEMS); setHeader(DEFAULT_HEADER); return; }
       for (const row of data) {
-        if (row.field === 'items') {
-          try { setItems(JSON.parse(row.value)); } catch {}
-        }
-        if (row.field === 'header') {
-          try { setHeader(JSON.parse(row.value)); } catch {}
-        }
+        if (row.field === 'items') { try { setItems(JSON.parse(row.value)); } catch {} }
+        if (row.field === 'header') { try { setHeader(JSON.parse(row.value)); } catch {} }
       }
     });
-  }, []);
+  }, [PAGE]);
 
   function flash(m: string) { setMsg(m); setTimeout(() => setMsg(''), 4000); }
 
   async function save() {
     setSaving(true);
     const rows = [
-      { page: 'grandes-numeros', field: 'items',  value: JSON.stringify(items) },
-      { page: 'grandes-numeros', field: 'header', value: JSON.stringify(header) },
+      { page: PAGE, field: 'items',  value: JSON.stringify(items) },
+      { page: PAGE, field: 'header', value: JSON.stringify(header) },
     ];
     const { error } = await createClient().from('site_content').upsert(rows);
     setSaving(false);
@@ -110,7 +113,7 @@ export default function GrandesNumerosAdmin() {
 
   return (
     <div style={{ maxWidth: 900, margin: '0 auto' }}>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 28 }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
         <div>
           <h1 style={{ margin: 0, fontSize: 20, fontWeight: 800, color: '#0f172a' }}>Grandes Números</h1>
           <p style={{ margin: '4px 0 0', fontSize: 13, color: '#64748b' }}>Edita os cartões com estatísticas, imagens e textos de cabeçalho.</p>
@@ -119,6 +122,7 @@ export default function GrandesNumerosAdmin() {
           {saving ? 'A guardar…' : 'Guardar tudo'}
         </button>
       </div>
+      <LangTabs lang={lang} onChange={setLang} />
 
       {msg && (
         <div style={{ padding: '10px 16px', borderRadius: 4, marginBottom: 20, fontSize: 13, fontWeight: 600, background: msg.startsWith('✅') ? '#dcfce7' : '#fee2e2', color: msg.startsWith('✅') ? '#16a34a' : '#dc2626', border: `1px solid ${msg.startsWith('✅') ? '#bbf7d0' : '#fca5a5'}` }}>

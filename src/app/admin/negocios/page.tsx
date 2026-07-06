@@ -2,6 +2,10 @@
 
 import { useEffect, useState } from 'react';
 import { createClient } from '@/lib/supabase/client';
+import LangTabs from '@/components/admin/LangTabs';
+
+type Lang = 'pt' | 'en' | 'fr';
+const BASE_PAGE = 'negocios';
 
 type Company = {
   logo: string; name: string; year: string;
@@ -54,6 +58,9 @@ const inp = (extra?: React.CSSProperties): React.CSSProperties => ({
 });
 
 export default function NegociosAdminPage() {
+  const [lang, setLang] = useState<Lang>('pt');
+  const PAGE = lang === 'pt' ? BASE_PAGE : `${BASE_PAGE}-${lang}`;
+
   const [sectors, setSectors] = useState<Sector[]>(DEFAULT_SECTORS);
   const [title1, setTitle1] = useState('Empresas');
   const [title2, setTitle2] = useState('do Grupo');
@@ -78,8 +85,8 @@ export default function NegociosAdminPage() {
   }
 
   useEffect(() => {
-    createClient().from('site_content').select('field,value').eq('page', 'negocios').then(({ data }) => {
-      if (!data) return;
+    createClient().from('site_content').select('field,value').eq('page', PAGE).then(({ data }) => {
+      if (!data || data.length === 0) { setSectors(DEFAULT_SECTORS); setTitle1('Empresas'); setTitle2('do Grupo'); setIntro('Um ecossistema empresarial diversificado que actua nos principais sectores da economia angolana.'); return; }
       for (const row of data) {
         if (row.field === 'sectors') { try { setSectors(JSON.parse(row.value)); } catch {} }
         if (row.field === 'intro') setIntro(row.value);
@@ -87,7 +94,7 @@ export default function NegociosAdminPage() {
         if (row.field === 'title2') setTitle2(row.value);
       }
     });
-  }, []);
+  }, [PAGE]);
 
   function flash(m: string) { setMsg(m); setTimeout(() => setMsg(''), 3000); }
 
@@ -95,10 +102,10 @@ export default function NegociosAdminPage() {
     setSaving(true);
     const db = createClient();
     const [r1, r2, r3, r4] = await Promise.all([
-      db.from('site_content').upsert({ page: 'negocios', field: 'sectors', value: JSON.stringify(sectors) }),
-      db.from('site_content').upsert({ page: 'negocios', field: 'intro', value: intro }),
-      db.from('site_content').upsert({ page: 'negocios', field: 'title1', value: title1 }),
-      db.from('site_content').upsert({ page: 'negocios', field: 'title2', value: title2 }),
+      db.from('site_content').upsert({ page: PAGE, field: 'sectors', value: JSON.stringify(sectors) }),
+      db.from('site_content').upsert({ page: PAGE, field: 'intro', value: intro }),
+      db.from('site_content').upsert({ page: PAGE, field: 'title1', value: title1 }),
+      db.from('site_content').upsert({ page: PAGE, field: 'title2', value: title2 }),
     ]);
     setSaving(false);
     flash(r1.error || r2.error || r3.error || r4.error ? '❌ Erro ao guardar' : '✅ Guardado!');
@@ -118,7 +125,8 @@ export default function NegociosAdminPage() {
   return (
     <div style={{ padding: 'clamp(24px,3vw,40px)', maxWidth: 900, margin: '0 auto' }}>
       <h1 style={{ margin: '0 0 4px', fontSize: 22, fontWeight: 800, color: '#0f172a' }}>Empresas do Grupo</h1>
-      <p style={{ margin: '0 0 24px', color: '#64748b', fontSize: 14 }}>Edita os dados e links de cada empresa por sector.</p>
+      <p style={{ margin: '0 0 16px', color: '#64748b', fontSize: 14 }}>Edita os dados e links de cada empresa por sector.</p>
+      <LangTabs lang={lang} onChange={setLang} />
 
       {msg && (
         <div style={{ background: msg.startsWith('❌') ? '#fee2e2' : '#dcfce7', border: `1px solid ${msg.startsWith('❌') ? '#fca5a5' : '#bbf7d0'}`, borderRadius: 4, padding: '10px 16px', marginBottom: 20, fontSize: 13, fontWeight: 600, color: msg.startsWith('❌') ? '#dc2626' : '#16a34a' }}>
