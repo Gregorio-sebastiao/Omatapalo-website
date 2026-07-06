@@ -220,24 +220,26 @@ export default function Nav() {
               {t.nav.contactos}
             </a>
 
-            {/* Language switcher */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginLeft: 8 }}>
+            {/* Language switcher — desktop */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: 2, marginLeft: 12, borderLeft: '1px solid rgba(255,255,255,0.15)', paddingLeft: 12 }}>
               {FLAGS.map(({ locale: l, countryCode, label }) => (
                 <button
                   key={l}
                   onClick={() => setLocale(l)}
                   title={label}
                   style={{
-                    background: 'none', border: 'none', cursor: 'pointer',
-                    padding: '3px 5px', borderRadius: 4,
-                    display: 'flex', alignItems: 'center', gap: 5,
-                    opacity: locale === l ? 1 : 0.4,
-                    transition: 'opacity .2s',
+                    background: locale === l ? 'rgba(255,255,255,0.12)' : 'none',
+                    border: locale === l ? '1px solid rgba(255,255,255,0.25)' : '1px solid transparent',
+                    cursor: 'pointer',
+                    padding: '5px 10px', borderRadius: 6,
+                    display: 'flex', alignItems: 'center', gap: 6,
+                    opacity: locale === l ? 1 : 0.5,
+                    transition: 'all .2s',
                   }}
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={`https://flagcdn.com/20x15/${countryCode}.png`} width={20} height={15} alt={label} style={{ borderRadius: 2, display: 'block' }} />
-                  <span style={{ fontFamily: 'var(--font-label)', fontSize: 10, letterSpacing: '0.1em', color: '#fff', fontWeight: 700 }}>{label}</span>
+                  <img src={`https://flagcdn.com/24x18/${countryCode}.png`} width={24} height={18} alt={label} style={{ borderRadius: 2, display: 'block', flexShrink: 0 }} />
+                  <span style={{ fontFamily: 'var(--font-label)', fontSize: 11, letterSpacing: '0.12em', color: '#fff', fontWeight: 700 }}>{label}</span>
                 </button>
               ))}
             </div>
