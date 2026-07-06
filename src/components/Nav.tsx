@@ -241,11 +241,31 @@ export default function Nav() {
             </div>
           </nav>
 
+          {/* Language switcher — mobile (always visible, hidden on lg where desktop nav shows flags) */}
+          <div className="lg:hidden flex items-center gap-1 ml-auto mr-1">
+            {FLAGS.map(({ locale: l, flag, label }) => (
+              <button
+                key={l}
+                onClick={() => setLocale(l)}
+                title={label}
+                style={{
+                  background: 'none', border: 'none', cursor: 'pointer',
+                  padding: '4px 4px', borderRadius: 4,
+                  fontSize: 20, lineHeight: 1,
+                  opacity: locale === l ? 1 : 0.4,
+                  transition: 'opacity .2s',
+                }}
+              >
+                {flag}
+              </button>
+            ))}
+          </div>
+
           {/* Burger */}
           <button
             onClick={() => setOpen(true)}
             aria-label="Menu"
-            className="lg:hidden ml-auto text-white p-2"
+            className="lg:hidden text-white p-2"
           >
             <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <line x1="3" y1="6" x2="21" y2="6" />
