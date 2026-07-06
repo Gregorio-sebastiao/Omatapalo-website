@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { createClient } from '@/lib/supabase/client';
+import { useLanguage } from '@/lib/i18n/LanguageContext';
 
 type PageHeroProps = {
   title: string;
@@ -14,7 +15,15 @@ type PageHeroProps = {
 };
 
 export default function PageHero({ title, imgSrc, eyebrow, position = 'center', outlineWord, imgOpacity = 0.18, page }: PageHeroProps) {
+  const { t, locale } = useLanguage();
   const [dynamicImg, setDynamicImg] = useState(imgSrc);
+
+  const pageT = locale !== 'pt' && page
+    ? (t.pageTitles as Record<string, { title: string; eyebrow: string; outline?: string }>)[page] ?? null
+    : null;
+  const displayTitle = pageT?.title ?? title;
+  const displayEyebrow = pageT?.eyebrow ?? eyebrow;
+  const displayOutline = pageT?.outline ?? outlineWord;
 
   useEffect(() => {
     if (!page) return;
@@ -32,8 +41,8 @@ export default function PageHero({ title, imgSrc, eyebrow, position = 'center', 
     });
   }, []);
 
-  const words = title.trim().split(/\s+/);
-  const lastWord = outlineWord ?? words[words.length - 1];
+  const words = displayTitle.trim().split(/\s+/);
+  const lastWord = displayOutline ?? words[words.length - 1];
   const firstWords = words.slice(0, -1).join(' ');
 
   return (
@@ -66,7 +75,7 @@ export default function PageHero({ title, imgSrc, eyebrow, position = 'center', 
         <div className="ph-eyebrow" style={{ opacity: 0, display: 'flex', alignItems: 'center', gap: 12, marginBottom: 20 }}>
           <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><rect width="10" height="10" fill="#fff" /></svg>
           <span style={{ fontFamily: 'var(--font-label)', fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#fff' }}>
-            {eyebrow ?? 'Grupo Omatapalo'}
+            {displayEyebrow ?? 'Grupo Omatapalo'}
           </span>
         </div>
 

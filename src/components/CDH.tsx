@@ -2,6 +2,21 @@
 
 import { useState, useEffect } from 'react';
 import { createClient } from '@/lib/supabase/client';
+import { useLanguage } from '@/lib/i18n/LanguageContext';
+
+const gtCache = new Map<string, string>();
+async function gtx(text: string, lang: string): Promise<string> {
+  if (!text) return text;
+  const key = `${lang}:${text.slice(0, 60)}`;
+  if (gtCache.has(key)) return gtCache.get(key)!;
+  const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=pt&tl=${lang}&dt=t&q=${encodeURIComponent(text)}`;
+  try {
+    const data = await fetch(url).then(r => r.json());
+    const result = data[0]?.map((c: [string]) => c[0]).join('') ?? text;
+    gtCache.set(key, result);
+    return result;
+  } catch { return text; }
+}
 
 const DEF_CFG = {
   hero_text: 'Através do apoio ao Clube Desportivo da Huíla, Grupo Omatapalo reafirma o seu compromisso com o desenvolvimento do desporto angolano, investindo na formação de talentos, na promoção de valores positivos e na criação de oportunidades para as futuras gerações. Acreditamos que o desporto é uma poderosa ferramenta de inclusão social, educação e transformação das comunidades.',
@@ -27,9 +42,11 @@ const DEF_CFG = {
 };
 
 export default function CDH() {
+  const { locale } = useLanguage();
   const [lbIdx, setLbIdx] = useState<number | null>(null);
   const [videoOpen, setVideoOpen] = useState(false);
   const [cfg, setCfg] = useState(DEF_CFG);
+  const [displayCfg, setDisplayCfg] = useState(DEF_CFG);
 
   useEffect(() => {
     createClient().from('site_settings').select('value').eq('key', 'cdh_cfg').single().then(({ data }) => {
@@ -37,7 +54,30 @@ export default function CDH() {
     });
   }, []);
 
-  const photos = cfg.photos.map(p => ({ src: p.src, thumb: p.src, label: p.label }));
+  useEffect(() => {
+    if (locale === 'pt') { setDisplayCfg(cfg); return; }
+    (async () => {
+      const fields = ['hero_text', 'p1', 'p2', 'p3'] as const;
+      const translated = { ...cfg };
+      for (const f of fields) {
+        if (cfg[f]) translated[f] = await gtx(cfg[f], locale);
+      }
+      // translate metric labels/descs
+      translated.metrics = await Promise.all(cfg.metrics.map(async m => ({
+        ...m,
+        label: await gtx(m.label, locale),
+        desc: await gtx(m.desc, locale),
+      })));
+      // translate photo labels
+      translated.photos = await Promise.all(cfg.photos.map(async p => ({
+        ...p,
+        label: await gtx(p.label, locale),
+      })));
+      setDisplayCfg(translated);
+    })();
+  }, [cfg, locale]);
+
+  const photos = displayCfg.photos.map(p => ({ src: p.src, thumb: p.src, label: p.label }));
 
   return (
     <section style={{ background: '#07101f', position: 'relative', overflow: 'hidden' }}>
@@ -68,7 +108,7 @@ export default function CDH() {
           </div>
           <div>
             <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'clamp(13px,1.05vw,16px)', color: '#fff', lineHeight: 1.9, margin: '0 0 clamp(20px,3vw,32px)', maxWidth: '44ch' }}>
-              {cfg.hero_text}
+              {displayCfg.hero_text}
             </p>
           </div>
         </div>
@@ -86,9 +126,9 @@ export default function CDH() {
               Apoio ao Desenvolvimento<br />
               <span style={{ color: 'transparent', WebkitTextStroke: '1.5px rgba(255,255,255,0.35)' }}>Desportivo</span>
             </h3>
-            <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'clamp(13px,1vw,15px)', color: '#fff', lineHeight: 1.85, margin: '0 0 clamp(16px,2vw,22px)' }}>{cfg.p1}</p>
-            <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'clamp(13px,1vw,15px)', color: '#fff', lineHeight: 1.85, margin: '0 0 clamp(16px,2vw,22px)' }}>{cfg.p2}</p>
-            <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'clamp(13px,1vw,15px)', color: '#fff', lineHeight: 1.85, margin: 0 }}>{cfg.p3}</p>
+            <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'clamp(13px,1vw,15px)', color: '#fff', lineHeight: 1.85, margin: '0 0 clamp(16px,2vw,22px)' }}>{displayCfg.p1}</p>
+            <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'clamp(13px,1vw,15px)', color: '#fff', lineHeight: 1.85, margin: '0 0 clamp(16px,2vw,22px)' }}>{displayCfg.p2}</p>
+            <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'clamp(13px,1vw,15px)', color: '#fff', lineHeight: 1.85, margin: 0 }}>{displayCfg.p3}</p>
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -159,7 +199,7 @@ export default function CDH() {
 
       {/* ── 4 métricas CDH ── */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', background: '#0a1a0a' }} className="rsa-cdh-cards">
-        {cfg.metrics.map((item, i) => (
+        {displayCfg.metrics.map((item, i) => (
           <div key={item.label} style={{ padding: 'clamp(22px,2.8vw,36px) clamp(18px,2.2vw,28px)', borderLeft: i > 0 ? '1px solid rgba(255,255,255,0.05)' : undefined, borderTop: '3px solid ' + item.accent }}>
             <div style={{ fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 'clamp(1.8rem,2.8vw,3.2rem)', color: '#fff', letterSpacing: '-0.04em', lineHeight: 1, marginBottom: 10 }}>{item.v}</div>
             <div style={{ fontFamily: 'var(--font-label)', fontSize: 9, letterSpacing: '0.16em', textTransform: 'uppercase', color: '#fff', marginBottom: 8 }}>{item.label}</div>
