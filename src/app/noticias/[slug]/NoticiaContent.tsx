@@ -57,27 +57,13 @@ export default function NoticiaContent({ slug }: { slug: string }) {
       .then(async ({ data }) => {
         if (!data) { setNotFound(true); setLoading(false); return; }
 
-        // Apply translation if locale !== 'pt'
         if (locale !== 'pt') {
-          // Try stored translation first
-          const { data: tx } = await db
-            .from('post_translations')
-            .select('title, excerpt, content')
-            .eq('post_id', data.id)
-            .eq('lang', locale)
-            .single();
-
-          if (tx) {
-            setPost({ ...data, title: tx.title ?? data.title, excerpt: tx.excerpt ?? data.excerpt, content: tx.content ?? data.content });
-          } else {
-            // Fallback: translate on-the-fly via gtx
-            const [title, excerpt, content] = await Promise.all([
-              gtx(data.title, locale),
-              gtx(data.excerpt ?? '', locale),
-              gtx(data.content ?? '', locale),
-            ]);
-            setPost({ ...data, title, excerpt, content });
-          }
+          const [title, excerpt, content] = await Promise.all([
+            gtx(data.title, locale),
+            gtx(data.excerpt ?? '', locale),
+            gtx(data.content ?? '', locale),
+          ]);
+          setPost({ ...data, title, excerpt, content });
         } else {
           setPost(data);
         }
