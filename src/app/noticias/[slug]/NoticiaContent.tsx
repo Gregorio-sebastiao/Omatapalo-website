@@ -39,6 +39,7 @@ function fmtDate(iso: string) {
 
 export default function NoticiaContent({ slug }: { slug: string }) {
   const { locale } = useLanguage();
+  const [rawPost, setRawPost] = useState<Post | null>(null);
   const [post, setPost] = useState<Post | null>(null);
   const [prev, setPrev] = useState<{ title: string; slug: string } | null>(null);
   const [next, setNext] = useState<{ title: string; slug: string } | null>(null);
@@ -47,6 +48,7 @@ export default function NoticiaContent({ slug }: { slug: string }) {
   const [notFound, setNotFound] = useState(false);
   const shareUrl = typeof window !== 'undefined' ? window.location.href : '';
 
+  // Fetch raw PT post once
   useEffect(() => {
     const db = createClient();
     db.from('posts')
@@ -56,17 +58,7 @@ export default function NoticiaContent({ slug }: { slug: string }) {
       .single()
       .then(async ({ data }) => {
         if (!data) { setNotFound(true); setLoading(false); return; }
-
-        if (locale !== 'pt') {
-          const [title, excerpt, content] = await Promise.all([
-            gtx(data.title, locale),
-            gtx(data.excerpt ?? '', locale),
-            gtx(data.content ?? '', locale),
-          ]);
-          setPost({ ...data, title, excerpt, content });
-        } else {
-          setPost(data);
-        }
+        setRawPost(data);
         const { data: p } = await db.from('posts').select('title,slug').eq('published', true).lt('created_at', data.created_at).order('created_at', { ascending: false }).limit(1).single();
         setPrev(p ?? null);
         const { data: n } = await db.from('posts').select('title,slug').eq('published', true).gt('created_at', data.created_at).order('created_at', { ascending: true }).limit(1).single();
@@ -76,6 +68,17 @@ export default function NoticiaContent({ slug }: { slug: string }) {
         setLoading(false);
       });
   }, [slug]);
+
+  // Translate whenever rawPost or locale changes
+  useEffect(() => {
+    if (!rawPost) return;
+    if (locale === 'pt') { setPost(rawPost); return; }
+    Promise.all([
+      gtx(rawPost.title, locale),
+      gtx(rawPost.excerpt ?? '', locale),
+      gtx(rawPost.content ?? '', locale),
+    ]).then(([title, excerpt, content]) => setPost({ ...rawPost, title, excerpt, content }));
+  }, [rawPost, locale]);
 
   if (loading) return (
     <>

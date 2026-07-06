@@ -22,7 +22,7 @@ function lsSet(key: string, value: string) {
   }
 }
 
-export async function gtx(text: string, lang: string): Promise<string> {
+async function gtxChunk(text: string, lang: string): Promise<string> {
   if (!text || !text.trim() || text.length < 2) return text;
 
   const key = `${PREFIX}${lang}:${text.slice(0, 100)}`;
@@ -38,4 +38,18 @@ export async function gtx(text: string, lang: string): Promise<string> {
   } catch {
     return text;
   }
+}
+
+export async function gtx(text: string, lang: string): Promise<string> {
+  if (!text || !text.trim() || text.length < 2) return text;
+  if (lang === 'pt') return text;
+
+  // For long texts, split by HTML block tags and translate each chunk
+  if (text.length > 1500) {
+    const parts = text.split(/(?<=<\/(?:p|h[1-6]|li|blockquote|div)>)/i);
+    const translated = await Promise.all(parts.map(p => gtxChunk(p, lang)));
+    return translated.join('');
+  }
+
+  return gtxChunk(text, lang);
 }
