@@ -1,8 +1,9 @@
-﻿'use client';
+'use client';
 
 import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { createClient } from '@/lib/supabase/client';
+import { useLanguage } from '@/lib/i18n/LanguageContext';
 
 const DEFAULT_ITEMS = [
   { quote: 'Sinto que contribuo não só para uma estrada ou um edifício, mas para o desenvolvimento da comunidade onde vivo. O Grupo Omatapalo dá-nos orgulho e motivação para fazer sempre mais e melhor.', name: 'Zulmira da Costa', role: 'Responsável de Apoio Administrativo', photo: 'https://omatapalo.com/wp-content/uploads/27.jpg' },
@@ -13,7 +14,23 @@ const DEFAULT_ITEMS = [
 
 const DURATION = 6000;
 
+// Cache: key → translated text
+const gtCache = new Map<string, string>();
+async function gtx(text: string, lang: string): Promise<string> {
+  if (!text) return text;
+  const key = `${lang}:${text.slice(0, 40)}`;
+  if (gtCache.has(key)) return gtCache.get(key)!;
+  const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=pt&tl=${lang}&dt=t&q=${encodeURIComponent(text)}`;
+  try {
+    const data = await fetch(url).then(r => r.json());
+    const result = data[0]?.map((c: [string]) => c[0]).join('') ?? text;
+    gtCache.set(key, result);
+    return result;
+  } catch { return text; }
+}
+
 export default function Testemunhos() {
+  const { t, locale } = useLanguage();
   const [ITEMS, setITEMS] = useState(DEFAULT_ITEMS);
   const [active, setActive] = useState(0);
 
@@ -22,6 +39,18 @@ export default function Testemunhos() {
       if (data?.value) try { setITEMS(JSON.parse(data.value)); } catch {}
     });
   }, []);
+
+  const [displayItems, setDisplayItems] = useState(ITEMS);
+
+  useEffect(() => {
+    if (locale === 'pt') { setDisplayItems(ITEMS); return; }
+    Promise.all(ITEMS.map(async item => ({
+      ...item,
+      quote: await gtx(item.quote, locale),
+      role: await gtx(item.role, locale),
+    }))).then(setDisplayItems);
+  }, [ITEMS, locale]);
+
   const [prev, setPrev] = useState<number | null>(null);
   const [progress, setProgress] = useState(0);
   const [animating, setAnimating] = useState(false);
@@ -44,7 +73,7 @@ export default function Testemunhos() {
       const p = Math.min(elapsed / DURATION, 1);
       setProgress(p);
       if (p >= 1) {
-        const next = (active + 1) % ITEMS.length;
+        const next = (active + 1) % displayItems.length;
         setPrev(active);
         setAnimating(true);
         setActive(next);
@@ -66,7 +95,7 @@ export default function Testemunhos() {
         <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 'clamp(40px,6vw,64px)' }}>
           <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><rect width="10" height="10" fill="#1a396e" /></svg>
           <span style={{ fontFamily: 'var(--font-label)', fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#1a396e' }}>
-            Vozes da nossa equipa
+            {t.testemunhos.eyebrow}
           </span>
         </div>
 
@@ -74,7 +103,7 @@ export default function Testemunhos() {
 
           {/* Fotos empilhadas */}
           <div style={{ position: 'relative', aspectRatio: '3/4' }}>
-            {ITEMS.map((item, i) => (
+            {displayItems.map((item, i) => (
               <div
                 key={i}
                 style={{
@@ -108,7 +137,7 @@ export default function Testemunhos() {
               borderRadius: '2px', padding: '6px 12px',
               fontFamily: 'var(--font-mono)', fontSize: '12px', color: '#fff', letterSpacing: '0.06em',
             }}>
-              {String(active + 1).padStart(2, '0')} / {String(ITEMS.length).padStart(2, '0')}
+              {String(active + 1).padStart(2, '0')} / {String(displayItems.length).padStart(2, '0')}
             </div>
           </div>
 
@@ -118,7 +147,7 @@ export default function Testemunhos() {
             <div style={{ fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: '96px', lineHeight: 0.8, color: '#1a396e', opacity: 0.1, marginBottom: 8, userSelect: 'none' }}>"</div>
 
             <div style={{ position: 'relative', minHeight: '180px' }}>
-              {ITEMS.map((item, i) => (
+              {displayItems.map((item, i) => (
                 <p
                   key={i}
                   style={{
@@ -154,7 +183,7 @@ export default function Testemunhos() {
 
               {/* Thumbnails / dots */}
               <div style={{ display: 'flex', gap: 12 }}>
-                {ITEMS.map((item, i) => (
+                {displayItems.map((item, i) => (
                   <button
                     key={i}
                     onClick={() => goTo(i)}

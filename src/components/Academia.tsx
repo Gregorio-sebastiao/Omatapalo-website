@@ -1,8 +1,9 @@
-﻿'use client';
+'use client';
 
 import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 import { createClient } from '@/lib/supabase/client';
+import { useLanguage } from '@/lib/i18n/LanguageContext';
 
 const DEF_GALLERY = [
   '/Formação omatapalo.jpg',
@@ -12,11 +13,26 @@ const DEF_GALLERY = [
 ];
 
 const DEF_STATS = [
-  { value: 76000, label: 'Horas de Formação', prefix: '+ ', suffix: '' },
+  { value: 76000, label: 'Horas de Formação', prefix: '+ ', suffix: '' },
   { value: 2021, label: 'Ano de Inauguração', prefix: '', suffix: '' },
-  { value: 3200, label: 'Colaboradores Formados', prefix: '+ ', suffix: '' },
+  { value: 3200, label: 'Colaboradores Formados', prefix: '+ ', suffix: '' },
 ];
 const DEF_CFG = { paragraph: 'ACADEMIA OMATAPALO, inaugurada em 2021, tem como objetivo primordial a formação de quadros e funcionários do Grupo, com vista ao desenvolvimento e especialização dos seus profissionais.', badge: 'Desde 2021', stats: DEF_STATS, gallery: DEF_GALLERY, hero_img: '/Academia-barra.jpg' };
+
+// Cache: key → translated text
+const gtCache = new Map<string, string>();
+async function gtx(text: string, lang: string): Promise<string> {
+  if (!text) return text;
+  const key = `${lang}:${text.slice(0, 40)}`;
+  if (gtCache.has(key)) return gtCache.get(key)!;
+  const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=pt&tl=${lang}&dt=t&q=${encodeURIComponent(text)}`;
+  try {
+    const data = await fetch(url).then(r => r.json());
+    const result = data[0]?.map((c: [string]) => c[0]).join('') ?? text;
+    gtCache.set(key, result);
+    return result;
+  } catch { return text; }
+}
 
 function useCountUp(target: number, duration = 1800, active = false) {
   const [count, setCount] = useState(0);
@@ -49,6 +65,7 @@ function StatItem({ value, label, prefix, suffix, active }: { value: number; lab
 }
 
 export default function Academia() {
+  const { t, locale } = useLanguage();
   const sectionRef = useRef<HTMLElement>(null);
   const [active, setActive] = useState(false);
   const [hoveredImg, setHoveredImg] = useState<number | null>(null);
@@ -59,6 +76,13 @@ export default function Academia() {
       if (data?.value) try { setCfg(c => ({ ...c, ...JSON.parse(data.value) })); } catch {}
     });
   }, []);
+
+  const [displayParagraph, setDisplayParagraph] = useState(cfg.paragraph);
+
+  useEffect(() => {
+    if (locale === 'pt') { setDisplayParagraph(cfg.paragraph); return; }
+    gtx(cfg.paragraph, locale).then(setDisplayParagraph);
+  }, [cfg.paragraph, locale]);
 
   useEffect(() => {
     import('gsap').then(({ gsap }) => {
@@ -115,7 +139,7 @@ export default function Academia() {
                 />
               </div>
               <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'clamp(15px,1.35vw,18px)', color: '#ffffff', lineHeight: 1.85, margin: '0 0 32px' }}>
-                {cfg.paragraph}
+                {displayParagraph}
               </p>
             </div>
           </div>
@@ -139,7 +163,7 @@ export default function Academia() {
               fontSize: '13px', letterSpacing: '0.06em',
               padding: '6px 14px', borderRadius: 2,
             }}>
-              {cfg.badge}
+              {locale !== 'pt' ? t.academia.badge : cfg.badge}
             </div>
           </div>
         </div>
@@ -150,7 +174,7 @@ export default function Academia() {
         {/* ─── Stats bar ─── */}
         <div className="ac-reveal" style={{ opacity: 0, display: 'flex', marginTop: 0, borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
           {cfg.stats.map((s, i) => (
-            <StatItem key={i} {...s} active={active} />
+            <StatItem key={i} {...s} label={locale !== 'pt' ? t.academia.stats[i] : s.label} active={active} />
           ))}
         </div>
       </div>
@@ -213,4 +237,3 @@ export default function Academia() {
     </section>
   );
 }
-
