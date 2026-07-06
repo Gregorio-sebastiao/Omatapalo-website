@@ -14,8 +14,31 @@ const COUNTRIES = [
   { name: 'EUA',         code: 'US', continent: 'América do Norte', sub: 'Parcerias estratégicas e de investimento', x: 24, y: 31, labelLeft: false },
 ];
 
+const COUNTRIES_EN = [
+  { ...COUNTRIES[0], continent: 'Africa',        sub: 'HQ · Lubango — all provinces' },
+  { ...COUNTRIES[1], continent: 'Africa',        sub: 'Infrastructure and civil construction' },
+  { ...COUNTRIES[2], continent: 'Africa',        sub: 'Mining and public works' },
+  { ...COUNTRIES[3], continent: 'Africa',        sub: 'Democratic Republic of the Congo' },
+  { ...COUNTRIES[4], continent: 'Europe',        sub: 'Representation and European partnerships' },
+  { ...COUNTRIES[5], continent: 'Europe',        sub: 'Commercial and technical partnerships' },
+  { ...COUNTRIES[6], continent: 'Europe',        sub: 'Strategic and financial partnerships' },
+  { ...COUNTRIES[7], continent: 'North America', sub: 'Strategic and investment partnerships' },
+];
+
+const COUNTRIES_FR = [
+  { ...COUNTRIES[0], continent: 'Afrique',        sub: 'Siège · Lubango — toutes les provinces' },
+  { ...COUNTRIES[1], continent: 'Afrique',        sub: 'Infrastructure et construction civile' },
+  { ...COUNTRIES[2], continent: 'Afrique',        sub: 'Mines et travaux publics' },
+  { ...COUNTRIES[3], continent: 'Afrique',        sub: 'République Démocratique du Congo' },
+  { ...COUNTRIES[4], continent: 'Europe',         sub: 'Représentation et partenariats européens' },
+  { ...COUNTRIES[5], continent: 'Europe',         sub: 'Partenariats commerciaux et techniques' },
+  { ...COUNTRIES[6], continent: 'Europe',         sub: 'Partenariats stratégiques et financiers' },
+  { ...COUNTRIES[7], continent: 'Amérique du Nord', sub: "Partenariats stratégiques et d'investissement" },
+];
+
 export default function Mundo() {
-  const { t } = useLanguage();
+  const { t, locale } = useLanguage();
+  const countries = locale === 'en' ? COUNTRIES_EN : locale === 'fr' ? COUNTRIES_FR : COUNTRIES;
   const wrapperRef  = useRef<HTMLDivElement>(null);
   const stickyRef   = useRef<HTMLDivElement>(null);
   const [visibleCount, setVisibleCount] = useState(0);
@@ -54,7 +77,7 @@ export default function Mundo() {
 
   return (
     /* tall wrapper gives scroll room for pin reveals */
-    <div ref={wrapperRef} id="mundo" style={{ height: `${100 + COUNTRIES.length * 18}vh`, position: 'relative' }}>
+    <div ref={wrapperRef} id="mundo" style={{ height: `${100 + countries.length * 18}vh`, position: 'relative' }}>
       <div ref={stickyRef} style={{ position: 'sticky', top: 0, height: '100vh', overflow: 'hidden', background: '#1a396e' }}>
 
         {/* grid texture */}
@@ -77,7 +100,7 @@ export default function Mundo() {
             <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at center, transparent 30%, #1a396e 85%)' }} />
 
         {/* ── Pins on map ── */}
-          {COUNTRIES.map((c, i) => {
+          {countries.map((c, i) => {
             const visible = i < visibleCount;
             const isHov   = hoveredPin === i;
             return (
@@ -177,10 +200,10 @@ export default function Mundo() {
             {/* scroll progress indicator */}
             <div className="mundo-hdr-el" style={{ opacity: 0, display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 8 }}>
               <div style={{ fontFamily: 'var(--font-label)', fontSize: 9, letterSpacing: '0.16em', textTransform: 'uppercase', color: '#fff' }}>
-                {visibleCount}/{COUNTRIES.length} países
+                {visibleCount}/{countries.length} países
               </div>
               <div style={{ width: 80, height: 1, background: 'rgba(255,255,255,0.3)', borderRadius: 1, overflow: 'hidden' }}>
-                <div style={{ height: '100%', background: '#fff', width: `${(visibleCount / COUNTRIES.length) * 100}%`, transition: 'width .3s ease' }} />
+                <div style={{ height: '100%', background: '#fff', width: `${(visibleCount / countries.length) * 100}%`, transition: 'width .3s ease' }} />
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                 <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><rect width="10" height="10" fill="#fff" /></svg>
