@@ -32,6 +32,16 @@ const DEFAULT_eventos: Evento[] = [
 
 const VISIBLE = 3;
 
+const ENG_CONST: Record<string, string> = {
+  en: 'Engineering and Construction',
+  fr: 'Génie Civil et Construction',
+};
+
+function fixProperNouns(text: string, locale: string): string {
+  const repl = ENG_CONST[locale];
+  return repl ? text.replace(/Engenharia e Construção/gi, repl) : text;
+}
+
 const EYEBROW: Record<string, string> = { pt: 'História', en: 'History', fr: 'Histoire' };
 const TITULO: Record<string, { p1: string; p2: string }> = {
   pt: { p1: 'Marcos', p2: 'Históricos' },
@@ -72,8 +82,8 @@ export default function Historia() {
     if (t) { setPalavra1(t.p1); setPalavra2(t.p2); }
     Promise.all(rawEventos.map(async e => ({
       ...e,
-      title: await gtx(e.title, locale),
-      desc:  await gtx(e.desc,  locale),
+      title: fixProperNouns(await gtx(e.title, locale), locale),
+      desc:  fixProperNouns(await gtx(e.desc,  locale), locale),
     }))).then(setEventos);
   }, [rawEventos, rawPalavra1, rawPalavra2, locale]);
 
