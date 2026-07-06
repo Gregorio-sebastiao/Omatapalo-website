@@ -5,6 +5,36 @@ import { createClient } from '@/lib/supabase/client';
 import Link from 'next/link';
 import { SECTORS, type Company, type Sector } from '@/data/empresas';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
+import { gtx } from '@/lib/i18n/gtx';
+
+const AREA_EN: Record<string, string> = {
+  'Agro-negócio': 'Agribusiness', 'Pescas': 'Fisheries',
+  'Mineração – Ouro': 'Mining – Gold', 'Mineração – Diamantes': 'Mining – Diamonds',
+  'Engenharia e Construção': 'Engineering & Construction', 'Metalomecânica': 'Metal Engineering',
+  'Extracção de Granito': 'Granite Quarrying', 'Geotecnia': 'Geotechnics',
+  'Instalações Especiais': 'Special Installations', 'Captação de Água': 'Water Supply',
+  'Carpintaria': 'Carpentry', 'Energia': 'Energy',
+  'Gestão de Edifícios': 'Building Management', 'Imobiliário': 'Real Estate',
+  'Turismo': 'Tourism', 'Trading': 'Trading', 'Transportes': 'Transport',
+  'Arquitectura de Interiores': 'Interior Design',
+};
+const AREA_FR: Record<string, string> = {
+  'Agro-negócio': 'Agro-industrie', 'Pescas': 'Pêche',
+  'Mineração – Ouro': 'Mines – Or', 'Mineração – Diamantes': 'Mines – Diamants',
+  'Engenharia e Construção': 'Génie Civil', 'Metalomecânica': 'Métallurgie',
+  'Extracção de Granito': 'Extraction de Granit', 'Geotecnia': 'Géotechnique',
+  'Instalações Especiais': 'Installations Spéciales', 'Captação de Água': 'Captage d\'eau',
+  'Carpintaria': 'Menuiserie', 'Energia': 'Énergie',
+  'Gestão de Edifícios': 'Gestion Immobilière', 'Imobiliário': 'Immobilier',
+  'Turismo': 'Tourisme', 'Trading': 'Commerce', 'Transportes': 'Transport',
+  'Arquitectura de Interiores': 'Architecture d\'Intérieur',
+};
+
+async function translateArea(area: string, locale: string): Promise<string> {
+  if (locale === 'pt' || !area) return area;
+  const map = locale === 'en' ? AREA_EN : AREA_FR;
+  return map[area] ?? await gtx(area, locale);
+}
 
 /* ── Company card ──────────────────────────────────────────── */
 function TiltCard({ company, index, visitarSite }: { company: Company; index: number; visitarSite: string }) {
@@ -96,6 +126,7 @@ export default function Negocios() {
   const gridRef     = useRef<HTMLDivElement>(null);
   const bgTextRef   = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(0);
+  const [rawSectors, setRawSectors] = useState<Sector[]>(SECTORS);
   const [sectors, setSectors] = useState<Sector[]>(SECTORS);
   const [title1, setTitle1] = useState('Empresas');
   const [title2, setTitle2] = useState('do Grupo');
@@ -113,7 +144,7 @@ export default function Negocios() {
       }
       if (!data) return;
       for (const row of data) {
-        if (row.field === 'sectors') { try { setSectors(JSON.parse(row.value)); } catch {} }
+        if (row.field === 'sectors') { try { setRawSectors(JSON.parse(row.value)); } catch {} }
         if (row.field === 'intro') setIntro(row.value);
         if (row.field === 'title1') setTitle1(row.value);
         if (row.field === 'title2') setTitle2(row.value);
@@ -121,6 +152,18 @@ export default function Negocios() {
     }
     load();
   }, [locale]);
+
+  useEffect(() => {
+    if (locale === 'pt') { setSectors(rawSectors); return; }
+    Promise.all(rawSectors.map(async s => ({
+      ...s,
+      companies: await Promise.all(s.companies.map(async c => ({
+        ...c,
+        area: await translateArea(c.area ?? '', locale),
+      }))),
+    }))).then(setSectors);
+  }, [rawSectors, locale]);
+
   const dirRef      = useRef<1 | -1>(1);
 
   /* entrance */
