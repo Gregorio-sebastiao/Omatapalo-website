@@ -96,6 +96,7 @@ export default function Nav() {
   const [ptNav, setPtNav] = useState<NavEntry[]>(DEFAULT_NAV.map(n => ({ ...n, sub: n.sub?.map(s => ({ t: s.t, href: s.href })) })));
   const DEFAULT_LOGO = '/logo/LOGO OMT 1.png';
   const [logoUrl, setLogoUrl] = useState(DEFAULT_LOGO);
+  const [langOpen, setLangOpen] = useState(false);
 
   const nav = locale === 'pt' ? ptNav : buildTranslatedNav(t.nav);
   const allPages = locale === 'pt' ? ALL_PAGES : buildTranslatedPages(t.nav);
@@ -126,10 +127,17 @@ export default function Nav() {
   }, []);
 
   useEffect(() => {
-    const fn = (e: KeyboardEvent) => { if (e.key === 'Escape') setOpen(false); };
+    const fn = (e: KeyboardEvent) => { if (e.key === 'Escape') { setOpen(false); setLangOpen(false); } };
     window.addEventListener('keydown', fn);
     return () => window.removeEventListener('keydown', fn);
   }, []);
+
+  useEffect(() => {
+    if (!langOpen) return;
+    const fn = (e: MouseEvent) => { if (!(e.target as Element).closest('[data-lang-dropdown]')) setLangOpen(false); };
+    document.addEventListener('mousedown', fn);
+    return () => document.removeEventListener('mousedown', fn);
+  }, [langOpen]);
 
   useEffect(() => {
     document.body.style.overflow = open ? 'hidden' : '';
@@ -222,51 +230,49 @@ export default function Nav() {
               {t.nav.contactos}
             </a>
 
-            {/* Language switcher — desktop */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: 2, marginLeft: 12, borderLeft: '1px solid rgba(255,255,255,0.15)', paddingLeft: 12 }}>
-              {FLAGS.map(({ locale: l, countryCode, label }) => (
-                <button
-                  key={l}
-                  onClick={() => setLocale(l)}
-                  title={label}
-                  style={{
-                    background: locale === l ? 'rgba(255,255,255,0.12)' : 'none',
-                    border: locale === l ? '1px solid rgba(255,255,255,0.25)' : '1px solid transparent',
-                    cursor: 'pointer',
-                    padding: '5px 10px', borderRadius: 6,
-                    display: 'flex', alignItems: 'center', gap: 6,
-                    opacity: locale === l ? 1 : 0.5,
-                    transition: 'all .2s',
-                  }}
-                >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={`https://flagcdn.com/24x18/${countryCode}.png`} width={24} height={18} alt={label} style={{ borderRadius: 2, display: 'block', flexShrink: 0 }} />
-                  <span style={{ fontFamily: 'var(--font-label)', fontSize: 11, letterSpacing: '0.12em', color: '#fff', fontWeight: 700 }}>{label}</span>
-                </button>
-              ))}
+            {/* Language switcher — desktop dropdown */}
+            <div data-lang-dropdown style={{ position: 'relative', marginLeft: 12, borderLeft: '1px solid rgba(255,255,255,0.15)', paddingLeft: 12 }}>
+              <button
+                onClick={() => setLangOpen(o => !o)}
+                style={{ display: 'flex', alignItems: 'center', gap: 6, background: 'none', border: '1px solid rgba(255,255,255,0.2)', borderRadius: 6, padding: '5px 10px', cursor: 'pointer', color: '#fff' }}
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                <span style={{ fontFamily: 'var(--font-label)', fontSize: 11, letterSpacing: '0.12em', fontWeight: 700 }}>{locale.toUpperCase()}</span>
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" style={{ transition: 'transform .2s', transform: langOpen ? 'rotate(180deg)' : 'none' }}><polyline points="6 9 12 15 18 9"/></svg>
+              </button>
+              {langOpen && (
+                <div style={{ position: 'absolute', top: 'calc(100% + 8px)', right: 0, background: '#1a396e', border: '1px solid rgba(255,255,255,0.15)', borderRadius: 8, overflow: 'hidden', minWidth: 90, zIndex: 100, boxShadow: '0 8px 24px rgba(0,0,0,0.3)' }}>
+                  {FLAGS.map(({ locale: l, label }) => (
+                    <button key={l} onClick={() => { setLocale(l); setLangOpen(false); }}
+                      style={{ display: 'block', width: '100%', padding: '9px 16px', background: locale === l ? 'rgba(255,255,255,0.12)' : 'none', border: 'none', cursor: 'pointer', fontFamily: 'var(--font-label)', fontSize: 11, letterSpacing: '0.12em', fontWeight: 700, color: '#fff', textAlign: 'left' }}>
+                      {label}
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
           </nav>
 
-          {/* Language switcher — mobile (always visible, hidden on lg where desktop nav shows flags) */}
-          <div className="lg:hidden flex items-center gap-1 ml-auto mr-1">
-            {FLAGS.map(({ locale: l, countryCode, label }) => (
-              <button
-                key={l}
-                onClick={() => setLocale(l)}
-                title={label}
-                style={{
-                  background: 'none', border: 'none', cursor: 'pointer',
-                  padding: '3px 5px', borderRadius: 4,
-                  display: 'flex', alignItems: 'center', gap: 5,
-                  opacity: locale === l ? 1 : 0.35,
-                  transition: 'opacity .2s',
-                }}
-              >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={`https://flagcdn.com/20x15/${countryCode}.png`} width={20} height={15} alt={label} style={{ borderRadius: 2, display: 'block' }} />
-                <span style={{ fontFamily: 'var(--font-label)', fontSize: 10, letterSpacing: '0.1em', color: '#fff', fontWeight: 700 }}>{label}</span>
-              </button>
-            ))}
+          {/* Language switcher — mobile dropdown */}
+          <div data-lang-dropdown style={{ position: 'relative' }} className="lg:hidden ml-auto mr-1">
+            <button
+              onClick={() => setLangOpen(o => !o)}
+              style={{ display: 'flex', alignItems: 'center', gap: 5, background: 'none', border: '1px solid rgba(255,255,255,0.2)', borderRadius: 6, padding: '4px 8px', cursor: 'pointer', color: '#fff' }}
+            >
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+              <span style={{ fontFamily: 'var(--font-label)', fontSize: 10, letterSpacing: '0.12em', fontWeight: 700 }}>{locale.toUpperCase()}</span>
+              <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            {langOpen && (
+              <div style={{ position: 'absolute', top: 'calc(100% + 6px)', right: 0, background: '#1a396e', border: '1px solid rgba(255,255,255,0.15)', borderRadius: 8, overflow: 'hidden', minWidth: 80, zIndex: 100, boxShadow: '0 8px 24px rgba(0,0,0,0.3)' }}>
+                {FLAGS.map(({ locale: l, label }) => (
+                  <button key={l} onClick={() => { setLocale(l); setLangOpen(false); }}
+                    style={{ display: 'block', width: '100%', padding: '8px 14px', background: locale === l ? 'rgba(255,255,255,0.12)' : 'none', border: 'none', cursor: 'pointer', fontFamily: 'var(--font-label)', fontSize: 10, letterSpacing: '0.12em', fontWeight: 700, color: '#fff', textAlign: 'left' }}>
+                    {label}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Burger */}
