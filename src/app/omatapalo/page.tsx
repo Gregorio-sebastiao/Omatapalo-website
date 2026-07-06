@@ -1,6 +1,8 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { createClient } from '@/lib/supabase/client';
+import { useLanguage } from '@/lib/i18n/LanguageContext';
+import { gtx } from '@/lib/i18n/gtx';
 import Nav from '@/components/Nav';
 import Footer from '@/components/Footer';
 import PageHero from '@/components/PageHero';
@@ -12,13 +14,20 @@ import ConselhoAdministracao from '@/components/ConselhoAdministracao';
 const DEFAULT_INTRO = 'O Grupo Omatapalo é um grupo empresarial angolano com um portefólio diversificado de empresas que actuam em sectores estratégicos da economia, criando valor através de projectos e investimentos que contribuem para o desenvolvimento sustentável do país.';
 
 export default function OmatapaloPage() {
+  const { locale } = useLanguage();
+  const [rawIntro, setRawIntro] = useState(DEFAULT_INTRO);
   const [intro, setIntro] = useState(DEFAULT_INTRO);
 
   useEffect(() => {
     createClient().from('site_content').select('value').eq('page', 'omatapalo').eq('field', 'intro_destaque').single().then(({ data }) => {
-      if (data?.value) setIntro(data.value);
+      if (data?.value) setRawIntro(data.value);
     });
   }, []);
+
+  useEffect(() => {
+    if (locale === 'pt') { setIntro(rawIntro); return; }
+    gtx(rawIntro, locale).then(setIntro);
+  }, [rawIntro, locale]);
 
   return (
     <>
