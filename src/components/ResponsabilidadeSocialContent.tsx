@@ -3,6 +3,8 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import type React from 'react';
 import { createClient } from '@/lib/supabase/client';
+import { useLanguage } from '@/lib/i18n/LanguageContext';
+import { gtx } from '@/lib/i18n/gtx';
 
 /* ── DATA ──────────────────────────────────────────────────────── */
 
@@ -79,14 +81,17 @@ const gridTex: React.CSSProperties = {
 };
 
 export default function ResponsabilidadeSocialContent() {
+  const { t, locale } = useLanguage();
   const [active, setActive]       = useState<string | null>(null);
   const [videoOpen, setVideoOpen] = useState(false);
   const [lbIdx, setLbIdx]         = useState<number | null>(null);
   const [stats, setStats]         = useState(DEF_STATS);
   const [texts, setTexts]         = useState(DEF_TEXTS);
   const [odsData, setOdsData]     = useState(ODS_DEF);
+  const [displayTexts, setDisplayTexts] = useState(DEF_TEXTS);
+  const [displayOds, setDisplayOds]     = useState(ODS_DEF);
   const projectsRef               = useRef<HTMLDivElement>(null);
-  const activeOds = odsData.find(o => o.key === active) ?? null;
+  const activeOds = displayOds.find(o => o.key === active) ?? null;
 
   useEffect(() => {
     createClient().from('site_settings').select('value').eq('key', 'responsabilidade_cfg').single().then(({ data }) => {
@@ -99,6 +104,32 @@ export default function ResponsabilidadeSocialContent() {
       } catch {}
     });
   }, []);
+
+  useEffect(() => {
+    if (locale === 'pt') {
+      setDisplayTexts(texts);
+      setDisplayOds(odsData.map((o, i) => ({ ...o, label: (t as any).responsabilidade?.odsLabels?.[i] ?? o.label })));
+      return;
+    }
+    // Traduz textos longos via gtx
+    Promise.all([
+      gtx(texts.citacao, locale),
+      gtx(texts.p1, locale),
+      gtx(texts.p2, locale),
+    ]).then(([citacao, p1, p2]) => setDisplayTexts({ citacao, p1, p2 }));
+
+    // Traduz ODS descriptions e projects
+    Promise.all(odsData.map(async (o, i) => ({
+      ...o,
+      label: (t as any).responsabilidade?.odsLabels?.[i] ?? o.label,
+      desc: await gtx(o.desc, locale),
+      projects: await Promise.all(o.projects.map(async p => ({
+        ...p,
+        title: await gtx(p.title, locale),
+        desc: await gtx(p.desc, locale),
+      }))),
+    }))).then(setDisplayOds);
+  }, [texts, odsData, locale]);
 
   const selectOds = useCallback((key: string) => {
     setActive(prev => {
@@ -143,13 +174,13 @@ export default function ResponsabilidadeSocialContent() {
           {/* eyebrow */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 'clamp(20px,3vh,32px)' }}>
             <svg width="10" height="10" viewBox="0 0 10 10"><rect width="10" height="10" fill="#1a396e" /></svg>
-            <span style={{ fontFamily: 'var(--font-label)', fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#1a396e' }}>Responsabilidade Social · Grupo Omatapalo</span>
+            <span style={{ fontFamily: 'var(--font-label)', fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#1a396e' }}>{`${(t as any).responsabilidade?.eyebrow ?? 'Responsabilidade Social'} · Grupo Omatapalo`}</span>
           </div>
 
           {/* Título full-width */}
           <h2 style={{ margin: '0 0 clamp(24px,4vh,40px)', fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 'clamp(2.4rem,5vw,5.5rem)', color: '#07101f', letterSpacing: '-0.05em', lineHeight: 0.83, textTransform: 'uppercase' }}>
-            Missão Fazer<br />
-            <span style={{ color: 'transparent', WebkitTextStroke: '2.5px rgba(7,16,31,0.15)' }}>Sorrir</span>
+            {(t as any).responsabilidade?.missionTitle1 ?? 'Missão Fazer'}<br />
+            <span style={{ color: 'transparent', WebkitTextStroke: '2.5px rgba(7,16,31,0.15)' }}>{(t as any).responsabilidade?.missionTitle2 ?? 'Sorrir'}</span>
           </h2>
 
           {/* vídeo + citação lado a lado */}
@@ -163,7 +194,7 @@ export default function ResponsabilidadeSocialContent() {
                 <div style={{ width: 52, height: 52, background: 'rgba(255,255,255,0.95)', borderRadius: 2, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="#07101f" style={{ marginLeft: 3 }}><polygon points="5 3 19 12 5 21 5 3" /></svg>
                 </div>
-                <span style={{ fontFamily: 'var(--font-label)', fontSize: 9, letterSpacing: '0.18em', textTransform: 'uppercase', color: '#fff' }}>RSE na Omatapalo</span>
+                <span style={{ fontFamily: 'var(--font-label)', fontSize: 9, letterSpacing: '0.18em', textTransform: 'uppercase', color: '#fff' }}>{(t as any).responsabilidade?.videoLabel ?? 'RSE na Omatapalo'}</span>
               </div>
             </div>
             {/* citação */}
@@ -171,15 +202,15 @@ export default function ResponsabilidadeSocialContent() {
               <div>
                 <div style={{ fontSize: 'clamp(2rem,3vw,3.5rem)', color: 'rgba(26,57,110,0.2)', fontFamily: 'Georgia, serif', lineHeight: 0.8, marginBottom: 10 }}>"</div>
                 <blockquote style={{ margin: 0, padding: 0, fontFamily: 'var(--font-sans)', fontSize: 'clamp(14px,1.15vw,18px)', color: '#07101f', lineHeight: 1.75, fontStyle: 'italic' }}>
-                  {texts.citacao}
+                  {displayTexts.citacao}
                 </blockquote>
               </div>
               <div style={{ borderTop: '1px solid rgba(7,16,31,0.1)', paddingTop: 24, display: 'flex', flexDirection: 'column', gap: 12 }}>
                 <p style={{ margin: 0, fontFamily: 'var(--font-sans)', fontSize: 'clamp(12px,0.9vw,14px)', color: '#222936', lineHeight: 1.8 }}>
-                  {texts.p1}
+                  {displayTexts.p1}
                 </p>
                 <p style={{ margin: 0, fontFamily: 'var(--font-sans)', fontSize: 'clamp(12px,0.9vw,14px)', color: '#222936', lineHeight: 1.8 }}>
-                  {texts.p2}
+                  {displayTexts.p2}
                 </p>
               </div>
             </div>
@@ -190,7 +221,7 @@ export default function ResponsabilidadeSocialContent() {
             {stats.map((s, i) => (
               <div key={i} style={{ paddingLeft: i > 0 ? 'clamp(16px,2.5vw,32px)' : 0, borderLeft: i > 0 ? '1px solid rgba(255,255,255,0.07)' : 'none' }}>
                 <div style={{ fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 'clamp(1.4rem,2.5vw,2.8rem)', color: '#07101f', letterSpacing: '-0.05em', lineHeight: 1, marginBottom: 5 }}>{s.v}</div>
-                <div style={{ fontFamily: 'var(--font-label)', fontSize: 9, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#07101f' }}>{s.l}</div>
+                <div style={{ fontFamily: 'var(--font-label)', fontSize: 9, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#07101f' }}>{((t as any).responsabilidade?.stats?.[i]) ?? s.l}</div>
               </div>
             ))}
           </div>
@@ -203,11 +234,11 @@ export default function ResponsabilidadeSocialContent() {
         <div className="wrap">
           <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 'clamp(32px,4vw,48px)' }}>
             <svg width="10" height="10" viewBox="0 0 10 10"><rect width="10" height="10" fill="#1a396e" /></svg>
-            <span style={{ fontFamily: 'var(--font-label)', fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#94A3B8' }}>Agenda 2030 · Seleccione um objectivo</span>
+            <span style={{ fontFamily: 'var(--font-label)', fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#94A3B8' }}>{(t as any).responsabilidade?.agenda ?? 'Agenda 2030 · Seleccione um objectivo'}</span>
           </div>
 
           <div className="rsa-tiles" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'clamp(12px,2vw,20px)', marginBottom: active ? 'clamp(8px,1vw,16px)' : 0 }}>
-            {odsData.map(o => {
+            {displayOds.map(o => {
               const isActive = active === o.key;
               return (
                 <button
@@ -242,18 +273,18 @@ export default function ResponsabilidadeSocialContent() {
                         {o.totalDirecta > 0 && (
                           <div>
                             <div style={{ fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 'clamp(1rem,1.5vw,1.4rem)', color: isActive ? '#fff' : o.color, letterSpacing: '-0.04em', lineHeight: 1 }}>{fmtNum(o.totalDirecta)}</div>
-                            <div style={{ fontFamily: 'var(--font-label)', fontSize: 8, letterSpacing: '0.12em', textTransform: 'uppercase', color: isActive ? 'rgba(255,255,255,0.4)' : '#94A3B8', marginTop: 3 }}>directas</div>
+                            <div style={{ fontFamily: 'var(--font-label)', fontSize: 8, letterSpacing: '0.12em', textTransform: 'uppercase', color: isActive ? 'rgba(255,255,255,0.4)' : '#94A3B8', marginTop: 3 }}>{(t as any).responsabilidade?.directas ?? 'directas'}</div>
                           </div>
                         )}
                         {o.totalIndirecta && (
                           <div>
                             <div style={{ fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 'clamp(1rem,1.5vw,1.4rem)', color: isActive ? '#fff' : o.color, letterSpacing: '-0.04em', lineHeight: 1 }}>{fmtNum(o.totalIndirecta)}</div>
-                            <div style={{ fontFamily: 'var(--font-label)', fontSize: 8, letterSpacing: '0.12em', textTransform: 'uppercase', color: isActive ? 'rgba(255,255,255,0.4)' : '#94A3B8', marginTop: 3 }}>indirectas</div>
+                            <div style={{ fontFamily: 'var(--font-label)', fontSize: 8, letterSpacing: '0.12em', textTransform: 'uppercase', color: isActive ? 'rgba(255,255,255,0.4)' : '#94A3B8', marginTop: 3 }}>{(t as any).responsabilidade?.indirectas ?? 'indirectas'}</div>
                           </div>
                         )}
                       </div>
                       <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontFamily: 'var(--font-label)', fontSize: 9, letterSpacing: '0.14em', textTransform: 'uppercase', color: isActive ? 'rgba(255,255,255,0.55)' : o.color }}>
-                        {o.projects.length} projecto{o.projects.length > 1 ? 's' : ''}
+                        {o.projects.length} {o.projects.length > 1 ? ((t as any).responsabilidade?.projectoPlur ?? 'projectos') : ((t as any).responsabilidade?.projectoSing ?? 'projecto')}
                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" style={{ transform: isActive ? 'rotate(180deg)' : 'none', transition: 'transform 0.25s' }}><polyline points="6 9 12 15 18 9" /></svg>
                       </div>
                     </div>
@@ -286,20 +317,20 @@ export default function ResponsabilidadeSocialContent() {
                     <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
                       <span style={{ fontFamily: 'var(--font-label)', fontSize: 9, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#07101f' }}>{p.location}</span>
                       <span style={{ width: 3, height: 3, borderRadius: '50%', background: '#CBD5E1', display: 'inline-block' }} />
-                      <span style={{ fontFamily: 'var(--font-label)', fontSize: 9, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#07101f' }}>Desde {p.since}</span>
+                      <span style={{ fontFamily: 'var(--font-label)', fontSize: 9, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#07101f' }}>{(t as any).responsabilidade?.desde ?? 'Desde'} {p.since}</span>
                     </div>
                   </div>
                   <div style={{ textAlign: 'right', flexShrink: 0, display: 'flex', flexDirection: 'column', gap: 4 }}>
                     {p.directa && (
                       <div>
                         <div style={{ fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 'clamp(1rem,1.5vw,1.4rem)', color: '#1a396e', letterSpacing: '-0.04em', lineHeight: 1 }}>{fmtNum(p.directa)}</div>
-                        <div style={{ fontFamily: 'var(--font-label)', fontSize: 8, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#07101f', marginTop: 2 }}>directas</div>
+                        <div style={{ fontFamily: 'var(--font-label)', fontSize: 8, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#07101f', marginTop: 2 }}>{(t as any).responsabilidade?.directas ?? 'directas'}</div>
                       </div>
                     )}
                     {p.indirecta && (
                       <div>
                         <div style={{ fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 'clamp(0.8rem,1.1vw,1rem)', color: '#1a396e', letterSpacing: '-0.03em', lineHeight: 1 }}>{fmtNum(p.indirecta)}</div>
-                        <div style={{ fontFamily: 'var(--font-label)', fontSize: 8, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#07101f', marginTop: 2 }}>indirectas</div>
+                        <div style={{ fontFamily: 'var(--font-label)', fontSize: 8, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#07101f', marginTop: 2 }}>{(t as any).responsabilidade?.indirectas ?? 'indirectas'}</div>
                       </div>
                     )}
                   </div>
