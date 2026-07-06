@@ -1,15 +1,12 @@
 ﻿'use client';
 
 import { useEffect, useRef } from 'react';
+import { useLanguage } from '@/lib/i18n/LanguageContext';
 
-const ODS = [
-  { n: 'ODS 1', t: 'Erradicar a Pobreza' },
-  { n: 'ODS 2', t: 'Erradicar a Fome' },
-  { n: 'ODS 3', t: 'Saúde de Qualidade' },
-  { n: 'ODS 4', t: 'Educação de Qualidade' },
-];
+const ODS_NUMS = ['ODS 1', 'ODS 2', 'ODS 3', 'ODS 4'];
 
 export default function SustentabilidadeHome() {
+  const { t } = useLanguage();
   const sectionRef = useRef<HTMLElement>(null);
   const imageRef   = useRef<HTMLDivElement>(null);
   const spinRef    = useRef<HTMLDivElement>(null);
@@ -96,7 +93,7 @@ export default function SustentabilidadeHome() {
         <div className="sus-reveal" style={{ opacity: 0, display: 'flex', alignItems: 'center', gap: 12, marginBottom: 'clamp(40px,6vw,72px)' }}>
           <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><rect width="10" height="10" fill="rgba(255,255,255,0.3)" /></svg>
           <span style={{ fontFamily: 'var(--font-label)', fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#fff' }}>
-            Sustentabilidade
+            {t.sustentabilidade.eyebrow}
           </span>
         </div>
 
@@ -110,11 +107,11 @@ export default function SustentabilidadeHome() {
               fontSize: 'clamp(1.8rem,3.2vw,4rem)', color: '#fff',
               letterSpacing: '-0.035em', lineHeight: 0.92, textTransform: 'uppercase',
             }}>
-              Construir<br />hoje<br />
-              <span style={{ color: 'transparent', WebkitTextStroke: '1.5px rgba(255,255,255,0.22)' }}>preservar<br />amanhã</span>
+              {t.sustentabilidade.title1}<br />{t.sustentabilidade.title2}<br />
+              <span style={{ color: 'transparent', WebkitTextStroke: '1.5px rgba(255,255,255,0.22)' }}>{t.sustentabilidade.title3}<br />{t.sustentabilidade.title4}</span>
             </h2>
             <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'clamp(13px,1vw,15px)', color: '#fff', lineHeight: 1.85, margin: 0 }}>
-              Acreditamos que o desenvolvimento só é verdadeiramente sustentável quando gera valor para as pessoas, para a economia e para o ambiente. É por isso que investimos continuamente em soluções energéticas renováveis e em práticas responsáveis que promovem um crescimento mais equilibrado e duradouro.
+              {t.sustentabilidade.description}
             </p>
           </div>
 
@@ -162,22 +159,22 @@ export default function SustentabilidadeHome() {
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             <div className="sus-reveal" style={{ opacity: 0, marginBottom: 20 }}>
               <p style={{ fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 'clamp(0.85rem,1.1vw,1rem)', color: '#fff', textTransform: 'uppercase', letterSpacing: '0.04em', margin: 0 }}>
-                O Nosso Contributo para a Agenda 2030
+                {t.sustentabilidade.agenda}
               </p>
             </div>
-            {ODS.map((o, i) => (
-              <div key={o.n} className="sus-reveal" style={{
+            {ODS_NUMS.map((num, i) => (
+              <div key={num} className="sus-reveal" style={{
                 opacity: 0,
                 paddingTop: 20, paddingBottom: 20,
                 borderTop: '1px solid rgba(255,255,255,0.08)',
-                borderBottom: i === ODS.length - 1 ? '1px solid rgba(255,255,255,0.08)' : 'none',
+                borderBottom: i === ODS_NUMS.length - 1 ? '1px solid rgba(255,255,255,0.08)' : 'none',
                 display: 'flex', alignItems: 'center', gap: 16,
               }}>
                 <span style={{ fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 'clamp(1.4rem,2vw,2rem)', color: 'rgba(255,255,255,0.18)', letterSpacing: '-0.04em', flexShrink: 0 }}>
-                  {o.n}
+                  {num}
                 </span>
                 <span style={{ fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 'clamp(0.85rem,1.1vw,1rem)', color: '#fff', textTransform: 'uppercase', letterSpacing: '0.04em', lineHeight: 1.2 }}>
-                  {o.t}
+                  {t.sustentabilidade.ods[i]}
                 </span>
               </div>
             ))}

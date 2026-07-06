@@ -79,6 +79,18 @@ export const translations = {
     },
     sustentabilidade: {
       eyebrow: 'Sustentabilidade',
+      title1: 'Construir',
+      title2: 'hoje',
+      title3: 'preservar',
+      title4: 'amanhã',
+      description: 'Acreditamos que o desenvolvimento só é verdadeiramente sustentável quando gera valor para as pessoas, para a economia e para o ambiente. É por isso que investimos continuamente em soluções energéticas renováveis e em práticas responsáveis que promovem um crescimento mais equilibrado e duradouro.',
+      agenda: 'O Nosso Contributo para a Agenda 2030',
+      ods: [
+        'Erradicar a Pobreza',
+        'Erradicar a Fome',
+        'Saúde de Qualidade',
+        'Educação de Qualidade',
+      ],
     },
     responsabilidade: {
       eyebrow: 'Responsabilidade Social',
@@ -194,6 +206,18 @@ export const translations = {
     },
     sustentabilidade: {
       eyebrow: 'Sustainability',
+      title1: 'Build',
+      title2: 'today',
+      title3: 'preserve',
+      title4: 'tomorrow',
+      description: 'We believe that development is only truly sustainable when it generates value for people, the economy and the environment. That is why we continuously invest in renewable energy solutions and responsible practices that promote more balanced and lasting growth.',
+      agenda: 'Our Contribution to the 2030 Agenda',
+      ods: [
+        'No Poverty',
+        'Zero Hunger',
+        'Good Health & Well-being',
+        'Quality Education',
+      ],
     },
     responsabilidade: {
       eyebrow: 'Social Responsibility',
@@ -309,6 +333,18 @@ export const translations = {
     },
     sustentabilidade: {
       eyebrow: 'Durabilité',
+      title1: 'Construire',
+      title2: "aujourd'hui",
+      title3: 'préserver',
+      title4: 'demain',
+      description: "Nous croyons que le développement n'est véritablement durable que lorsqu'il génère de la valeur pour les personnes, l'économie et l'environnement. C'est pourquoi nous investissons continuellement dans des solutions énergétiques renouvelables et des pratiques responsables qui favorisent une croissance plus équilibrée et durable.",
+      agenda: "Notre Contribution à l'Agenda 2030",
+      ods: [
+        'Pas de Pauvreté',
+        'Faim Zéro',
+        'Bonne Santé et Bien-être',
+        'Éducation de Qualité',
+      ],
     },
     responsabilidade: {
       eyebrow: 'Responsabilité Sociale',
