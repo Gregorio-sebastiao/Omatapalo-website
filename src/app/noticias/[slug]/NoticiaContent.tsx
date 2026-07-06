@@ -72,7 +72,8 @@ export default function NoticiaContent({ slug }: { slug: string }) {
   // Translate whenever rawPost or locale changes
   useEffect(() => {
     if (!rawPost) return;
-    if (locale === 'pt') { setPost(rawPost); return; }
+    setPost(rawPost); // show PT immediately while translating
+    if (locale === 'pt') return;
     Promise.all([
       gtx(rawPost.title, locale),
       gtx(rawPost.excerpt ?? '', locale),
