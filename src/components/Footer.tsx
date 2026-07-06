@@ -4,6 +4,81 @@ import { useEffect, useState, type ReactElement } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
 
+const FOOTER_DESC: Record<string, string> = {
+  pt: 'Engenharia, Construção e Infra-estruturas a transformar Angola e o continente africano desde 2003. Fazemos acontecer.',
+  en: 'Engineering, Construction and Infrastructure transforming Angola and the African continent since 2003. We make it happen.',
+  fr: 'Ingénierie, Construction et Infrastructures transformant l\'Angola et le continent africain depuis 2003. Nous faisons arriver.',
+};
+
+const FOOTER_COLS: Record<string, { h: string; links: { t: string; href: string }[] }[]> = {
+  pt: [
+    { h: 'O Grupo', links: [
+      { t: 'O Grupo e os Negócios',     href: '/omatapalo' },
+      { t: 'Omatapalo no Mundo',        href: '/omatapalo#mundo' },
+      { t: 'História',                   href: '/omatapalo' },
+      { t: 'Conselho de Administração', href: '/omatapalo#conselho' },
+    ]},
+    { h: 'Atividade', links: [
+      { t: 'Portefólio',       href: '/portefolio' },
+      { t: 'Sustentabilidade', href: '/sustentabilidade' },
+      { t: 'Media',            href: '/media' },
+      { t: 'Contactos',        href: '/contactos' },
+    ]},
+    { h: 'Pessoas', links: [
+      { t: 'Pessoas',             href: '/pessoas' },
+      { t: 'CDH',                 href: '/cdh' },
+      { t: 'Missão Fazer Sorrir', href: '/responsabilidade-social#missao' },
+      { t: 'Trabalhar connosco',  href: '/contactos' },
+    ]},
+  ],
+  en: [
+    { h: 'The Group', links: [
+      { t: 'The Group & Businesses',  href: '/omatapalo' },
+      { t: 'Omatapalo in the World',  href: '/omatapalo#mundo' },
+      { t: 'History',                  href: '/omatapalo' },
+      { t: 'Board of Directors',       href: '/omatapalo#conselho' },
+    ]},
+    { h: 'Activity', links: [
+      { t: 'Portfolio',       href: '/portefolio' },
+      { t: 'Sustainability',  href: '/sustentabilidade' },
+      { t: 'Media',           href: '/media' },
+      { t: 'Contacts',        href: '/contactos' },
+    ]},
+    { h: 'People', links: [
+      { t: 'People',               href: '/pessoas' },
+      { t: 'CDH',                  href: '/cdh' },
+      { t: 'Mission Make Smile',   href: '/responsabilidade-social#missao' },
+      { t: 'Work with us',         href: '/contactos' },
+    ]},
+  ],
+  fr: [
+    { h: 'Le Groupe', links: [
+      { t: 'Le Groupe et ses Activités', href: '/omatapalo' },
+      { t: 'Omatapalo dans le Monde',    href: '/omatapalo#mundo' },
+      { t: 'Histoire',                    href: '/omatapalo' },
+      { t: 'Conseil d\'Administration',  href: '/omatapalo#conselho' },
+    ]},
+    { h: 'Activité', links: [
+      { t: 'Portefeuille',     href: '/portefolio' },
+      { t: 'Durabilité',       href: '/sustentabilidade' },
+      { t: 'Médias',           href: '/media' },
+      { t: 'Contacts',         href: '/contactos' },
+    ]},
+    { h: 'Personnes', links: [
+      { t: 'Personnes',            href: '/pessoas' },
+      { t: 'CDH',                  href: '/cdh' },
+      { t: 'Mission Faire Sourire',href: '/responsabilidade-social#missao' },
+      { t: 'Travailler avec nous', href: '/contactos' },
+    ]},
+  ],
+};
+
+const LEGAL: Record<string, string[]> = {
+  pt: ['Termos de Uso', 'Cookies'],
+  en: ['Terms of Use', 'Cookies'],
+  fr: ['Conditions d\'utilisation', 'Cookies'],
+};
+
 const DEFAULT_COLS = [
   { h: 'O Grupo', links: [
     { t: 'O Grupo e os Negócios',     href: '/omatapalo' },
@@ -42,21 +117,25 @@ const DEFAULT_SOCIALS = {
 };
 
 export default function Footer() {
-  const { t } = useLanguage();
+  const { t, locale } = useLanguage();
   const [socials, setSocials] = useState(DEFAULT_SOCIALS);
-  const [cols, setCols]       = useState(DEFAULT_COLS);
-  const [desc, setDesc]       = useState(DEFAULT_DESC);
+  const [rawCols, setRawCols] = useState(DEFAULT_COLS);
+  const [rawDesc, setRawDesc] = useState(DEFAULT_DESC);
 
   useEffect(() => {
     createClient().from('site_settings').select('key,value').in('key', ['social_links', 'footer_cols', 'footer_desc']).then(({ data }) => {
       if (!data) return;
       for (const row of data) {
         if (row.key === 'social_links') { try { setSocials(JSON.parse(row.value)); } catch {} }
-        if (row.key === 'footer_cols')  { try { setCols(JSON.parse(row.value)); } catch {} }
-        if (row.key === 'footer_desc')  setDesc(row.value);
+        if (row.key === 'footer_cols')  { try { setRawCols(JSON.parse(row.value)); } catch {} }
+        if (row.key === 'footer_desc')  setRawDesc(row.value);
       }
     });
   }, []);
+
+  // Use static translations if available, otherwise fall back to gtx-translated rawCols/rawDesc
+  const cols = (FOOTER_COLS[locale] ?? rawCols);
+  const desc = FOOTER_DESC[locale] ?? rawDesc;
 
   return (
     <footer style={{ background: '#1a396e', color: '#fff', paddingBlock: '120px var(--space-6)' }}>
@@ -92,6 +171,7 @@ export default function Footer() {
 
           {cols.map((c) => (
             <div key={c.h}>
+              <p style={{ fontFamily: 'var(--font-label)', fontSize: 10, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.45)', marginBottom: 18 }}>{c.h}</p>
               <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '11px' }}>
                 {c.links.map((l) => (
                   <li key={l.t}>
@@ -107,7 +187,7 @@ export default function Footer() {
           <span>© 2026 Grupo Omatapalo · {t.footer.rights}</span>
           <div style={{ display: 'flex', gap: 'var(--space-5)' }}>
             <a href="https://rsbzgeqgfseyeogexkwk.supabase.co/storage/v1/object/public/cms-media/uploads/1782502445398-Politica-Gestao_2023-10-27.pdf" target="_blank" rel="noopener noreferrer" style={{ color: '#fff', opacity: 0.6, textDecoration: 'none' }} className="ftr-link">Política do Sistema de Gestão Integrado</a>
-            {['Termos de Uso', 'Cookies'].map((l) => (
+            {(LEGAL[locale] ?? LEGAL.pt).map((l) => (
               <span key={l} style={{ color: '#fff', opacity: 0.6 }} className="ftr-link">{l}</span>
             ))}
           </div>
