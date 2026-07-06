@@ -92,7 +92,10 @@ export const translations = {
       download: 'Download',
     },
     certifications: {
-      eyebrow: 'Certificações',
+      eyebrow: 'Certificação',
+      title1: 'Padrões',
+      title2: 'de Excelência',
+      description: 'No Grupo Omatapalo, o compromisso com a segurança, a qualidade e a sustentabilidade orienta todas as nossas operações. As nossas certificações reflectem uma cultura de excelência, responsabilidade e confiança.',
     },
     manifesto: {
       eyebrow: 'O Nosso Manifesto',
@@ -198,7 +201,10 @@ export const translations = {
       download: 'Download',
     },
     certifications: {
-      eyebrow: 'Certifications',
+      eyebrow: 'Certification',
+      title1: 'Standards',
+      title2: 'of Excellence',
+      description: 'At Omatapalo Group, commitment to safety, quality and sustainability guides all our operations. Our certifications reflect a culture of excellence, responsibility and trust.',
     },
     manifesto: {
       eyebrow: 'Our Manifesto',
@@ -304,7 +310,10 @@ export const translations = {
       download: 'Télécharger',
     },
     certifications: {
-      eyebrow: 'Certifications',
+      eyebrow: 'Certification',
+      title1: 'Normes',
+      title2: "d'Excellence",
+      description: "Au Groupe Omatapalo, l'engagement envers la sécurité, la qualité et la durabilité guide toutes nos opérations. Nos certifications reflètent une culture d'excellence, de responsabilité et de confiance.",
     },
     manifesto: {
       eyebrow: 'Notre Manifeste',

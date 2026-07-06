@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import Image from 'next/image';
 import { createClient } from '@/lib/supabase/client';
+import { useLanguage } from '@/lib/i18n/LanguageContext';
 
 const FALLBACK_CERTS = [
   { id: 1, src: '/ISO-9001-3.png',          label: 'ISO 9001',          sub: 'Sistemas de Gestão da Qualidade',   sort_order: 1, link: '' },
@@ -154,6 +155,7 @@ function CertColumn({ cert, index, hovered, onEnter, onLeave }: {
 }
 
 export default function Certificacoes() {
+  const { t } = useLanguage();
   const sectionRef  = useRef<HTMLElement>(null);
   const colsRef     = useRef<HTMLDivElement>(null);
   const [hovered, setHovered] = useState<number | null>(null);
@@ -215,15 +217,15 @@ export default function Certificacoes() {
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 18 }}>
               <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><rect width="10" height="10" fill="rgba(255,255,255,0.3)" /></svg>
-              <span style={{ fontFamily: 'var(--font-label)', fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#fff' }}>Certificação</span>
+              <span style={{ fontFamily: 'var(--font-label)', fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#fff' }}>{t.certifications.eyebrow}</span>
             </div>
             <h2 style={{ margin: 0, fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 'clamp(2rem,4vw,4.5rem)', color: '#fff', letterSpacing: '-0.035em', lineHeight: 0.95, textTransform: 'uppercase' }}>
-              Padrões<br />
-              <span style={{ color: 'transparent', WebkitTextStroke: '1.5px rgba(255,255,255,0.2)' }}>de Excelência</span>
+              {t.certifications.title1}<br />
+              <span style={{ color: 'transparent', WebkitTextStroke: '1.5px rgba(255,255,255,0.2)' }}>{t.certifications.title2}</span>
             </h2>
           </div>
           <p style={{ margin: 0, fontFamily: 'var(--font-sans)', fontSize: 'clamp(13px,1vw,15px)', color: '#fff', lineHeight: 1.85, maxWidth: 380 }}>
-            No Grupo Omatapalo, o compromisso com a segurança, a qualidade e a sustentabilidade orienta todas as nossas operações. As nossas certificações reflectem uma cultura de excelência, responsabilidade e confiança.
+            {t.certifications.description}
           </p>
         </div>
 
