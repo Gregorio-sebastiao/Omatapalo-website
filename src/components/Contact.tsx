@@ -39,6 +39,7 @@ function ContactForm() {
 }
 
 export default function Contact() {
+  const { t } = useLanguage();
   const sectionRef = useRef<HTMLElement>(null);
   const [phone, setPhone] = useState('+244 934 337 822');
   const [email, setEmail] = useState('info.ao@omatapalo.com');
@@ -76,33 +77,41 @@ export default function Contact() {
       <div className="wrap relative z-[2]">
         <div style={{ display: 'grid', gridTemplateColumns: '1.05fr 0.95fr', gap: 'var(--space-9)', alignItems: 'start' }} className="cta-grid">
           <div className="reveal-ct" style={{ opacity: 0 }}>
-            <div className="eyebrow eyebrow--dark">Próximo passo</div>
+            <div className="eyebrow eyebrow--dark">{(t as any).contact?.nextStep ?? 'Próximo passo'}</div>
             <h2 style={{ fontFamily: 'var(--font-display)', fontWeight: 900, textTransform: 'uppercase', color: '#1a396e', fontSize: 'var(--text-display-lg)', lineHeight: '0.95', letterSpacing: '-0.03em', marginTop: '16px', marginBottom: 0 }}>
-              Construímos<span style={{ color: 'transparent', WebkitTextStroke: '2px rgba(26,57,110,0.22)', display: 'block' }}>O Seu Futuro</span>
+              {(t as any).contact?.headline1 ?? 'Construímos'}<span style={{ color: 'transparent', WebkitTextStroke: '2px rgba(26,57,110,0.22)', display: 'block' }}>{(t as any).contact?.headline2 ?? 'O Seu Futuro'}</span>
             </h2>
             <p style={{ color: '#374151', fontSize: 'var(--text-lg)', lineHeight: 1.6, maxWidth: '46ch', marginTop: 'var(--space-5)' }}>
-              Para contactos com o Grupo OMATAPALO utilize, por favor, o formulário ao lado. A nossa equipa responderá com a maior brevidade possível.
+              {(t as any).contact?.intro ?? 'Para contactos com o Grupo OMATAPALO utilize, por favor, o formulário ao lado. A nossa equipa responderá com a maior brevidade possível.'}
             </p>
             <div style={{ marginTop: 'var(--space-7)', display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
-              {[
-                { icon: '📍', label: 'Sede Lubango', value: 'Bairro do Tchioco, Zona Industrial II, Lubango – Angola' },
-                { icon: '📍', label: 'Escritório Marginal Luanda', value: 'Avenida 4 de Fevereiro, Nº 93, Marginal de Luanda' },
-                { icon: '004-message', label: 'Email', value: email },
-                { icon: 'telephone', label: 'Telefone', value: phone },
-              ].map((c) => (
-                <div key={c.label} style={{ display: 'grid', gridTemplateColumns: '28px 1fr', gap: '14px', alignItems: 'start' }}>
-                  {c.label === 'Email'
-                    ? <img src="/icons/004-message.svg" alt="" width={22} height={22} style={{ marginTop: '3px', filter: 'invert(21%) sepia(54%) saturate(500%) hue-rotate(190deg) brightness(80%)' }} />
-                    : c.label === 'Telefone'
-                    ? <img src="/icons/telephone.svg" alt="" width={22} height={22} style={{ marginTop: '3px', filter: 'invert(21%) sepia(54%) saturate(500%) hue-rotate(190deg) brightness(80%)' }} />
-                    : <img src="/placeholder.svg" alt="" width={22} height={22} style={{ marginTop: '3px', filter: 'invert(21%) sepia(54%) saturate(500%) hue-rotate(190deg) brightness(80%)' }} />
-                  }
-                  <div>
-                    <div style={{ fontFamily: 'var(--font-label)', fontSize: '11px', letterSpacing: '0.16em', textTransform: 'uppercase', color: '#1a396e', marginBottom: '3px' }}>{c.label}</div>
-                    <div style={{ color: '#1e293b', fontSize: 'var(--text-base)' }}>{c.value}</div>
+              {(() => {
+                const LABEL_MAP: Record<string, string> = {
+                  'Sede Lubango': (t as any).contact?.hqLabel ?? 'Sede Lubango',
+                  'Escritório Marginal Luanda': (t as any).contact?.officeLabel ?? 'Escritório Marginal Luanda',
+                  'Email': (t as any).contact?.emailLabel ?? 'Email',
+                  'Telefone': (t as any).contact?.phoneLabel ?? 'Telefone',
+                };
+                return [
+                  { icon: '📍', label: 'Sede Lubango', value: 'Bairro do Tchioco, Zona Industrial II, Lubango – Angola' },
+                  { icon: '📍', label: 'Escritório Marginal Luanda', value: 'Avenida 4 de Fevereiro, Nº 93, Marginal de Luanda' },
+                  { icon: '004-message', label: 'Email', value: email },
+                  { icon: 'telephone', label: 'Telefone', value: phone },
+                ].map((c) => (
+                  <div key={c.label} style={{ display: 'grid', gridTemplateColumns: '28px 1fr', gap: '14px', alignItems: 'start' }}>
+                    {c.label === 'Email'
+                      ? <img src="/icons/004-message.svg" alt="" width={22} height={22} style={{ marginTop: '3px', filter: 'invert(21%) sepia(54%) saturate(500%) hue-rotate(190deg) brightness(80%)' }} />
+                      : c.label === 'Telefone'
+                      ? <img src="/icons/telephone.svg" alt="" width={22} height={22} style={{ marginTop: '3px', filter: 'invert(21%) sepia(54%) saturate(500%) hue-rotate(190deg) brightness(80%)' }} />
+                      : <img src="/placeholder.svg" alt="" width={22} height={22} style={{ marginTop: '3px', filter: 'invert(21%) sepia(54%) saturate(500%) hue-rotate(190deg) brightness(80%)' }} />
+                    }
+                    <div>
+                      <div style={{ fontFamily: 'var(--font-label)', fontSize: '11px', letterSpacing: '0.16em', textTransform: 'uppercase', color: '#1a396e', marginBottom: '3px' }}>{LABEL_MAP[c.label] ?? c.label}</div>
+                      <div style={{ color: '#1e293b', fontSize: 'var(--text-base)' }}>{c.value}</div>
+                    </div>
                   </div>
-                </div>
-              ))}
+                ));
+              })()}
             </div>
           </div>
 
