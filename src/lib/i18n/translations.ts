@@ -32,6 +32,10 @@ export const translations = {
     sobreGrupo: {
       eyebrow: 'Sobre o Grupo',
       titleWords: ['Quem', 'Somos'],
+      statLabels: ['Anos', 'Colaboradores', 'Construídos', 'de Estrada'],
+      videoTitle: 'Vídeo Institucional',
+      videoSub: 'Grupo Omatapalo · 2026',
+      scrollHint: 'Deslize para explorar',
     },
     negocios: {
       eyebrow: 'O Grupo e os Negócios',
@@ -244,6 +248,10 @@ export const translations = {
     sobreGrupo: {
       eyebrow: 'About the Group',
       titleWords: ['Who', 'We Are'],
+      statLabels: ['Years', 'Employees', 'Built', 'of Road'],
+      videoTitle: 'Institutional Video',
+      videoSub: 'Omatapalo Group · 2026',
+      scrollHint: 'Scroll to explore',
     },
     negocios: {
       eyebrow: 'The Group and its Businesses',
@@ -456,6 +464,10 @@ export const translations = {
     sobreGrupo: {
       eyebrow: 'À Propos du Groupe',
       titleWords: ['Qui', 'Sommes-Nous'],
+      statLabels: ['Ans', 'Collaborateurs', 'Construits', 'de Route'],
+      videoTitle: 'Vidéo Institutionnelle',
+      videoSub: 'Groupe Omatapalo · 2026',
+      scrollHint: 'Faites défiler pour explorer',
     },
     negocios: {
       eyebrow: 'Le Groupe et ses Activités',

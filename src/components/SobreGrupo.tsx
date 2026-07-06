@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
+import { gtx } from '@/lib/i18n/gtx';
 
 const DEFAULT_IMAGES = [
   { src: '/EN-230-omatapalo-2.jpg',              label: 'Estrada Nacional 230 - Saurimo'   },
@@ -37,18 +38,21 @@ export default function SobreGrupo() {
 
   useEffect(() => {
     const db = createClient();
-    const page = locale !== 'pt' ? `quem-somos-${locale}` : 'quem-somos';
 
     async function load() {
-      let { data } = await db.from('site_content').select('field,value').eq('page', page);
-      if ((!data || data.length === 0) && locale !== 'pt') {
-        ({ data } = await db.from('site_content').select('field,value').eq('page', 'quem-somos'));
-      }
+      const { data } = await db.from('site_content').select('field,value').eq('page', 'quem-somos');
+      let rawTexts = DEFAULT_TEXTS;
       if (data && data.length > 0) {
         const map: Record<string, string> = {};
         for (const row of data) map[row.field] = row.value;
         if (map['images']) setImages(JSON.parse(map['images']));
-        if (map['texts']) setTexts(JSON.parse(map['texts']));
+        if (map['texts']) rawTexts = JSON.parse(map['texts']);
+      }
+      if (locale !== 'pt') {
+        const translated = await Promise.all(rawTexts.map(txt => gtx(txt, locale)));
+        setTexts(translated);
+      } else {
+        setTexts(rawTexts);
       }
     }
     load();
@@ -194,7 +198,7 @@ export default function SobreGrupo() {
                         {s.suffix.includes('m²') ? <>M m<sup>2</sup></> : s.suffix}
                       </span>
                     </div>
-                    <div style={{ fontFamily: 'var(--font-label)', fontSize: 9, letterSpacing: '0.16em', textTransform: 'uppercase', color: '#0a0f1e', marginTop: 6 }}>{s.l}</div>
+                    <div style={{ fontFamily: 'var(--font-label)', fontSize: 9, letterSpacing: '0.16em', textTransform: 'uppercase', color: '#0a0f1e', marginTop: 6 }}>{t.sobreGrupo.statLabels?.[i] ?? s.l}</div>
                   </div>
                 );
               })}
@@ -217,8 +221,8 @@ export default function SobreGrupo() {
                   <svg width="12" height="14" viewBox="0 0 12 14" fill="white"><path d="M1 1l10 6-10 6V1z" /></svg>
                 </div>
                 <div style={{ textAlign: 'left' }}>
-                  <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '0.75rem', color: '#0F1A2E', textTransform: 'uppercase', letterSpacing: '0.06em' }}>Vídeo Institucional</div>
-                  <div style={{ fontFamily: 'var(--font-label)', fontSize: 9, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#9ca3af' }}>Grupo Omatapalo · 2026</div>
+                  <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '0.75rem', color: '#0F1A2E', textTransform: 'uppercase', letterSpacing: '0.06em' }}>{t.sobreGrupo.videoTitle}</div>
+                  <div style={{ fontFamily: 'var(--font-label)', fontSize: 9, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#9ca3af' }}>{t.sobreGrupo.videoSub}</div>
                 </div>
               </button>
             </div>
@@ -228,7 +232,7 @@ export default function SobreGrupo() {
               <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
                 <rect width="10" height="10" fill="#1a396e" />
               </svg>
-              <span style={{ fontFamily: 'var(--font-label)', fontSize: 9, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#0a0f1e' }}>Deslize para explorar</span>
+              <span style={{ fontFamily: 'var(--font-label)', fontSize: 9, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#0a0f1e' }}>{t.sobreGrupo.scrollHint}</span>
             </div>
 
           </div>
