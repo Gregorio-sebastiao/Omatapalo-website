@@ -1,8 +1,9 @@
-﻿'use client';
+'use client';
 
 import { useEffect, useRef, useState } from 'react';
 import type React from 'react';
 import { createClient } from '@/lib/supabase/client';
+import { useLanguage } from '@/lib/i18n/LanguageContext';
 
 const DEFAULT_CERT_LOGOS = [
   { src: '/ISO-9001-2.png',          alt: 'ISO 9001',         label: 'Qualidade',        href: '#' },
@@ -29,7 +30,23 @@ const gridTexture: React.CSSProperties = {
   backgroundSize: '60px 60px',
 };
 
+const gtCache = new Map<string, string>();
+async function gtx(text: string, lang: string): Promise<string> {
+  if (!text) return text;
+  const key = `${lang}:${text.slice(0, 60)}`;
+  if (gtCache.has(key)) return gtCache.get(key)!;
+  const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=pt&tl=${lang}&dt=t&q=${encodeURIComponent(text)}`;
+  try {
+    const data = await fetch(url).then(r => r.json());
+    const result = data[0]?.map((c: [string]) => c[0]).join('') ?? text;
+    gtCache.set(key, result);
+    return result;
+  } catch { return text; }
+}
+
 export default function Sustentabilidade() {
+  const { t, locale } = useLanguage();
+
   const s1Ref = useRef<HTMLElement>(null);
   const s2Ref = useRef<HTMLElement>(null);
   const s3Ref = useRef<HTMLElement>(null);
@@ -45,6 +62,12 @@ export default function Sustentabilidade() {
   const [relDesc, setRelDesc]       = useState('Consulte o nosso Relatório e Contas consolidadas e acompanhe os compromissos e resultados em matéria de sustentabilidade, governação e impacto social.');
   const [relPdf, setRelPdf]         = useState('#');
   const [heroImg, setHeroImg]       = useState('https://omatapalo.com/wp-content/uploads/HABITACAO-CAMBAMBE_08042025-5.jpg');
+
+  const [displayP1, setDisplayP1]           = useState(introP1);
+  const [displayP2, setDisplayP2]           = useState(introP2);
+  const [displayEsg, setDisplayEsg]         = useState(esg);
+  const [displayRelTitulo, setDisplayRelTitulo] = useState(relTitulo);
+  const [displayRelDesc, setDisplayRelDesc] = useState(relDesc);
 
   useEffect(() => {
     createClient().from('site_settings').select('value').eq('key', 'sustentabilidade_cfg').single().then(({ data }) => {
@@ -62,6 +85,23 @@ export default function Sustentabilidade() {
       } catch {}
     });
   }, []);
+
+  useEffect(() => {
+    if (locale === 'pt') {
+      setDisplayP1(introP1); setDisplayP2(introP2);
+      setDisplayEsg(esg); setDisplayRelTitulo(relTitulo); setDisplayRelDesc(relDesc);
+      return;
+    }
+    gtx(introP1, locale).then(setDisplayP1);
+    gtx(introP2, locale).then(setDisplayP2);
+    gtx(relTitulo, locale).then(setDisplayRelTitulo);
+    gtx(relDesc, locale).then(setDisplayRelDesc);
+    Promise.all(esg.map(async p => ({
+      ...p,
+      t: t.sustentabilidadePage.esgTitles[['Ambiental', 'Social', 'Governança'].indexOf(p.t)] ?? await gtx(p.t, locale),
+      d: await gtx(p.d, locale),
+    }))).then(setDisplayEsg);
+  }, [locale, introP1, introP2, esg, relTitulo, relDesc]);
 
   useEffect(() => {
     import('gsap').then(({ gsap }) => {
@@ -103,17 +143,17 @@ export default function Sustentabilidade() {
             <div className="sus-s1-left" style={{ opacity: 0 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 24 }}>
                 <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><rect width="10" height="10" fill="#1a396e" /></svg>
-                <span style={{ fontFamily: 'var(--font-label)', fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#1a396e' }}>Sustentabilidade</span>
+                <span style={{ fontFamily: 'var(--font-label)', fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#1a396e' }}>{t.sustentabilidadePage.eyebrow}</span>
               </div>
               <h2 style={{ margin: '0 0 clamp(20px,2.5vw,32px)', fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 'clamp(2rem,4vw,4.5rem)', color: '#0F1A2E', letterSpacing: '-0.035em', lineHeight: 0.92, textTransform: 'uppercase' }}>
-                Construir<br />com<br />
-                <span style={{ color: 'transparent', WebkitTextStroke: '1.5px rgba(26,57,110,0.22)' }}>Propósito</span>
+                {t.sustentabilidadePage.title1}<br />{t.sustentabilidadePage.title2}<br />
+                <span style={{ color: 'transparent', WebkitTextStroke: '1.5px rgba(26,57,110,0.22)' }}>{t.sustentabilidadePage.title3}</span>
               </h2>
               <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'clamp(14px,1.2vw,17px)', color: '#475569', lineHeight: 1.8, margin: '0 0 clamp(16px,2vw,24px)', maxWidth: 480 }}>
-                {introP1}
+                {displayP1}
               </p>
               <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'clamp(14px,1.2vw,17px)', color: '#475569', lineHeight: 1.8, margin: 0, maxWidth: 480 }}>
-                {introP2}
+                {displayP2}
               </p>
             </div>
 
@@ -141,21 +181,21 @@ export default function Sustentabilidade() {
           <div className="sus-s2-hdr" style={{ opacity: 0, marginBottom: 'clamp(40px,6vw,64px)' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 20 }}>
               <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><rect width="10" height="10" fill="rgba(255,255,255,0.4)" /></svg>
-              <span style={{ fontFamily: 'var(--font-label)', fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#fff' }}>Áreas de Actuação</span>
+              <span style={{ fontFamily: 'var(--font-label)', fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#fff' }}>{t.sustentabilidadePage.esgEyebrow}</span>
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'clamp(24px,4vw,64px)', alignItems: 'flex-end' }} className="sus-s2-hdr-grid">
               <h2 style={{ margin: 0, fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 'clamp(2rem,4vw,4.5rem)', color: '#fff', letterSpacing: '-0.035em', lineHeight: 0.92, textTransform: 'uppercase' }}>
-                Estratégia<br />
-                <span style={{ color: 'transparent', WebkitTextStroke: '1.5px rgba(255,255,255,0.2)' }}>ESG</span>
+                {t.sustentabilidadePage.esgTitle1}<br />
+                <span style={{ color: 'transparent', WebkitTextStroke: '1.5px rgba(255,255,255,0.2)' }}>{t.sustentabilidadePage.esgTitle2}</span>
               </h2>
               <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'clamp(13px,1.1vw,16px)', color: '#fff', lineHeight: 1.8, margin: 0 }}>
-                A estratégia do Grupo OMATAPALO envolve um compromisso integral com a Sustentabilidade nas suas dimensões Ambiental, Social e de Governança.
+                {t.sustentabilidadePage.esgDesc}
               </p>
             </div>
           </div>
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 'clamp(12px,1.5vw,20px)' }} className="sus-esg-grid">
-            {esg.map(p => (
+            {displayEsg.map(p => (
               <div key={p.n} className="sus-esg-card" style={{ opacity: 0 }}>
                 <div style={{ position: 'relative', overflow: 'hidden', borderRadius: 3, height: 'clamp(280px,28vw,380px)' }}>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -180,19 +220,19 @@ export default function Sustentabilidade() {
             <div className="sus-s3-left" style={{ opacity: 0 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 24 }}>
                 <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><rect width="10" height="10" fill="#1a396e" /></svg>
-                <span style={{ fontFamily: 'var(--font-label)', fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#1a396e' }}>Agenda 2030</span>
+                <span style={{ fontFamily: 'var(--font-label)', fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#1a396e' }}>{t.sustentabilidadePage.odsEyebrow}</span>
               </div>
               <h2 style={{ margin: '0 0 clamp(20px,2.5vw,32px)', fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 'clamp(2rem,3.5vw,4rem)', color: '#0F1A2E', letterSpacing: '-0.035em', lineHeight: 0.92, textTransform: 'uppercase' }}>
-                Objectivos de<br />Desenvolvimento<br />
-                <span style={{ color: 'transparent', WebkitTextStroke: '1.5px rgba(26,57,110,0.22)' }}>Sustentável</span>
+                {t.sustentabilidadePage.odsTitle1}<br />{t.sustentabilidadePage.odsTitle2}<br />
+                <span style={{ color: 'transparent', WebkitTextStroke: '1.5px rgba(26,57,110,0.22)' }}>{t.sustentabilidadePage.odsTitle3}</span>
               </h2>
               <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'clamp(14px,1.2vw,16px)', color: '#475569', lineHeight: 1.8, margin: '0 0 clamp(24px,3vw,36px)' }}>
-                A OMATAPALO abraça 4 dos 17 ODS fixados pela ONU na Agenda 2030, e em 2024 tornou-se a primeira empresa angolana de construção civil signatária do <strong style={{ color: '#0F1A2E' }}>Pacto Global das Nações Unidas</strong>.
+                {t.sustentabilidadePage.odsDesc}
               </p>
 
               {/* Goals list */}
               <div style={{ borderTop: '1px solid #DDE3ED', marginBottom: 'clamp(24px,3vw,36px)' }}>
-                {['Erradicar a Pobreza', 'Erradicar a Fome', 'Saúde de Qualidade', 'Educação de Qualidade'].map((g, i) => (
+                {t.sustentabilidadePage.odsGoals.map((g, i) => (
                   <div key={g} className="sus-ods-icon" style={{ opacity: 0, display: 'flex', alignItems: 'center', gap: 14, padding: 'clamp(12px,1.5vw,16px) 0', borderBottom: '1px solid #DDE3ED' }}>
                     <span style={{ fontFamily: 'var(--font-label)', fontSize: 9, letterSpacing: '0.16em', color: '#1a396e', flexShrink: 0, minWidth: 24 }}>{String(i + 1).padStart(2, '0')}</span>
                     <span style={{ fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 'clamp(0.8rem,1vw,0.95rem)', textTransform: 'uppercase', letterSpacing: '-0.01em', color: '#0F1A2E' }}>{g}</span>
@@ -232,7 +272,7 @@ export default function Sustentabilidade() {
           <div className="sus-s4-hdr" style={{ opacity: 0, marginBottom: 'clamp(48px,6vw,72px)' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 20 }}>
               <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><rect width="10" height="10" fill="rgba(255,255,255,0.4)" /></svg>
-              <span style={{ fontFamily: 'var(--font-label)', fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#fff' }}>Qualidade & Conformidade</span>
+              <span style={{ fontFamily: 'var(--font-label)', fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#fff' }}>{t.sustentabilidadePage.certsEyebrow}</span>
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'clamp(24px,4vw,64px)', alignItems: 'flex-end' }} className="sus-s4-hdr-grid">
               <h2 style={{ margin: 0, fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 'clamp(2rem,4vw,4.5rem)', color: '#fff', letterSpacing: '-0.035em', lineHeight: 0.92, textTransform: 'uppercase' }}>
@@ -278,14 +318,14 @@ export default function Sustentabilidade() {
             <div>
               <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 24 }}>
                 <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><rect width="10" height="10" fill="rgba(255,255,255,0.4)" /></svg>
-                <span style={{ fontFamily: 'var(--font-label)', fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#fff' }}>Transparência</span>
+                <span style={{ fontFamily: 'var(--font-label)', fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#fff' }}>{t.sustentabilidadePage.relEyebrow}</span>
               </div>
               <h2 style={{ margin: '0 0 clamp(16px,2vw,28px)', fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 'clamp(2rem,3.5vw,4rem)', color: '#fff', letterSpacing: '-0.035em', lineHeight: 0.92, textTransform: 'uppercase' }}>
                 Relatório de<br />
                 <span style={{ color: 'transparent', WebkitTextStroke: '1.5px rgba(255,255,255,0.18)' }}>Sustentabilidade</span>
               </h2>
               <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'clamp(14px,1.2vw,16px)', color: '#fff', lineHeight: 1.8, margin: 0, maxWidth: 440 }}>
-                {relDesc}
+                {displayRelDesc}
               </p>
             </div>
 
@@ -301,12 +341,12 @@ export default function Sustentabilidade() {
                 </div>
                 <div>
                   <div style={{ fontFamily: 'var(--font-label)', fontSize: 9, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.3)', marginBottom: 4 }}>Documento PDF</div>
-                  <div style={{ fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 'clamp(0.9rem,1.2vw,1.1rem)', color: '#fff', letterSpacing: '-0.01em' }}>{relTitulo}</div>
+                  <div style={{ fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 'clamp(0.9rem,1.2vw,1.1rem)', color: '#fff', letterSpacing: '-0.01em' }}>{displayRelTitulo}</div>
                 </div>
               </div>
               <div style={{ height: 1, background: 'rgba(255,255,255,0.07)' }} />
               <a href={relPdf} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: 10, fontFamily: 'var(--font-label)', fontSize: 10, letterSpacing: '0.18em', textTransform: 'uppercase', color: '#fff', textDecoration: 'none', background: '#1a396e', padding: '14px 24px', borderRadius: 2, alignSelf: 'flex-start' }}>
-                Descarregar PDF
+                {t.sustentabilidadePage.relBtn}
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
                   <polyline points="7 10 12 15 17 10"/>
