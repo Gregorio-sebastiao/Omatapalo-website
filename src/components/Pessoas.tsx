@@ -3,6 +3,8 @@
 import { useEffect, useRef, useState } from 'react';
 
 import { createClient } from '@/lib/supabase/client';
+import { useLanguage } from '@/lib/i18n/LanguageContext';
+import { gtx } from '@/lib/i18n/gtx';
 
 const DEFAULTS = {
   body_p1: 'Contando com mais de 15.000 colaboradores directos, a OMATAPALO possui no seu quadro técnico áreas de conhecimento relacionadas com a sua actividade.',
@@ -13,6 +15,8 @@ const DEFAULTS = {
 
 export default function Pessoas() {
   const sectionRef = useRef<HTMLElement>(null);
+  const { t, locale } = useLanguage();
+  const [rawContent, setRawContent] = useState(DEFAULTS);
   const [content, setContent] = useState(DEFAULTS);
 
   useEffect(() => {
@@ -25,10 +29,18 @@ export default function Pessoas() {
         if (data?.length) {
           const map: Record<string, string> = {};
           data.forEach(({ field, value }) => { map[field] = value; });
-          setContent(prev => ({ ...prev, ...map }));
+          setRawContent(prev => ({ ...prev, ...map }));
         }
       });
   }, []);
+
+  useEffect(() => {
+    if (locale === 'pt') { setContent(rawContent); return; }
+    Promise.all([
+      gtx(rawContent.body_p1, locale),
+      gtx(rawContent.body_p2, locale),
+    ]).then(([p1, p2]) => setContent({ ...rawContent, body_p1: p1, body_p2: p2 }));
+  }, [rawContent, locale]);
 
   useEffect(() => {
     import('gsap').then(({ gsap }) => {
@@ -48,7 +60,7 @@ export default function Pessoas() {
       <div className="wrap">
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-9)', alignItems: 'center' }} className="split-grid">
           <div className="reveal-p" style={{ opacity: 0 }}>
-            <div className="eyebrow">Pessoas</div>
+            <div className="eyebrow">{(t as any).pessoas?.eyebrowSection ?? 'Pessoas'}</div>
             <h2 style={{
               margin: 'var(--space-4) 0 0',
               fontFamily: 'var(--font-display)', fontWeight: 900,
@@ -56,8 +68,8 @@ export default function Pessoas() {
               color: '#0F1A2E', letterSpacing: '-0.035em', lineHeight: 0.92,
               textTransform: 'uppercase',
             }}>
-              A nossa maior<br />obra são as<br />
-              <span style={{ color: 'transparent', WebkitTextStroke: '1.5px rgba(26,57,110,0.22)' }}>Pessoas</span>
+              {(t as any).pessoas?.headline1 ?? 'A nossa maior obra são as'}<br />
+              <span style={{ color: 'transparent', WebkitTextStroke: '1.5px rgba(26,57,110,0.22)' }}>{(t as any).pessoas?.headline2 ?? 'Pessoas'}</span>
             </h2>
             <p className="shead__lead" style={{ marginTop: 'var(--space-4)', color: '#1a1a1a' }}>
               {content.body_p1}
@@ -66,7 +78,7 @@ export default function Pessoas() {
             </p>
             <div style={{ marginTop: 'var(--space-6)' }}>
               <a href={content.cta_link} className="btn btn-ghost">
-                Trabalhar connosco
+                {(t as any).pessoas?.cta ?? 'Trabalhar connosco'}
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
               </a>
             </div>
