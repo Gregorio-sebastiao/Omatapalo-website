@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
+import type { Locale } from '@/lib/i18n/translations';
 
 type Post = {
   id: number;
@@ -14,14 +15,43 @@ type Post = {
   created_at: string;
 };
 
-function fmtDate(iso: string) {
-  return new Date(iso).toLocaleDateString('pt-PT', { day: '2-digit', month: 'short', year: 'numeric' });
+function fmtDate(iso: string, locale: Locale) {
+  const loc = locale === 'fr' ? 'fr-FR' : locale === 'en' ? 'en-GB' : 'pt-PT';
+  return new Date(iso).toLocaleDateString(loc, { day: '2-digit', month: 'short', year: 'numeric' });
+}
+
+// Cache: locale → postId → { title, excerpt }
+const translateCache = new Map<string, { title: string; excerpt: string }>();
+
+async function gtx(text: string, lang: string): Promise<string> {
+  if (!text) return text;
+  const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=pt&tl=${lang}&dt=t&q=${encodeURIComponent(text)}`;
+  try {
+    const data = await fetch(url).then(r => r.json());
+    return data[0]?.map((c: [string]) => c[0]).join('') ?? text;
+  } catch { return text; }
+}
+
+async function translatePosts(posts: Post[], lang: string): Promise<Post[]> {
+  return Promise.all(posts.map(async p => {
+    const key = `${lang}:${p.id}`;
+    if (!translateCache.has(key)) {
+      const [title, excerpt] = await Promise.all([
+        gtx(p.title, lang),
+        gtx(p.excerpt, lang),
+      ]);
+      translateCache.set(key, { title, excerpt });
+    }
+    const cached = translateCache.get(key)!;
+    return { ...p, title: cached.title, excerpt: cached.excerpt };
+  }));
 }
 
 export default function Media() {
-  const { t } = useLanguage();
+  const { t, locale } = useLanguage();
   const sectionRef = useRef<HTMLElement>(null);
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
+  const [rawPosts, setRawPosts] = useState<Post[]>([]);
   const [posts, setPosts] = useState<Post[]>([]);
 
   useEffect(() => {
@@ -31,8 +61,14 @@ export default function Media() {
       .eq('published', true)
       .order('created_at', { ascending: false })
       .limit(4)
-      .then(({ data }) => setPosts(data ?? []));
+      .then(({ data }) => setRawPosts(data ?? []));
   }, []);
+
+  useEffect(() => {
+    if (rawPosts.length === 0) return;
+    if (locale === 'pt') { setPosts(rawPosts); return; }
+    translatePosts(rawPosts, locale).then(setPosts);
+  }, [rawPosts, locale]);
 
   useEffect(() => {
     if (posts.length === 0) return;
@@ -77,15 +113,15 @@ export default function Media() {
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 18 }}>
               <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><rect width="10" height="10" fill="#1a396e" /></svg>
-              <span style={{ fontFamily: 'var(--font-label)', fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#1a396e' }}>Media</span>
+              <span style={{ fontFamily: 'var(--font-label)', fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#1a396e' }}>{t.noticias.mediaEyebrow}</span>
             </div>
             <h2 style={{ margin: 0, fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 'clamp(2rem,4vw,4.5rem)', color: '#0F1A2E', letterSpacing: '-0.035em', lineHeight: 0.92, textTransform: 'uppercase' }}>
-              Últimas<br />
-              <span style={{ color: 'transparent', WebkitTextStroke: '1.5px rgba(26,57,110,0.22)' }}>Novidades</span>
+              {t.noticias.mediaTitle1}<br />
+              <span style={{ color: 'transparent', WebkitTextStroke: '1.5px rgba(26,57,110,0.22)' }}>{t.noticias.mediaTitle2}</span>
             </h2>
           </div>
           <a href="/media" style={{ display: 'inline-flex', alignItems: 'center', gap: 10, fontFamily: 'var(--font-label)', fontSize: 10, letterSpacing: '0.16em', textTransform: 'uppercase', color: '#1a396e', paddingBottom: 4, borderBottom: '1px solid rgba(26,57,110,0.3)', whiteSpace: 'nowrap', textDecoration: 'none' }}>
-            Ver Todas as Notícias
+            {t.noticias.viewAll}
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
           </a>
         </div>
@@ -93,7 +129,7 @@ export default function Media() {
         <div className="media-divider" style={{ height: 1, background: '#DDE3ED', marginBottom: 'clamp(28px,4vw,48px)' }} />
 
         {posts.length === 0 ? (
-          <div style={{ textAlign: 'center', padding: '60px 0', color: '#94a3b8', fontSize: 14 }}>A carregar notícias…</div>
+          <div style={{ textAlign: 'center', padding: '60px 0', color: '#94a3b8', fontSize: 14 }}>{t.noticias.loading}</div>
         ) : (
           <div style={{ display: 'grid', gridTemplateColumns: '1.4fr 1fr', gap: 'clamp(16px,2.5vw,32px)', alignItems: 'start' }} className="media-grid">
 
@@ -117,7 +153,7 @@ export default function Media() {
                 <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(7,16,31,0.92) 0%, rgba(7,16,31,0.3) 50%, transparent 100%)' }} />
                 <div style={{ position: 'absolute', inset: 0, padding: 'clamp(20px,3vw,36px)', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 14 }}>
-                    <span style={{ fontFamily: 'var(--font-label)', fontSize: 9, letterSpacing: '0.1em', color: '#fff' }}>{fmtDate(featured.created_at)}</span>
+                    <span style={{ fontFamily: 'var(--font-label)', fontSize: 9, letterSpacing: '0.1em', color: '#fff' }}>{fmtDate(featured.created_at, locale)}</span>
                   </div>
                   <h3 style={{ margin: '0 0 12px', fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 'clamp(1.1rem,2vw,1.9rem)', color: '#fff', letterSpacing: '-0.02em', lineHeight: 1.1, textTransform: 'uppercase' }}>
                     {featured.title}
@@ -158,7 +194,7 @@ export default function Media() {
                   </div>
                   <div style={{ padding: 'clamp(16px,2vw,22px)', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 8 }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                        <span style={{ fontFamily: 'var(--font-label)', fontSize: 8, letterSpacing: '0.1em', color: '#94a3b8' }}>{fmtDate(n.created_at)}</span>
+                        <span style={{ fontFamily: 'var(--font-label)', fontSize: 8, letterSpacing: '0.1em', color: '#94a3b8' }}>{fmtDate(n.created_at, locale)}</span>
                     </div>
                     <h3 style={{ margin: 0, fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 'clamp(0.85rem,1.1vw,1rem)', color: '#0F1A2E', letterSpacing: '-0.01em', lineHeight: 1.2, textTransform: 'uppercase' }}>{n.title}</h3>
                     {n.excerpt && (

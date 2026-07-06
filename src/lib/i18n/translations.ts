@@ -73,6 +73,10 @@ export const translations = {
       readMore: 'Ler mais',
       viewAll: 'Ver todas as notícias',
       back: '← Notícias',
+      mediaEyebrow: 'Media',
+      mediaTitle1: 'Últimas',
+      mediaTitle2: 'Novidades',
+      loading: 'A carregar notícias…',
     },
     pessoas: {
       eyebrow: 'As Nossas Pessoas',
@@ -200,6 +204,10 @@ export const translations = {
       readMore: 'Read more',
       viewAll: 'View all news',
       back: '← News',
+      mediaEyebrow: 'Media',
+      mediaTitle1: 'Latest',
+      mediaTitle2: 'News',
+      loading: 'Loading news…',
     },
     pessoas: {
       eyebrow: 'Our People',
@@ -327,6 +335,10 @@ export const translations = {
       readMore: 'Lire la suite',
       viewAll: 'Voir toutes les actualités',
       back: '← Actualités',
+      mediaEyebrow: 'Médias',
+      mediaTitle1: 'Dernières',
+      mediaTitle2: 'Actualités',
+      loading: 'Chargement des actualités…',
     },
     pessoas: {
       eyebrow: 'Nos Collaborateurs',
