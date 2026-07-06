@@ -2,6 +2,14 @@
 
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { createClient } from '@/lib/supabase/client';
+import { useLanguage } from '@/lib/i18n/LanguageContext';
+import { gtx } from '@/lib/i18n/gtx';
+
+const STRINGS = {
+  pt: { eyebrow: 'Governança Corporativa', title1: 'Conselho de', title2: 'Administração', desc: 'Estrutura de governança que orienta e supervisiona a estratégia do Grupo Omatapalo.', membros: 'membros' },
+  en: { eyebrow: 'Corporate Governance',   title1: 'Board of',      title2: 'Directors',      desc: 'Governance structure that guides and oversees the strategy of the Omatapalo Group.', membros: 'members' },
+  fr: { eyebrow: 'Gouvernance d\'Entreprise', title1: 'Conseil d\'', title2: 'Administration', desc: 'Structure de gouvernance qui oriente et supervise la stratégie du Groupe Omatapalo.', membros: 'membres' },
+};
 
 /* ─── Data ─── */
 type Member = { name: string; role: string; initials: string; featured?: boolean };
@@ -130,19 +138,33 @@ function TiltCard({ member, index }: { member: Member; index: number }) {
 
 /* ─── Main ─── */
 export default function ConselhoAdministracao() {
+  const { locale } = useLanguage();
   const sectionRef  = useRef<HTMLElement>(null);
   const gridRef     = useRef<HTMLDivElement>(null);
   const bgRef       = useRef<HTMLDivElement>(null);
   const [active, setActive]   = useState(0);
+  const [rawTiers, setRawTiers] = useState(DEFAULT_TIERS);
   const [TIERS, setTIERS]     = useState(DEFAULT_TIERS);
   const isAnimating = useRef(false);
   const dirRef      = useRef<1 | -1>(1);
 
   useEffect(() => {
     createClient().from('site_settings').select('value').eq('key', 'conselho_tiers').single().then(({ data }) => {
-      if (data?.value) { try { setTIERS(JSON.parse(data.value)); } catch {} }
+      if (data?.value) { try { setRawTiers(JSON.parse(data.value)); } catch {} }
     });
   }, []);
+
+  useEffect(() => {
+    if (locale === 'pt') { setTIERS(rawTiers); return; }
+    Promise.all(rawTiers.map(async t => ({
+      ...t,
+      label: await gtx(t.label, locale),
+      members: await Promise.all(t.members.map(async m => ({
+        ...m,
+        role: await gtx(m.role, locale),
+      }))),
+    }))).then(setTIERS);
+  }, [rawTiers, locale]);
 
   /* entrance */
   useEffect(() => {
@@ -217,15 +239,15 @@ export default function ConselhoAdministracao() {
         <div style={{ marginBottom: 'clamp(40px,6vw,72px)' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 18 }}>
             <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><rect width="10" height="10" fill="#1a396e" /></svg>
-            <span style={{ fontFamily: 'var(--font-label)', fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#1a396e' }}>Governança Corporativa</span>
+            <span style={{ fontFamily: 'var(--font-label)', fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#1a396e' }}>{(STRINGS[locale as keyof typeof STRINGS] ?? STRINGS.pt).eyebrow}</span>
           </div>
           <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 24, flexWrap: 'wrap' }}>
             <h2 style={{ margin: 0, fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 'clamp(2rem,4vw,4.5rem)', color: '#0F1A2E', letterSpacing: '-0.035em', lineHeight: 0.92, textTransform: 'uppercase' }}>
-              Conselho de<br />
-              <span style={{ color: 'transparent', WebkitTextStroke: '1.5px rgba(26,57,110,0.22)' }}>Administração</span>
+              {(STRINGS[locale as keyof typeof STRINGS] ?? STRINGS.pt).title1}<br />
+              <span style={{ color: 'transparent', WebkitTextStroke: '1.5px rgba(26,57,110,0.22)' }}>{(STRINGS[locale as keyof typeof STRINGS] ?? STRINGS.pt).title2}</span>
             </h2>
             <p style={{ margin: 0, fontFamily: 'var(--font-sans)', fontSize: 'clamp(13px,1vw,15px)', color: '#64748b', lineHeight: 1.8, maxWidth: 320 }}>
-              Estrutura de governança que orienta e supervisiona a estratégia do Grupo Omatapalo.
+              {(STRINGS[locale as keyof typeof STRINGS] ?? STRINGS.pt).desc}
             </p>
           </div>
         </div>
@@ -261,7 +283,7 @@ export default function ConselhoAdministracao() {
                       }}>{t.label}</div>
                       <div style={{ height: 2, background: '#1a396e', width: isAct ? '100%' : '0%', transition: 'width 0.45s ease', marginBottom: 6 }} />
                       <div style={{ fontFamily: 'var(--font-label)', fontSize: 9, letterSpacing: '0.16em', textTransform: 'uppercase', color: isAct ? '#1a396e' : '#c4cdd8', transition: 'color 0.3s' }}>
-                        {t.members.length} membros
+                        {t.members.length} {(STRINGS[locale as keyof typeof STRINGS] ?? STRINGS.pt).membros}
                       </div>
                     </div>
                   </div>
