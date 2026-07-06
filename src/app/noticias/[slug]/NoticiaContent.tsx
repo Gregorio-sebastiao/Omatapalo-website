@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 import Nav from '@/components/Nav';
 import Footer from '@/components/Footer';
 import { createClient } from '@/lib/supabase/client';
+import { useLanguage } from '@/lib/i18n/LanguageContext';
+import { gtx } from '@/lib/i18n/gtx';
 
 type NewsCard = { title: string; slug: string; cover_image: string; created_at: string; category: string };
 
@@ -36,6 +38,7 @@ function fmtDate(iso: string) {
 }
 
 export default function NoticiaContent({ slug }: { slug: string }) {
+  const { locale } = useLanguage();
   const [post, setPost] = useState<Post | null>(null);
   const [prev, setPrev] = useState<{ title: string; slug: string } | null>(null);
   const [next, setNext] = useState<{ title: string; slug: string } | null>(null);
@@ -53,7 +56,31 @@ export default function NoticiaContent({ slug }: { slug: string }) {
       .single()
       .then(async ({ data }) => {
         if (!data) { setNotFound(true); setLoading(false); return; }
-        setPost(data);
+
+        // Apply translation if locale !== 'pt'
+        if (locale !== 'pt') {
+          // Try stored translation first
+          const { data: tx } = await db
+            .from('post_translations')
+            .select('title, excerpt, content')
+            .eq('post_id', data.id)
+            .eq('lang', locale)
+            .single();
+
+          if (tx) {
+            setPost({ ...data, title: tx.title ?? data.title, excerpt: tx.excerpt ?? data.excerpt, content: tx.content ?? data.content });
+          } else {
+            // Fallback: translate on-the-fly via gtx
+            const [title, excerpt, content] = await Promise.all([
+              gtx(data.title, locale),
+              gtx(data.excerpt ?? '', locale),
+              gtx(data.content ?? '', locale),
+            ]);
+            setPost({ ...data, title, excerpt, content });
+          }
+        } else {
+          setPost(data);
+        }
         const { data: p } = await db.from('posts').select('title,slug').eq('published', true).lt('created_at', data.created_at).order('created_at', { ascending: false }).limit(1).single();
         setPrev(p ?? null);
         const { data: n } = await db.from('posts').select('title,slug').eq('published', true).gt('created_at', data.created_at).order('created_at', { ascending: true }).limit(1).single();
