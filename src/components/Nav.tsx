@@ -6,10 +6,10 @@ import { createClient } from '@/lib/supabase/client';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
 import type { Locale } from '@/lib/i18n/translations';
 
-const FLAGS: { locale: Locale; flag: string; label: string }[] = [
-  { locale: 'pt', flag: '🇵🇹', label: 'PT' },
-  { locale: 'en', flag: '🇬🇧', label: 'EN' },
-  { locale: 'fr', flag: '🇫🇷', label: 'FR' },
+const FLAGS: { locale: Locale; countryCode: string; label: string }[] = [
+  { locale: 'pt', countryCode: 'ao', label: 'PT' },
+  { locale: 'en', countryCode: 'gb', label: 'EN' },
+  { locale: 'fr', countryCode: 'fr', label: 'FR' },
 ];
 
 const DEFAULT_NAV = [
@@ -222,20 +222,22 @@ export default function Nav() {
 
             {/* Language switcher */}
             <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginLeft: 8 }}>
-              {FLAGS.map(({ locale: l, flag, label }) => (
+              {FLAGS.map(({ locale: l, countryCode, label }) => (
                 <button
                   key={l}
                   onClick={() => setLocale(l)}
                   title={label}
                   style={{
                     background: 'none', border: 'none', cursor: 'pointer',
-                    padding: '4px 6px', borderRadius: 4,
-                    fontSize: 18, lineHeight: 1,
-                    opacity: locale === l ? 1 : 0.45,
+                    padding: '3px 5px', borderRadius: 4,
+                    display: 'flex', alignItems: 'center', gap: 5,
+                    opacity: locale === l ? 1 : 0.4,
                     transition: 'opacity .2s',
                   }}
                 >
-                  {flag}
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={`https://flagcdn.com/20x15/${countryCode}.png`} width={20} height={15} alt={label} style={{ borderRadius: 2, display: 'block' }} />
+                  <span style={{ fontFamily: 'var(--font-label)', fontSize: 10, letterSpacing: '0.1em', color: '#fff', fontWeight: 700 }}>{label}</span>
                 </button>
               ))}
             </div>
@@ -243,20 +245,22 @@ export default function Nav() {
 
           {/* Language switcher — mobile (always visible, hidden on lg where desktop nav shows flags) */}
           <div className="lg:hidden flex items-center gap-1 ml-auto mr-1">
-            {FLAGS.map(({ locale: l, flag, label }) => (
+            {FLAGS.map(({ locale: l, countryCode, label }) => (
               <button
                 key={l}
                 onClick={() => setLocale(l)}
                 title={label}
                 style={{
                   background: 'none', border: 'none', cursor: 'pointer',
-                  padding: '4px 4px', borderRadius: 4,
-                  fontSize: 20, lineHeight: 1,
-                  opacity: locale === l ? 1 : 0.4,
+                  padding: '3px 5px', borderRadius: 4,
+                  display: 'flex', alignItems: 'center', gap: 5,
+                  opacity: locale === l ? 1 : 0.35,
                   transition: 'opacity .2s',
                 }}
               >
-                {flag}
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={`https://flagcdn.com/20x15/${countryCode}.png`} width={20} height={15} alt={label} style={{ borderRadius: 2, display: 'block' }} />
+                <span style={{ fontFamily: 'var(--font-label)', fontSize: 10, letterSpacing: '0.1em', color: '#fff', fontWeight: 700 }}>{label}</span>
               </button>
             ))}
           </div>
@@ -294,7 +298,7 @@ export default function Nav() {
         </div>
         {/* Language switcher mobile */}
         <div style={{ display: 'flex', gap: 12, marginBottom: 24 }}>
-          {FLAGS.map(({ locale: l, flag, label }) => (
+          {FLAGS.map(({ locale: l, countryCode, label }) => (
             <button
               key={l}
               onClick={() => setLocale(l)}
@@ -302,14 +306,16 @@ export default function Nav() {
                 background: locale === l ? 'rgba(255,255,255,0.12)' : 'none',
                 border: '1px solid rgba(255,255,255,0.15)',
                 borderRadius: 8, cursor: 'pointer',
-                padding: '6px 12px',
-                display: 'flex', alignItems: 'center', gap: 6,
+                padding: '8px 14px',
+                display: 'flex', alignItems: 'center', gap: 8,
                 color: '#fff', fontSize: 13, fontWeight: 700,
                 opacity: locale === l ? 1 : 0.5,
                 transition: 'all .2s',
               }}
             >
-              <span style={{ fontSize: 20 }}>{flag}</span> {label}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={`https://flagcdn.com/24x18/${countryCode}.png`} width={24} height={18} alt={label} style={{ borderRadius: 2, display: 'block' }} />
+              {label}
             </button>
           ))}
         </div>
