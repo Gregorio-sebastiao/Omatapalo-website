@@ -113,7 +113,7 @@ export default function Nav() {
             })));
           } catch {}
         }
-        if (row.key === 'logo_url') setLogoUrl(row.value);
+        if (row.key === 'logo_url' && row.value) setLogoUrl(row.value);
       }
     });
   }, []);
