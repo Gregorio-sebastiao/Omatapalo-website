@@ -96,6 +96,12 @@ export const translations = {
       title1: 'Padrões',
       title2: 'de Excelência',
       description: 'No Grupo Omatapalo, o compromisso com a segurança, a qualidade e a sustentabilidade orienta todas as nossas operações. As nossas certificações reflectem uma cultura de excelência, responsabilidade e confiança.',
+      subs: [
+        'Sistemas de Gestão da Qualidade',
+        'Gestão Ambiental',
+        'Saúde e Segurança no Trabalho',
+        'Pacto Global das Nações Unidas',
+      ],
     },
     manifesto: {
       eyebrow: 'O Nosso Manifesto',
@@ -205,6 +211,12 @@ export const translations = {
       title1: 'Standards',
       title2: 'of Excellence',
       description: 'At Omatapalo Group, commitment to safety, quality and sustainability guides all our operations. Our certifications reflect a culture of excellence, responsibility and trust.',
+      subs: [
+        'Quality Management Systems',
+        'Environmental Management',
+        'Occupational Health & Safety',
+        'United Nations Global Compact',
+      ],
     },
     manifesto: {
       eyebrow: 'Our Manifesto',
@@ -314,6 +326,12 @@ export const translations = {
       title1: 'Normes',
       title2: "d'Excellence",
       description: "Au Groupe Omatapalo, l'engagement envers la sécurité, la qualité et la durabilité guide toutes nos opérations. Nos certifications reflètent une culture d'excellence, de responsabilité et de confiance.",
+      subs: [
+        'Systèmes de Management de la Qualité',
+        'Management Environnemental',
+        'Santé et Sécurité au Travail',
+        'Pacte Mondial des Nations Unies',
+      ],
     },
     manifesto: {
       eyebrow: 'Notre Manifeste',

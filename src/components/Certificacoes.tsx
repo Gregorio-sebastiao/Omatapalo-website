@@ -155,18 +155,24 @@ function CertColumn({ cert, index, hovered, onEnter, onLeave }: {
 }
 
 export default function Certificacoes() {
-  const { t } = useLanguage();
+  const { t, locale } = useLanguage();
   const sectionRef  = useRef<HTMLElement>(null);
   const colsRef     = useRef<HTMLDivElement>(null);
   const [hovered, setHovered] = useState<number | null>(null);
-  const [CERTS, setCerts] = useState<Cert[]>(FALLBACK_CERTS);
+  const [baseCerts, setBaseCerts] = useState<Cert[]>(FALLBACK_CERTS);
+
+  const CERTS = baseCerts.map((c, i) =>
+    locale !== 'pt' && t.certifications.subs[i]
+      ? { ...c, sub: t.certifications.subs[i] }
+      : c
+  );
 
   useEffect(() => {
     createClient()
       .from('certifications')
       .select('*')
       .order('sort_order')
-      .then(({ data }) => { if (data && data.length > 0) setCerts(data); });
+      .then(({ data }) => { if (data && data.length > 0) setBaseCerts(data); });
   }, []);
 
   useEffect(() => {
