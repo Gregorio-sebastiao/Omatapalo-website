@@ -45,6 +45,7 @@ export default function Media() {
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
   const [rawPosts, setRawPosts] = useState<Post[]>([]);
   const [posts, setPosts] = useState<Post[]>([]);
+  const [txSlugs, setTxSlugs] = useState<Record<string, string>>({});
 
   useEffect(() => {
     createClient()
@@ -55,6 +56,27 @@ export default function Media() {
       .limit(4)
       .then(({ data }) => setRawPosts(data ?? []));
   }, []);
+
+  useEffect(() => {
+    if (rawPosts.length === 0 || locale === 'pt') return;
+    const ids = rawPosts.map(p => String(p.id));
+    createClient()
+      .from('post_translations')
+      .select('post_id, slug')
+      .eq('lang', locale)
+      .in('post_id', ids)
+      .then(({ data }) => {
+        const map: Record<string, string> = {};
+        (data ?? []).forEach((tx: { post_id: string; slug: string }) => { map[tx.post_id] = tx.slug; });
+        setTxSlugs(map);
+      });
+  }, [rawPosts, locale]);
+
+  function articleUrl(post: Post): string {
+    if (locale === 'en' && txSlugs[post.id]) return `/en/articles/${txSlugs[post.id]}`;
+    if (locale === 'fr' && txSlugs[post.id]) return `/fr/articles/${txSlugs[post.id]}`;
+    return `/noticias/${post.slug}`;
+  }
 
   useEffect(() => {
     if (rawPosts.length === 0) return;
@@ -112,7 +134,7 @@ export default function Media() {
               <span style={{ color: 'transparent', WebkitTextStroke: '1.5px rgba(26,57,110,0.22)' }}>{t.noticias.mediaTitle2}</span>
             </h2>
           </div>
-          <a href="/media" style={{ display: 'inline-flex', alignItems: 'center', gap: 10, fontFamily: 'var(--font-label)', fontSize: 10, letterSpacing: '0.16em', textTransform: 'uppercase', color: '#1a396e', paddingBottom: 4, borderBottom: '1px solid rgba(26,57,110,0.3)', whiteSpace: 'nowrap', textDecoration: 'none' }}>
+          <a href={locale === 'en' ? '/en/articles' : locale === 'fr' ? '/fr/articles' : '/media'} style={{ display: 'inline-flex', alignItems: 'center', gap: 10, fontFamily: 'var(--font-label)', fontSize: 10, letterSpacing: '0.16em', textTransform: 'uppercase', color: '#1a396e', paddingBottom: 4, borderBottom: '1px solid rgba(26,57,110,0.3)', whiteSpace: 'nowrap', textDecoration: 'none' }}>
             {t.noticias.viewAll}
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
           </a>
@@ -128,7 +150,7 @@ export default function Media() {
             {/* FEATURED */}
             {featured && (
               <a
-                href={`/noticias/${featured.slug}`}
+                href={articleUrl(featured)}
                 className="media-featured"
                 onMouseEnter={() => setHoveredCard(0)}
                 onMouseLeave={() => setHoveredCard(null)}
@@ -172,7 +194,7 @@ export default function Media() {
               {side.map((n, i) => (
                 <a
                   key={n.id}
-                  href={`/noticias/${n.slug}`}
+                  href={articleUrl(n)}
                   className="media-side"
                   onMouseEnter={() => setHoveredCard(i + 1)}
                   onMouseLeave={() => setHoveredCard(null)}

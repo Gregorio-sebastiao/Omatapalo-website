@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import { useRouter } from 'next/navigation';
 import MediaPicker from './MediaPicker';
@@ -14,6 +14,8 @@ type Post = {
   category?: string;
   published?: boolean;
 };
+
+type TranslationStatus = 'none' | 'done' | 'translating' | 'error';
 
 const CATEGORIES = ['Geral', 'Construção', 'Energia', 'Mineração', 'Responsabilidade Social', 'Sustentabilidade', 'Comunidade'];
 
@@ -37,6 +39,22 @@ export default function PostEditor({ post }: { post?: Post }) {
   const [msg, setMsg] = useState('');
   const [uploading, setUploading] = useState(false);
   const [mediaPicker, setMediaPicker] = useState(false);
+  const [txStatus, setTxStatus] = useState<TranslationStatus>('none');
+  const [txSlugs, setTxSlugs] = useState<{ en?: string; fr?: string }>({});
+
+  // Load existing translation status
+  useEffect(() => {
+    if (!post?.id) return;
+    supabase.from('post_translations').select('lang, slug').eq('post_id', post.id).then(({ data }) => {
+      if (!data || data.length === 0) return;
+      const en = data.find(d => d.lang === 'en');
+      const fr = data.find(d => d.lang === 'fr');
+      if (en && fr) {
+        setTxStatus('done');
+        setTxSlugs({ en: en.slug, fr: fr.slug });
+      }
+    });
+  }, [post?.id]); // eslint-disable-line react-hooks/exhaustive-deps
 
   function set(field: string, value: string | boolean) {
     setForm(f => ({ ...f, [field]: value }));
@@ -60,19 +78,51 @@ export default function PostEditor({ post }: { post?: Post }) {
     setUploading(false);
   }
 
+  async function translate(id: string) {
+    setTxStatus('translating');
+    try {
+      const res = await fetch('/api/translate-post', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ postId: id }),
+      });
+      const json = await res.json();
+      if (!res.ok) { setTxStatus('error'); setMsg('Erro na tradução: ' + json.error); return; }
+      setTxStatus('done');
+      setTxSlugs({ en: json.en.slug, fr: json.fr.slug });
+      setMsg('Traduzido com sucesso!');
+    } catch {
+      setTxStatus('error');
+      setMsg('Erro na tradução automática.');
+    }
+  }
+
   async function save(publish?: boolean) {
     setSaving(true);
     setMsg('');
     const payload = { ...form, published: publish !== undefined ? publish : form.published };
+    let savedId = post?.id;
     let error;
     if (post?.id) {
       ({ error } = await supabase.from('posts').update(payload).eq('id', post.id));
     } else {
-      ({ error } = await supabase.from('posts').insert(payload));
+      const { data, error: e } = await supabase.from('posts').insert(payload).select('id').single();
+      error = e;
+      savedId = data?.id;
     }
     setSaving(false);
-    if (error) setMsg('Erro: ' + error.message);
-    else { setMsg('Guardado!'); setTimeout(() => router.push('/admin/posts'), 800); }
+    if (error) { setMsg('Erro: ' + error.message); return; }
+
+    // Auto-translate when publishing for the first time
+    if (publish && savedId && txStatus === 'none') {
+      await translate(savedId);
+    } else {
+      setMsg('Guardado!');
+      setTimeout(() => router.push('/admin/posts'), 800);
+    }
+    if (publish && savedId) {
+      setTimeout(() => router.push('/admin/posts'), 1200);
+    }
   }
 
   async function deletePost() {
@@ -82,6 +132,13 @@ export default function PostEditor({ post }: { post?: Post }) {
   }
 
   const inp: React.CSSProperties = { width: '100%', padding: '10px 14px', border: '1.5px solid #e2e8f0', borderRadius: 8, fontSize: 14, boxSizing: 'border-box', outline: 'none', fontFamily: 'inherit' };
+
+  const txBadge = {
+    none:        { label: '⏳ Sem tradução', bg: '#f8fafc', color: '#94a3b8', border: '#e2e8f0' },
+    done:        { label: '✓ EN + FR',       bg: '#f0fdf4', color: '#16a34a', border: '#bbf7d0' },
+    translating: { label: '🔄 A traduzir…',  bg: '#eff6ff', color: '#3b82f6', border: '#bfdbfe' },
+    error:       { label: '✗ Erro',           bg: '#fef2f2', color: '#dc2626', border: '#fecaca' },
+  }[txStatus];
 
   return (
     <div style={{ maxWidth: 900, margin: '0 auto' }}>
@@ -127,6 +184,32 @@ export default function PostEditor({ post }: { post?: Post }) {
               <input type="checkbox" checked={form.published} onChange={e => set('published', e.target.checked)} style={{ width: 16, height: 16 }} />
               Publicado
             </label>
+          </div>
+
+          {/* Translation panel */}
+          <div style={{ background: '#fff', borderRadius: 12, padding: 20, border: '1px solid #e2e8f0' }}>
+            <label style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#64748b', display: 'block', marginBottom: 12 }}>Tradução automática</label>
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '5px 10px', borderRadius: 6, border: `1px solid ${txBadge.border}`, background: txBadge.bg, fontSize: 12, fontWeight: 600, color: txBadge.color, marginBottom: 12 }}>
+              {txBadge.label}
+            </div>
+            {txStatus === 'done' && txSlugs.en && (
+              <div style={{ fontSize: 11, color: '#64748b', marginBottom: 12, lineHeight: 1.6 }}>
+                EN: <code style={{ background: '#f1f5f9', padding: '1px 4px', borderRadius: 3 }}>/en/articles/{txSlugs.en}</code><br />
+                FR: <code style={{ background: '#f1f5f9', padding: '1px 4px', borderRadius: 3 }}>/fr/articles/{txSlugs.fr}</code>
+              </div>
+            )}
+            {post?.id && (
+              <button
+                onClick={() => translate(post.id!)}
+                disabled={txStatus === 'translating'}
+                style={{ width: '100%', padding: '9px', background: txStatus === 'translating' ? '#f1f5f9' : '#f0f9ff', border: '1px solid #bae6fd', borderRadius: 8, fontSize: 13, fontWeight: 600, color: txStatus === 'translating' ? '#94a3b8' : '#0369a1', cursor: txStatus === 'translating' ? 'default' : 'pointer' }}
+              >
+                {txStatus === 'translating' ? '🔄 A traduzir…' : txStatus === 'done' ? '↺ Re-traduzir' : '🌐 Traduzir EN + FR'}
+              </button>
+            )}
+            {!post?.id && (
+              <p style={{ fontSize: 11, color: '#94a3b8', margin: 0 }}>Guarda o artigo primeiro para poder traduzir.</p>
+            )}
           </div>
 
           <div style={{ background: '#fff', borderRadius: 12, padding: 20, border: '1px solid #e2e8f0' }}>
