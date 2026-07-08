@@ -6,11 +6,25 @@ import { createClient } from '@/lib/supabase/client';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
 import type { Locale } from '@/lib/i18n/translations';
 
-const FLAGS: { locale: Locale; countryCode: string; label: string; flag: string }[] = [
-  { locale: 'pt', countryCode: 'ao', label: 'PT', flag: '🇦🇴' },
-  { locale: 'en', countryCode: 'gb', label: 'EN', flag: '🇬🇧' },
-  { locale: 'fr', countryCode: 'fr', label: 'FR', flag: '🇫🇷' },
+const FLAGS: { locale: Locale; countryCode: string; label: string }[] = [
+  { locale: 'pt', countryCode: 'ao', label: 'PT' },
+  { locale: 'en', countryCode: 'gb', label: 'EN' },
+  { locale: 'fr', countryCode: 'fr', label: 'FR' },
 ];
+
+function FlagImg({ code, size = 20 }: { code: string; size?: number }) {
+  return (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      src={`https://flagcdn.com/w${size}/${code}.png`}
+      srcSet={`https://flagcdn.com/w${size * 2}/${code}.png 2x`}
+      width={size}
+      height={Math.round(size * 0.75)}
+      alt={code}
+      style={{ borderRadius: 2, objectFit: 'cover', flexShrink: 0 }}
+    />
+  );
+}
 
 const DEFAULT_NAV = [
   { t: 'O Grupo', href: '/omatapalo', sub: [
@@ -242,10 +256,10 @@ export default function Nav() {
               </button>
               {langOpen && (
                 <div style={{ position: 'absolute', top: 'calc(100% + 8px)', right: 0, background: '#1a396e', border: '1px solid rgba(255,255,255,0.15)', borderRadius: 8, overflow: 'hidden', minWidth: 90, zIndex: 100, boxShadow: '0 8px 24px rgba(0,0,0,0.3)' }}>
-                  {FLAGS.map(({ locale: l, label, flag }) => (
+                  {FLAGS.map(({ locale: l, label, countryCode }) => (
                     <button key={l} onClick={() => { setLocale(l); setLangOpen(false); }}
                       style={{ display: 'flex', alignItems: 'center', gap: 8, width: '100%', padding: '9px 16px', background: locale === l ? 'rgba(255,255,255,0.12)' : 'none', border: 'none', cursor: 'pointer', fontFamily: 'var(--font-label)', fontSize: 11, letterSpacing: '0.12em', fontWeight: 700, color: '#fff', textAlign: 'left' }}>
-                      <span style={{ fontSize: 16, lineHeight: 1 }}>{flag}</span>{label}
+                      <FlagImg code={countryCode} size={20} />{label}
                     </button>
                   ))}
                 </div>
@@ -265,10 +279,10 @@ export default function Nav() {
             </button>
             {langOpen && (
               <div style={{ position: 'absolute', top: 'calc(100% + 6px)', right: 0, background: '#1a396e', border: '1px solid rgba(255,255,255,0.15)', borderRadius: 8, overflow: 'hidden', minWidth: 80, zIndex: 100, boxShadow: '0 8px 24px rgba(0,0,0,0.3)' }}>
-                {FLAGS.map(({ locale: l, label, flag }) => (
+                {FLAGS.map(({ locale: l, label, countryCode }) => (
                   <button key={l} onClick={() => { setLocale(l); setLangOpen(false); }}
                     style={{ display: 'flex', alignItems: 'center', gap: 8, width: '100%', padding: '8px 14px', background: locale === l ? 'rgba(255,255,255,0.12)' : 'none', border: 'none', cursor: 'pointer', fontFamily: 'var(--font-label)', fontSize: 10, letterSpacing: '0.12em', fontWeight: 700, color: '#fff', textAlign: 'left' }}>
-                    <span style={{ fontSize: 15, lineHeight: 1 }}>{flag}</span>{label}
+                    <FlagImg code={countryCode} size={18} />{label}
                   </button>
                 ))}
               </div>
