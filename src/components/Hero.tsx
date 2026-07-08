@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useContent } from '@/lib/useContent';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
+import { gtx } from '@/lib/i18n/gtx';
 import { createClient } from '@/lib/supabase/client';
 
 const HOME_DEFAULTS = {
@@ -46,6 +47,7 @@ export default function Hero() {
   const page = locale !== 'pt' ? `home-${locale}` : 'home';
   const c             = useContent(page, HOME_DEFAULTS);
   const eyebrow = locale !== 'pt' ? t.hero.eyebrow : c.eyebrow;
+  const [rawTicker, setRawTicker] = useState<string[]>(DEFAULT_TICKER);
   const [ticker, setTicker] = useState<string[]>(DEFAULT_TICKER);
   const heroRef       = useRef<HTMLElement>(null);
   const bgRef         = useRef<HTMLDivElement>(null);
@@ -59,9 +61,14 @@ export default function Hero() {
 
   useEffect(() => {
     createClient().from('site_settings').select('value').eq('key', 'ticker_items').single().then(({ data }) => {
-      if (data?.value) { try { setTicker(JSON.parse(data.value)); } catch {} }
+      if (data?.value) { try { const items = JSON.parse(data.value); setRawTicker(items); } catch {} }
     });
   }, []);
+
+  useEffect(() => {
+    if (locale === 'pt') { setTicker(rawTicker); return; }
+    Promise.all(rawTicker.map(item => gtx(item, locale))).then(setTicker);
+  }, [rawTicker, locale]);
 
   useEffect(() => {
     let cleanup: (() => void) | null = null;
