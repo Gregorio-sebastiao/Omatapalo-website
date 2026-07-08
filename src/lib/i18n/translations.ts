@@ -487,7 +487,7 @@ export const translations = {
     sobreGrupo: {
       eyebrow: 'À Propos du Groupe',
       titleWords: ['Qui', 'Sommes-Nous'],
-      statLabels: ['Ans', 'Collaborateurs', 'Construits', 'de Route'],
+      statLabels: ['Ans', 'Collaborateurs', 'Construits', 'sur route'],
       videoTitle: 'Vidéo Institutionnelle',
       videoSub: 'Groupe Omatapalo · 2026',
       scrollHint: 'Faites défiler pour explorer',
