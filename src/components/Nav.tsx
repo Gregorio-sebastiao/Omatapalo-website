@@ -126,10 +126,19 @@ export default function Nav() {
         if (row.key === 'nav_items') {
           try {
             const items = JSON.parse(row.value);
-            setPtNav(items.map((n: { label: string; href: string; sub?: { label: string; href: string }[] }) => ({
+            const parsed: NavEntry[] = items.map((n: { label: string; href: string; sub?: { label: string; href: string }[] }) => ({
               t: n.label, href: n.href,
               sub: n.sub?.map(s => ({ t: s.label, href: s.href })),
-            })));
+            }));
+            // Always ensure Candidaturas appears under Pessoas
+            const pessoasIdx = parsed.findIndex(n => n.href === '/pessoas');
+            if (pessoasIdx !== -1) {
+              const sub = parsed[pessoasIdx].sub ?? [];
+              if (!sub.some(s => s.href === '/pessoas#candidaturas')) {
+                parsed[pessoasIdx] = { ...parsed[pessoasIdx], sub: [...sub, { t: 'Candidaturas', href: '/pessoas#candidaturas' }] };
+              }
+            }
+            setPtNav(parsed);
           } catch {}
         }
         if (row.key === 'logo_url' && row.value) setLogoUrl(row.value);
