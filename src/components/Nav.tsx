@@ -32,7 +32,9 @@ const DEFAULT_NAV = [
     { t: 'Conselho de Administração', href: '/omatapalo#conselho' },
   ]},
   { t: 'Portefólio', href: '/portefolio' },
-  { t: 'Pessoas', href: '/pessoas' },
+  { t: 'Pessoas', href: '/pessoas', sub: [
+    { t: 'Candidaturas', href: '/pessoas#candidaturas' },
+  ]},
   { t: 'Sustentabilidade', href: '/sustentabilidade' },
   { t: 'R.Social', href: '/responsabilidade-social', sub: [
     { t: 'Missão Fazer Sorrir', href: '/responsabilidade-social#missao' },
@@ -53,6 +55,7 @@ const ALL_PAGES = [
   { t: 'Conselho de Administração', href: '/omatapalo#conselho' },
   { t: 'Portefólio', href: '/portefolio' },
   { t: 'Pessoas', href: '/pessoas' },
+  { t: 'Candidaturas', href: '/pessoas#candidaturas' },
   { t: 'CDH', href: '/cdh' },
   { t: 'Media', href: '/media' },
   { t: 'Press Kit', href: '/press-kit' },
@@ -70,7 +73,9 @@ function buildTranslatedNav(tNav: typeof import('@/lib/i18n/translations').trans
       { t: tNav.conselho, href: '/omatapalo#conselho' },
     ]},
     { t: tNav.portefolio, href: '/portefolio' },
-    { t: tNav.pessoas, href: '/pessoas' },
+    { t: tNav.pessoas, href: '/pessoas', sub: [
+      { t: tNav.candidaturas, href: '/pessoas#candidaturas' },
+    ]},
     { t: tNav.sustentabilidade, href: '/sustentabilidade' },
     { t: tNav.rsocial, href: '/responsabilidade-social', sub: [
       { t: tNav.missaoSorrir, href: '/responsabilidade-social#missao' },
