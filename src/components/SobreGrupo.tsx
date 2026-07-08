@@ -20,6 +20,12 @@ const DEFAULT_TEXTS = [
   'Mais do que construir infra-estruturas, construímos confiança, oportunidades e futuro.',
 ];
 
+const FR_TEXTS = [
+  "Nous sommes un groupe d'entreprises angolais présent dans des secteurs stratégiques de l'économie, engagé en faveur de la création de valeur, du développement durable et du progrès de l'Angola.",
+  "Fondé en 2003, le Groupe Omatapalo n'a cessé de consolider son parcours de croissance fondé sur l'excellence, l'innovation et l'impact positif.",
+  "Au-delà de la construction d'infrastructures, nous construisons la confiance, des opportunités et l'avenir.",
+];
+
 const STATS = [
   { target: 23,   suffix: '',        prefix: '',   format: (n: number) => Math.round(n).toString(),                          l: 'Anos'          },
   { target: 15000, suffix: '',       prefix: '+',  format: (n: number) => Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.'), l: 'Colaboradores' },
@@ -54,7 +60,9 @@ export default function SobreGrupo() {
         if (map['images']) setImages(JSON.parse(map['images']));
         if (map['texts']) rawTexts = JSON.parse(map['texts']);
       }
-      if (locale !== 'pt') {
+      if (locale === 'fr') {
+        setTexts(FR_TEXTS);
+      } else if (locale !== 'pt') {
         const translated = await Promise.all(rawTexts.map(txt => gtx(txt, locale)));
         setTexts(translated);
       } else {
