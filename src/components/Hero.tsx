@@ -46,7 +46,8 @@ export default function Hero() {
   const { locale, t } = useLanguage();
   const page = locale !== 'pt' ? `home-${locale}` : 'home';
   const localeDefaults = locale === 'fr'
-    ? { ...HOME_DEFAULTS, title_line1: 'NOUS FAISONS', title_line2: 'EN SORTE QUE CELA SE PRODUISE' }
+    ? { ...HOME_DEFAULTS, title_line1: 'NOUS FAISONS', title_line2: 'EN SORTE QUE CELA SE PRODUISE',
+        stat1_label: 'Ans d\'Expérience', stat2_label: 'Collaborateurs', stat3_label: 'Surface Construite', stat4_label: 'de Route', stat7_label: 'Hôpitaux' }
     : locale === 'en'
     ? { ...HOME_DEFAULTS, title_line1: 'WE MAKE', title_line2: 'IT HAPPEN' }
     : HOME_DEFAULTS;
