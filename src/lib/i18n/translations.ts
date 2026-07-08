@@ -213,6 +213,16 @@ export const translations = {
       email: 'Email',
       password: 'Password',
     },
+    noticiaPage: {
+      back: '← Voltar às notícias',
+      navLabel: 'Navegação',
+      prev: '‹ Anterior',
+      next: 'Seguinte ›',
+      shareLabel: 'Partilhar',
+      latestLabel: 'Últimas Notícias',
+      loading: 'A carregar...',
+      notFound: 'Notícia não encontrada',
+    },
   },
 
   en: {
@@ -429,6 +439,16 @@ export const translations = {
       email: 'Email',
       password: 'Password',
     },
+    noticiaPage: {
+      back: '← Back to news',
+      navLabel: 'Navigation',
+      prev: '‹ Previous',
+      next: 'Next ›',
+      shareLabel: 'Share',
+      latestLabel: 'Latest News',
+      loading: 'Loading...',
+      notFound: 'Article not found',
+    },
   },
 
   fr: {
@@ -644,6 +664,16 @@ export const translations = {
       loggingIn: 'Connexion...',
       email: 'E-mail',
       password: 'Mot de passe',
+    },
+    noticiaPage: {
+      back: '← Retour aux actualités',
+      navLabel: 'Navigation',
+      prev: '‹ Précédent',
+      next: 'Suivant ›',
+      shareLabel: 'Partager',
+      latestLabel: 'Dernières Actualités',
+      loading: 'Chargement...',
+      notFound: 'Article introuvable',
     },
   },
 } as const;

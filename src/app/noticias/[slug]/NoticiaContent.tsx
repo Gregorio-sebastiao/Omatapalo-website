@@ -38,7 +38,7 @@ function fmtDate(iso: string) {
 }
 
 export default function NoticiaContent({ slug }: { slug: string }) {
-  const { locale } = useLanguage();
+  const { locale, t } = useLanguage();
   const [rawPost, setRawPost] = useState<Post | null>(null);
   const [post, setPost] = useState<Post | null>(null);
   const [prev, setPrev] = useState<{ title: string; slug: string } | null>(null);
@@ -81,11 +81,13 @@ export default function NoticiaContent({ slug }: { slug: string }) {
     ]).then(([title, excerpt, content]) => setPost({ ...rawPost, title, excerpt, content }));
   }, [rawPost, locale]);
 
+  const ui = t.noticiaPage;
+
   if (loading) return (
     <>
       <Nav />
       <main style={{ minHeight: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <span style={{ color: '#94a3b8', fontSize: 14 }}>A carregar...</span>
+        <span style={{ color: '#94a3b8', fontSize: 14 }}>{ui.loading}</span>
       </main>
       <Footer />
     </>
@@ -95,8 +97,8 @@ export default function NoticiaContent({ slug }: { slug: string }) {
     <>
       <Nav />
       <main style={{ minHeight: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: 16 }}>
-        <h1 style={{ fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: '2rem', color: '#0f1a2e' }}>Notícia não encontrada</h1>
-        <a href="/media" style={{ color: '#1a396e', fontSize: 14, fontWeight: 600 }}>← Voltar às notícias</a>
+        <h1 style={{ fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: '2rem', color: '#0f1a2e' }}>{ui.notFound}</h1>
+        <a href="/media" style={{ color: '#1a396e', fontSize: 14, fontWeight: 600 }}>{ui.back}</a>
       </main>
       <Footer />
     </>
@@ -130,7 +132,7 @@ export default function NoticiaContent({ slug }: { slug: string }) {
                   <img src={post.cover_image} alt={post.title} style={{ width: '100%', aspectRatio: '4/3', objectFit: 'cover', borderRadius: 4, display: 'block' }} />
                 )}
                 <div style={{ padding: '16px', background: '#f6f8fb', borderRadius: 4 }}>
-                  <div style={{ fontFamily: 'var(--font-label)', fontSize: 9, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#64748b', marginBottom: 10 }}>Partilhar</div>
+                  <div style={{ fontFamily: 'var(--font-label)', fontSize: 9, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#64748b', marginBottom: 10 }}>{ui.shareLabel}</div>
                   <div style={{ display: 'flex', gap: 6 }}>
                     {[
                       { label: 'LinkedIn', url: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`, icon: <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg> },
@@ -145,14 +147,14 @@ export default function NoticiaContent({ slug }: { slug: string }) {
                   </div>
                 </div>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 8, padding: '16px', background: '#f6f8fb', borderRadius: 4 }}>
-                  <div style={{ fontFamily: 'var(--font-label)', fontSize: 9, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#64748b', marginBottom: 2 }}>Navegação</div>
-                  {prev ? <a href={`/noticias/${prev.slug}`} style={{ fontFamily: 'var(--font-label)', fontSize: 10, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#1a396e', textDecoration: 'none', fontWeight: 700 }}>‹ Anterior</a>
-                        : <span style={{ fontFamily: 'var(--font-label)', fontSize: 10, textTransform: 'uppercase', color: '#c0cad8' }}>‹ Anterior</span>}
-                  {next ? <a href={`/noticias/${next.slug}`} style={{ fontFamily: 'var(--font-label)', fontSize: 10, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#1a396e', textDecoration: 'none', fontWeight: 700 }}>Seguinte ›</a>
-                        : <span style={{ fontFamily: 'var(--font-label)', fontSize: 10, textTransform: 'uppercase', color: '#c0cad8' }}>Seguinte ›</span>}
+                  <div style={{ fontFamily: 'var(--font-label)', fontSize: 9, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#64748b', marginBottom: 2 }}>{ui.navLabel}</div>
+                  {prev ? <a href={`/noticias/${prev.slug}`} style={{ fontFamily: 'var(--font-label)', fontSize: 10, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#1a396e', textDecoration: 'none', fontWeight: 700 }}>{ui.prev}</a>
+                        : <span style={{ fontFamily: 'var(--font-label)', fontSize: 10, textTransform: 'uppercase', color: '#c0cad8' }}>{ui.prev}</span>}
+                  {next ? <a href={`/noticias/${next.slug}`} style={{ fontFamily: 'var(--font-label)', fontSize: 10, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#1a396e', textDecoration: 'none', fontWeight: 700 }}>{ui.next}</a>
+                        : <span style={{ fontFamily: 'var(--font-label)', fontSize: 10, textTransform: 'uppercase', color: '#c0cad8' }}>{ui.next}</span>}
                 </div>
                 <a href="/media" style={{ display: 'block', textAlign: 'center', fontFamily: 'var(--font-label)', fontSize: 9, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#1a396e', border: '1.5px solid #1a396e', padding: '9px 12px', borderRadius: 3, textDecoration: 'none', fontWeight: 700 }} className="back-btn">
-                  ← Voltar às notícias
+                  {ui.back}
                 </a>
               </aside>
               <div>
@@ -160,7 +162,7 @@ export default function NoticiaContent({ slug }: { slug: string }) {
               </div>
               <aside style={{ display: 'flex', flexDirection: 'column', gap: 0, position: 'sticky', top: 100 }}>
                 <div style={{ fontFamily: 'var(--font-label)', fontSize: 9, letterSpacing: '0.16em', textTransform: 'uppercase', color: '#64748b', marginBottom: 16, paddingBottom: 10, borderBottom: '1px solid #e8edf5' }}>
-                  Últimas Notícias
+                  {ui.latestLabel}
                 </div>
                 {latestNews.map((n, i) => (
                   <a key={n.slug} href={`/noticias/${n.slug}`} style={{ display: 'flex', gap: 10, textDecoration: 'none', paddingBottom: 14, marginBottom: 14, borderBottom: i < latestNews.length - 1 ? '1px solid #f1f5f9' : 'none' }} className="latest-item">
