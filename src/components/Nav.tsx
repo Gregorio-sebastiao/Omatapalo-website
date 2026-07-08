@@ -16,7 +16,7 @@ function FlagImg({ code, size = 20 }: { code: string; size?: number }) {
   return (
     // eslint-disable-next-line @next/next/no-img-element
     <img
-      src={`https://flagcdn.com/w${size * 2}/${code}.png`}
+      src={`/flags/${code}.png`}
       width={size}
       height={Math.round(size * 0.67)}
       alt={code.toUpperCase()}
