@@ -1,16 +1,40 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import Image from 'next/image';
 import { createClient } from '@/lib/supabase/client';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
 
 const DEFAULT_ITEMS = [
-  { quote: 'Sinto que contribuo não só para uma estrada ou um edifício, mas para o desenvolvimento da comunidade onde vivo. O Grupo Omatapalo dá-nos orgulho e motivação para fazer sempre mais e melhor.', name: 'Zulmira da Costa', role: 'Responsável de Apoio Administrativo', photo: 'https://omatapalo.com/wp-content/uploads/27.jpg' },
-  { quote: 'Fui promovido depois de participar num programa interno de capacitação. Sinto que aqui há oportunidades reais de crescer e fazer a diferença.', name: 'Edmar Manuel', role: 'Director Executivo Administrativo', photo: 'https://omatapalo.com/wp-content/uploads/29.jpg' },
-  { quote: 'Na obra onde trabalho, vejo diariamente como se preocupam com a nossa segurança e conforto. As formações que recebemos ajudaram-me a crescer, tanto na parte técnica, como pessoal.', name: 'João Freitas', role: 'Técnico de Segurança, Benguela', photo: 'https://omatapalo.com/wp-content/uploads/26.jpg' },
-  { quote: 'Participei em acções de reflorestação promovidas pela empresa. Não é só construir, é também preservar. Isso dá sentido ao nosso trabalho.', name: 'José Avelino', role: 'Motorista, Malanje', photo: 'https://omatapalo.com/wp-content/uploads/28.jpg' },
+  { quote: 'Sinto que contribuo não só para uma estrada ou um edifício, mas para o desenvolvimento da comunidade onde vivo. O Grupo Omatapalo dá-nos orgulho e motivação para fazer sempre mais e melhor.', name: 'Zulmira da Costa', role: 'Responsável de Apoio Administrativo', photo: '/team/zulmira.webp' },
+  { quote: 'Fui promovido depois de participar num programa interno de capacitação. Sinto que aqui há oportunidades reais de crescer e fazer a diferença.', name: 'Edmar Manuel', role: 'Director Executivo Administrativo', photo: '/team/edmar.webp' },
+  { quote: 'Na obra onde trabalho, vejo diariamente como se preocupam com a nossa segurança e conforto. As formações que recebemos ajudaram-me a crescer, tanto na parte técnica, como pessoal.', name: 'João Freitas', role: 'Técnico de Segurança, Benguela', photo: '/team/joao.webp' },
+  { quote: 'Participei em acções de reflorestação promovidas pela empresa. Não é só construir, é também preservar. Isso dá sentido ao nosso trabalho.', name: 'José Avelino', role: 'Motorista, Malanje', photo: '/team/jose.webp' },
 ];
+
+const BG_COLORS = ['#0f2d5a', '#1a396e', '#0d4f6e', '#163a5f'];
+
+function Avatar({ name, photo, fill, index }: { name: string; photo: string; fill?: boolean; index: number }) {
+  const initials = name.split(' ').map(w => w[0]).slice(0, 2).join('').toUpperCase();
+  if (photo) {
+    // eslint-disable-next-line @next/next/no-img-element
+    return <img src={photo} alt={name} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top', display: 'block' }} />;
+  }
+  return (
+    <div style={{
+      width: '100%', height: '100%',
+      background: `linear-gradient(135deg, ${BG_COLORS[index % BG_COLORS.length]}, #1a396e)`,
+      display: 'flex', alignItems: fill ? 'flex-start' : 'center', justifyContent: 'center',
+      paddingTop: fill ? '18%' : 0,
+    }}>
+      <span style={{
+        fontFamily: 'var(--font-display)', fontWeight: 900,
+        fontSize: fill ? 'clamp(64px,12vw,120px)' : '20px',
+        color: 'rgba(255,255,255,0.18)',
+        letterSpacing: '-0.02em', lineHeight: 1, userSelect: 'none',
+      }}>{initials}</span>
+    </div>
+  );
+}
 
 const DURATION = 6000;
 
@@ -103,7 +127,7 @@ export default function Testemunhos() {
                   zIndex: i === active ? 2 : i === prev ? 1 : 0,
                 }}
               >
-                <Image src={item.photo} alt={item.name} fill style={{ objectFit: 'cover', objectPosition: 'top' }} />
+                <Avatar name={item.name} photo={item.photo} fill index={i} />
                 <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, transparent 40%, rgba(7,16,31,0.75) 100%)' }} />
                 {/* Nome sobreposto na foto */}
                 <div style={{ position: 'absolute', bottom: 28, left: 28, right: 28 }}>
@@ -186,7 +210,7 @@ export default function Testemunhos() {
                     }}
                     aria-label={item.name}
                   >
-                    <Image src={item.photo} alt={item.name} fill style={{ objectFit: 'cover', objectPosition: 'top' }} />
+                    <Avatar name={item.name} photo={item.photo} fill index={i} />
                   </button>
                 ))}
               </div>
