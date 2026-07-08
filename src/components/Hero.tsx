@@ -228,13 +228,16 @@ export default function Hero() {
         <div style={{ overflow: 'hidden', perspective: '600px' }}>
           <div style={{
             fontFamily: 'var(--font-display)', fontWeight: 900,
-            fontSize: 'clamp(52px,10vw,190px)', lineHeight: 0.88,
+            fontSize: c.title_line2.length > 15 ? 'clamp(24px,4.5vw,80px)' : 'clamp(52px,10vw,190px)',
+            lineHeight: 1,
             letterSpacing: '-0.03em', textTransform: 'uppercase',
             color: 'transparent', WebkitTextStroke: '1.5px rgba(255,255,255,0.22)',
-            marginTop: '0.06em', whiteSpace: 'nowrap',
+            marginTop: '0.06em', whiteSpace: c.title_line2.length > 15 ? 'normal' : 'nowrap',
           }}>
             {c.title_line2.split('').map((l, i) => (
-              <span key={i} className="hero-anim-letter" style={{ display: 'inline-block', opacity: 0, willChange: 'transform' }}>{l}</span>
+              <span key={i} className="hero-anim-letter" style={{ display: 'inline-block', opacity: 0, willChange: 'transform' }}>
+                {l === ' ' ? ' ' : l}
+              </span>
             ))}
           </div>
         </div>
@@ -371,3 +374,4 @@ export default function Hero() {
     </section>
   );
 }
+
