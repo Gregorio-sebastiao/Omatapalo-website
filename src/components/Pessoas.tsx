@@ -76,7 +76,7 @@ export default function Pessoas() {
               <br /><br />
               {content.body_p2}
             </p>
-            <div id="candidaturas" style={{ marginTop: 'var(--space-6)' }}>
+            <div id="candidaturas" style={{ marginTop: 'var(--space-6)', scrollMarginTop: '20vh' }}>
               <a href={content.cta_link} className="btn btn-ghost">
                 {(t as any).pessoas?.cta ?? 'Trabalhar connosco'}
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
