@@ -243,28 +243,29 @@ export default function Nav() {
               {t.nav.contactos}
             </a>
 
-            {/* Language switcher — desktop dropdown */}
-            <div data-lang-dropdown style={{ position: 'relative', marginLeft: 12, borderLeft: '1px solid rgba(255,255,255,0.15)', paddingLeft: 12 }}>
-              <button
-                onClick={() => setLangOpen(o => !o)}
-                style={{ display: 'flex', alignItems: 'center', gap: 6, background: 'none', border: '1px solid rgba(255,255,255,0.2)', borderRadius: 6, padding: '5px 10px', cursor: 'pointer', color: '#fff' }}
-              >
-                <FlagImg code={FLAGS.find(f => f.locale === locale)?.countryCode ?? 'ao'} size={20} />
-                <span style={{ fontFamily: 'var(--font-label)', fontSize: 11, letterSpacing: '0.12em', fontWeight: 700 }}>{locale.toUpperCase()}</span>
-                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" style={{ transition: 'transform .2s', transform: langOpen ? 'rotate(180deg)' : 'none' }}><polyline points="6 9 12 15 18 9"/></svg>
-              </button>
-              {langOpen && (
-                <div style={{ position: 'absolute', top: 'calc(100% + 8px)', right: 0, background: '#1a396e', border: '1px solid rgba(255,255,255,0.15)', borderRadius: 8, overflow: 'hidden', minWidth: 90, zIndex: 100, boxShadow: '0 8px 24px rgba(0,0,0,0.3)' }}>
-                  {FLAGS.map(({ locale: l, label, countryCode }) => (
-                    <button key={l} onClick={() => { setLocale(l); setLangOpen(false); }}
-                      style={{ display: 'flex', alignItems: 'center', gap: 8, width: '100%', padding: '9px 16px', background: locale === l ? 'rgba(255,255,255,0.12)' : 'none', border: 'none', cursor: 'pointer', fontFamily: 'var(--font-label)', fontSize: 11, letterSpacing: '0.12em', fontWeight: 700, color: '#fff', textAlign: 'left' }}>
-                      <FlagImg code={countryCode} size={20} />{label}
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
           </nav>
+
+          {/* Language switcher — desktop dropdown */}
+          <div data-lang-dropdown style={{ position: 'relative', borderLeft: '1px solid rgba(255,255,255,0.15)', paddingLeft: 12 }} className="hidden lg:block">
+            <button
+              onClick={() => setLangOpen(o => !o)}
+              style={{ display: 'flex', alignItems: 'center', gap: 6, background: 'none', border: '1px solid rgba(255,255,255,0.2)', borderRadius: 6, padding: '5px 10px', cursor: 'pointer', color: '#fff' }}
+            >
+              <FlagImg code={FLAGS.find(f => f.locale === locale)?.countryCode ?? 'ao'} size={20} />
+              <span style={{ fontFamily: 'var(--font-label)', fontSize: 11, letterSpacing: '0.12em', fontWeight: 700 }}>{locale.toUpperCase()}</span>
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" style={{ transition: 'transform .2s', transform: langOpen ? 'rotate(180deg)' : 'none' }}><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            {langOpen && (
+              <div style={{ position: 'absolute', top: 'calc(100% + 8px)', right: 0, background: '#1a396e', border: '1px solid rgba(255,255,255,0.15)', borderRadius: 8, overflow: 'hidden', minWidth: 90, zIndex: 100, boxShadow: '0 8px 24px rgba(0,0,0,0.3)' }}>
+                {FLAGS.map(({ locale: l, label, countryCode }) => (
+                  <button key={l} onClick={() => { setLocale(l); setLangOpen(false); }}
+                    style={{ display: 'flex', alignItems: 'center', gap: 8, width: '100%', padding: '9px 16px', background: locale === l ? 'rgba(255,255,255,0.12)' : 'none', border: 'none', cursor: 'pointer', fontFamily: 'var(--font-label)', fontSize: 11, letterSpacing: '0.12em', fontWeight: 700, color: '#fff', textAlign: 'left' }}>
+                    <FlagImg code={countryCode} size={20} />{label}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
 
           {/* Language switcher — mobile dropdown */}
           <div data-lang-dropdown style={{ position: 'relative' }} className="lg:hidden ml-auto mr-1">
