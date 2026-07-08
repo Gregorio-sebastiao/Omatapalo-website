@@ -12,41 +12,16 @@ const FLAGS: { locale: Locale; countryCode: string; label: string }[] = [
   { locale: 'fr', countryCode: 'fr', label: 'FR' },
 ];
 
-const FLAG_SVGS: Record<string, React.ReactNode> = {
-  ao: (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600">
-      <rect width="900" height="300" fill="#CC0000"/>
-      <rect y="300" width="900" height="300" fill="#000"/>
-      <g transform="translate(450,300)" fill="#FFCC00">
-        <path d="M-30-120 a120,120 0 1,1 60,0" fill="none" stroke="#FFCC00" strokeWidth="30"/>
-        <rect x="-15" y="-30" width="30" height="120" transform="rotate(-30)"/>
-        <path d="M-40,40 L0,-40 L40,40 Z"/>
-      </g>
-    </svg>
-  ),
-  gb: (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 30">
-      <rect width="60" height="30" fill="#012169"/>
-      <path d="M0,0 L60,30 M60,0 L0,30" stroke="#fff" strokeWidth="6"/>
-      <path d="M0,0 L60,30 M60,0 L0,30" stroke="#C8102E" strokeWidth="4"/>
-      <path d="M30,0 V30 M0,15 H60" stroke="#fff" strokeWidth="10"/>
-      <path d="M30,0 V30 M0,15 H60" stroke="#C8102E" strokeWidth="6"/>
-    </svg>
-  ),
-  fr: (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3 2">
-      <rect width="1" height="2" fill="#002395"/>
-      <rect x="1" width="1" height="2" fill="#fff"/>
-      <rect x="2" width="1" height="2" fill="#ED2939"/>
-    </svg>
-  ),
-};
-
 function FlagImg({ code, size = 20 }: { code: string; size?: number }) {
   return (
-    <span style={{ width: size, height: Math.round(size * 0.67), display: 'inline-flex', flexShrink: 0, borderRadius: 2, overflow: 'hidden' }}>
-      {FLAG_SVGS[code]}
-    </span>
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      src={`https://flagcdn.com/w${size * 2}/${code}.png`}
+      width={size}
+      height={Math.round(size * 0.67)}
+      alt={code.toUpperCase()}
+      style={{ borderRadius: 2, objectFit: 'cover', flexShrink: 0, display: 'block' }}
+    />
   );
 }
 
