@@ -188,7 +188,7 @@ export default function Nav() {
         }}
       >
         <div className="wrap flex items-center gap-6 h-20">
-          <a href="/" aria-label="Omatapalo — início">
+          <a href="/" aria-label="Omatapalo — início" style={{ flexShrink: 0 }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={logoUrl}
