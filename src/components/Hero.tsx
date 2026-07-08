@@ -45,7 +45,12 @@ const SQUARES = [
 export default function Hero() {
   const { locale, t } = useLanguage();
   const page = locale !== 'pt' ? `home-${locale}` : 'home';
-  const c             = useContent(page, HOME_DEFAULTS);
+  const localeDefaults = locale === 'fr'
+    ? { ...HOME_DEFAULTS, title_line1: 'NOUS FAISONS', title_line2: 'EN SORTE QUE CELA SE PRODUISE' }
+    : locale === 'en'
+    ? { ...HOME_DEFAULTS, title_line1: 'WE MAKE', title_line2: 'IT HAPPEN' }
+    : HOME_DEFAULTS;
+  const c             = useContent(page, localeDefaults);
   const eyebrow = locale !== 'pt' ? t.hero.eyebrow : c.eyebrow;
   const [rawTicker, setRawTicker] = useState<string[]>(DEFAULT_TICKER);
   const [ticker, setTicker] = useState<string[]>(DEFAULT_TICKER);
