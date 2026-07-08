@@ -225,7 +225,7 @@ export default function Hero() {
         </div>
 
         {/* ACONTECER — outline, letter by letter */}
-        <div style={{ overflow: 'hidden', perspective: '600px' }}>
+        <div style={{ perspective: '600px' }}>
           <div style={{
             fontFamily: 'var(--font-display)', fontWeight: 900,
             fontSize: c.title_line2.length > 15 ? 'clamp(24px,4.5vw,80px)' : 'clamp(52px,10vw,190px)',
