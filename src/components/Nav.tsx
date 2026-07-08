@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import { createClient } from '@/lib/supabase/client';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
@@ -12,17 +12,41 @@ const FLAGS: { locale: Locale; countryCode: string; label: string }[] = [
   { locale: 'fr', countryCode: 'fr', label: 'FR' },
 ];
 
+const FLAG_SVGS: Record<string, React.ReactNode> = {
+  ao: (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600">
+      <rect width="900" height="300" fill="#CC0000"/>
+      <rect y="300" width="900" height="300" fill="#000"/>
+      <g transform="translate(450,300)" fill="#FFCC00">
+        <path d="M-30-120 a120,120 0 1,1 60,0" fill="none" stroke="#FFCC00" strokeWidth="30"/>
+        <rect x="-15" y="-30" width="30" height="120" transform="rotate(-30)"/>
+        <path d="M-40,40 L0,-40 L40,40 Z"/>
+      </g>
+    </svg>
+  ),
+  gb: (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 30">
+      <rect width="60" height="30" fill="#012169"/>
+      <path d="M0,0 L60,30 M60,0 L0,30" stroke="#fff" strokeWidth="6"/>
+      <path d="M0,0 L60,30 M60,0 L0,30" stroke="#C8102E" strokeWidth="4"/>
+      <path d="M30,0 V30 M0,15 H60" stroke="#fff" strokeWidth="10"/>
+      <path d="M30,0 V30 M0,15 H60" stroke="#C8102E" strokeWidth="6"/>
+    </svg>
+  ),
+  fr: (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3 2">
+      <rect width="1" height="2" fill="#002395"/>
+      <rect x="1" width="1" height="2" fill="#fff"/>
+      <rect x="2" width="1" height="2" fill="#ED2939"/>
+    </svg>
+  ),
+};
+
 function FlagImg({ code, size = 20 }: { code: string; size?: number }) {
   return (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img
-      src={`https://flagcdn.com/w${size}/${code}.png`}
-      srcSet={`https://flagcdn.com/w${size * 2}/${code}.png 2x`}
-      width={size}
-      height={Math.round(size * 0.75)}
-      alt={code}
-      style={{ borderRadius: 2, objectFit: 'cover', flexShrink: 0 }}
-    />
+    <span style={{ width: size, height: Math.round(size * 0.67), display: 'inline-flex', flexShrink: 0, borderRadius: 2, overflow: 'hidden' }}>
+      {FLAG_SVGS[code]}
+    </span>
   );
 }
 
@@ -250,7 +274,7 @@ export default function Nav() {
                 onClick={() => setLangOpen(o => !o)}
                 style={{ display: 'flex', alignItems: 'center', gap: 6, background: 'none', border: '1px solid rgba(255,255,255,0.2)', borderRadius: 6, padding: '5px 10px', cursor: 'pointer', color: '#fff' }}
               >
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                <FlagImg code={FLAGS.find(f => f.locale === locale)?.countryCode ?? 'ao'} size={20} />
                 <span style={{ fontFamily: 'var(--font-label)', fontSize: 11, letterSpacing: '0.12em', fontWeight: 700 }}>{locale.toUpperCase()}</span>
                 <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" style={{ transition: 'transform .2s', transform: langOpen ? 'rotate(180deg)' : 'none' }}><polyline points="6 9 12 15 18 9"/></svg>
               </button>
@@ -273,7 +297,7 @@ export default function Nav() {
               onClick={() => setLangOpen(o => !o)}
               style={{ display: 'flex', alignItems: 'center', gap: 5, background: 'none', border: '1px solid rgba(255,255,255,0.2)', borderRadius: 6, padding: '4px 8px', cursor: 'pointer', color: '#fff' }}
             >
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+              <FlagImg code={FLAGS.find(f => f.locale === locale)?.countryCode ?? 'ao'} size={18} />
               <span style={{ fontFamily: 'var(--font-label)', fontSize: 10, letterSpacing: '0.12em', fontWeight: 700 }}>{locale.toUpperCase()}</span>
               <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="6 9 12 15 18 9"/></svg>
             </button>
