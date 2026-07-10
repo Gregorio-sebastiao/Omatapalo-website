@@ -67,6 +67,7 @@ export default function OdsIntro() {
             maxWidth: 280,
             marginLeft: 'auto',
             alignSelf: 'center',
+            marginTop: 60,
           }}>
             {ODS_GOALS.map((g) => (
               <img key={g.num} src={g.img} alt={g.label.replace('\n', ' ')} style={{ width: '100%', display: 'block', borderRadius: 4 }} />
