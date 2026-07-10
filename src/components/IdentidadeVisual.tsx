@@ -118,12 +118,29 @@ export default function IdentidadeVisual() {
                 <div style={{ opacity: 0.4 }}><DownloadIcon /></div>
               )}
 
-              <div style={{ marginTop: 'auto' }}>
-                <div style={{ fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 'clamp(0.75rem,1vw,0.9rem)', color: '#1a396e', letterSpacing: '0.06em', textTransform: 'uppercase', marginBottom: 10 }}>
-                  {asset.title}
+              <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: 14 }}>
+                <div>
+                  <div style={{ fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 'clamp(0.75rem,1vw,0.9rem)', color: '#1a396e', letterSpacing: '0.06em', textTransform: 'uppercase', marginBottom: 10 }}>
+                    {asset.title}
+                  </div>
+                  {asset.description && (
+                    <p style={{ margin: 0, fontSize: 13, color: '#374151', lineHeight: 1.65 }}>{asset.description}</p>
+                  )}
                 </div>
-                {asset.description && (
-                  <p style={{ margin: 0, fontSize: 13, color: '#374151', lineHeight: 1.65 }}>{asset.description}</p>
+                {asset.download_url ? (
+                  <a
+                    href={asset.download_url}
+                    download
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontFamily: 'var(--font-label)', fontSize: 10, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#fff', background: '#1a396e', padding: '9px 18px', borderRadius: 3, textDecoration: 'none', fontWeight: 700, alignSelf: 'flex-start' }}
+                  >
+                    {{ pt: 'Descarregar', en: 'Download Here', fr: 'Télécharger' }[locale] ?? 'Download Here'}
+                  </a>
+                ) : (
+                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontFamily: 'var(--font-label)', fontSize: 10, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#94a3b8', padding: '9px 18px', borderRadius: 3, background: '#f1f5f9', fontWeight: 700, alignSelf: 'flex-start' }}>
+                    {{ pt: 'Descarregar', en: 'Download Here', fr: 'Télécharger' }[locale] ?? 'Download Here'}
+                  </span>
                 )}
               </div>
             </div>
