@@ -6,6 +6,7 @@ import Footer from '@/components/Footer';
 import PageHero from '@/components/PageHero';
 import { createClient } from '@/lib/supabase/client';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
+import { gtx } from '@/lib/i18n/gtx';
 
 type Post = {
   id: number;
@@ -27,6 +28,7 @@ function fmtDate(iso: string) {
 export default function MediaPage() {
   const { locale } = useLanguage();
   const [posts, setPosts] = useState<Post[]>([]);
+  const [displayPosts, setDisplayPosts] = useState<Post[]>([]);
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
@@ -56,6 +58,18 @@ export default function MediaPage() {
       });
   }, [page]);
 
+  useEffect(() => {
+    if (posts.length === 0) { setDisplayPosts([]); return; }
+    if (locale === 'pt') { setDisplayPosts(posts); return; }
+    let cancelled = false;
+    Promise.all(posts.map(async (p) => ({
+      ...p,
+      title: await gtx(p.title, locale),
+      excerpt: p.excerpt ? await gtx(p.excerpt, locale) : p.excerpt,
+    }))).then((translated) => { if (!cancelled) setDisplayPosts(translated); });
+    return () => { cancelled = true; };
+  }, [posts, locale]);
+
   const totalPages = Math.ceil(total / PER_PAGE);
 
   function scrollTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
@@ -79,11 +93,11 @@ export default function MediaPage() {
 
             {loading ? (
               <div style={{ textAlign: 'center', padding: '80px 0', color: '#94a3b8', fontSize: 14 }}>{ui.loading}</div>
-            ) : posts.length === 0 ? (
+            ) : displayPosts.length === 0 ? (
               <div style={{ textAlign: 'center', padding: '80px 0', color: '#94a3b8', fontSize: 14 }}>{ui.empty}</div>
             ) : (
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '32px 28px' }} className="media-grid">
-                {posts.map((post) => (
+                {displayPosts.map((post) => (
                   <article key={post.id} style={{ background: '#fff', border: '1px solid #e8edf5', borderRadius: 4, overflow: 'hidden', display: 'flex', flexDirection: 'column' }} className="media-card">
                     <a href={post.slug ? `/noticias/${post.slug}` : undefined} style={{ display: 'block', position: 'relative', aspectRatio: '4/3', overflow: 'hidden', background: '#f1f5f9', textDecoration: 'none' }}>
                       {post.cover_image ? (
