@@ -42,8 +42,8 @@ const DEFAULT_NAV = [
   { t: 'CDH', href: '/cdh' },
   { t: 'Media', href: '#', sub: [
     { t: 'Notícias', href: '/noticias' },
+    { t: 'Press Kit', href: '/press-kit' },
   ]},
-  { t: 'Press Kit', href: '/press-kit' },
 ];
 
 type NavEntry = { t: string; href: string; sub?: { t: string; href: string }[] };
@@ -83,8 +83,8 @@ function buildTranslatedNav(tNav: typeof import('@/lib/i18n/translations').trans
     { t: tNav.cdh, href: '/cdh' },
     { t: tNav.media, href: '#', sub: [
       { t: tNav.noticias, href: '/noticias' },
+      { t: tNav.pressKit, href: '/press-kit' },
     ]},
-    { t: tNav.pressKit, href: '/press-kit' },
   ];
 }
 
