@@ -5,6 +5,7 @@ import Nav from '@/components/Nav';
 import Footer from '@/components/Footer';
 import PageHero from '@/components/PageHero';
 import { createClient } from '@/lib/supabase/client';
+import { useLanguage } from '@/lib/i18n/LanguageContext';
 
 type Post = {
   id: number;
@@ -24,10 +25,19 @@ function fmtDate(iso: string) {
 }
 
 export default function MediaPage() {
+  const { locale } = useLanguage();
   const [posts, setPosts] = useState<Post[]>([]);
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
+
+  const ui = {
+    loading:  { pt: 'A carregar...', en: 'Loading...', fr: 'Chargement...' }[locale] ?? 'A carregar...',
+    empty:    { pt: 'Sem notícias publicadas.', en: 'No news published.', fr: 'Aucune actualité publiée.' }[locale] ?? 'Sem notícias publicadas.',
+    readMore: { pt: 'Ver Mais »', en: 'Read More »', fr: 'Lire Plus »' }[locale] ?? 'Ver Mais »',
+    prev:     { pt: '« Anterior', en: '« Previous', fr: '« Précédent' }[locale] ?? '« Anterior',
+    next:     { pt: 'Próximo »', en: 'Next »', fr: 'Suivant »' }[locale] ?? 'Próximo »',
+  };
 
   useEffect(() => {
     setLoading(true);
@@ -55,6 +65,7 @@ export default function MediaPage() {
       <Nav />
       <main>
         <PageHero
+          page="media"
           title="Notícias"
           eyebrow="Grupo Omatapalo · Notícias"
           outlineWord="Notícias"
@@ -67,9 +78,9 @@ export default function MediaPage() {
           <div className="wrap">
 
             {loading ? (
-              <div style={{ textAlign: 'center', padding: '80px 0', color: '#94a3b8', fontSize: 14 }}>A carregar...</div>
+              <div style={{ textAlign: 'center', padding: '80px 0', color: '#94a3b8', fontSize: 14 }}>{ui.loading}</div>
             ) : posts.length === 0 ? (
-              <div style={{ textAlign: 'center', padding: '80px 0', color: '#94a3b8', fontSize: 14 }}>Sem notícias publicadas.</div>
+              <div style={{ textAlign: 'center', padding: '80px 0', color: '#94a3b8', fontSize: 14 }}>{ui.empty}</div>
             ) : (
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '32px 28px' }} className="media-grid">
                 {posts.map((post) => (
@@ -107,11 +118,11 @@ export default function MediaPage() {
                           href={`/noticias/${post.slug}`}
                           style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontFamily: 'var(--font-label)', fontSize: 10, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#1a396e', textDecoration: 'none', fontWeight: 700, marginTop: 'auto' }}
                         >
-                          Ver Mais »
+                          {ui.readMore}
                         </a>
                       ) : (
                         <span style={{ fontFamily: 'var(--font-label)', fontSize: 10, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#94a3b8', marginTop: 'auto' }}>
-                          Ver Mais »
+                          {ui.readMore}
                         </span>
                       )}
                     </div>
@@ -128,7 +139,7 @@ export default function MediaPage() {
                   disabled={page === 1}
                   style={{ padding: '6px 14px', border: '1px solid #dde3ed', borderRadius: 3, background: '#fff', color: page === 1 ? '#c0cad8' : '#1a396e', cursor: page === 1 ? 'default' : 'pointer', fontSize: 13, fontFamily: 'var(--font-sans)', fontWeight: 600 }}
                 >
-                  « Anterior
+                  {ui.prev}
                 </button>
                 {Array.from({ length: totalPages }, (_, i) => i + 1).map(n => (
                   <button
@@ -144,7 +155,7 @@ export default function MediaPage() {
                   disabled={page === totalPages}
                   style={{ padding: '6px 14px', border: '1px solid #dde3ed', borderRadius: 3, background: '#fff', color: page === totalPages ? '#c0cad8' : '#1a396e', cursor: page === totalPages ? 'default' : 'pointer', fontSize: 13, fontFamily: 'var(--font-sans)', fontWeight: 600 }}
                 >
-                  Próximo »
+                  {ui.next}
                 </button>
               </div>
             )}
