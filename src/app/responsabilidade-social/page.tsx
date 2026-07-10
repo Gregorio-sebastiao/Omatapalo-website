@@ -4,6 +4,7 @@ import PactoGlobalIntro from '@/components/PactoGlobalIntro';
 import PactoGlobal from '@/components/PactoGlobal';
 import OdsIntro from '@/components/OdsIntro';
 import InvestimentoSocial from '@/components/InvestimentoSocial';
+import ResultadosConcretos from '@/components/ResultadosConcretos';
 import Footer from '@/components/Footer';
 import PageHero from '@/components/PageHero';
 
@@ -17,6 +18,7 @@ export default function ResponsabilidadeSocial() {
         <PactoGlobal />
         <OdsIntro />
         <InvestimentoSocial />
+        <ResultadosConcretos />
         <ResponsabilidadeSocialContent />
       </main>
       <Footer />
