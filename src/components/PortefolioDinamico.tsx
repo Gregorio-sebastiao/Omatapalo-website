@@ -199,6 +199,10 @@ export default function PortefolioDinamico() {
         en: "Construction of the New M'Banza Congo City Center – Phase 1",
         fr: "Construction du nouveau centre-ville de M'Banza Congo – 1re phase",
       },
+      'estadio-ferrovia-do-lubango': {
+        en: 'Ferrovia Stadium in Lubango',
+        fr: 'Stade Ferrovia de Lubango',
+      },
     };
     Promise.all(source.map(async p => {
       const override = SLUG_TITLES[p.slug]?.[locale];
