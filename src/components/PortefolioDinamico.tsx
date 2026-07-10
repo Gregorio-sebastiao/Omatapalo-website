@@ -203,6 +203,10 @@ export default function PortefolioDinamico() {
         en: 'Ferrovia Stadium in Lubango',
         fr: 'Stade Ferrovia de Lubango',
       },
+      'edificio-habitacional-lubango-center': {
+        en: 'Lubango Center Residential Building',
+        fr: 'Immeuble Résidentiel Lubango Center',
+      },
     };
     Promise.all(source.map(async p => {
       const override = SLUG_TITLES[p.slug]?.[locale];
