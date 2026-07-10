@@ -38,29 +38,6 @@ export default function PactoGlobal() {
     <section style={{ background: '#fff', padding: 'clamp(64px,8vh,100px) 0' }}>
       <div className="wrap">
 
-        {/* Header */}
-        <div style={{ display: 'flex', alignItems: 'flex-start', gap: 32, marginBottom: 32, flexWrap: 'wrap' }}>
-          <div style={{ flex: 1, minWidth: 260 }}>
-            <h2 style={{
-              fontFamily: 'var(--font-display)', fontWeight: 900,
-              fontSize: 'clamp(1.5rem,3vw,2.6rem)',
-              color: '#0F1A2E', letterSpacing: '-0.03em', lineHeight: 1.05,
-              textTransform: 'uppercase', margin: 0,
-            }}>
-              Compromisso com o<br />Pacto Global das Nações Unidas
-            </h2>
-          </div>
-          {/* UN logo placeholder */}
-          <div style={{ flexShrink: 0, width: 64, height: 64, opacity: 0.15 }}>
-            <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" width="64" height="64">
-              <circle cx="32" cy="32" r="30" stroke="#1a396e" strokeWidth="2.5" fill="none"/>
-              <ellipse cx="32" cy="32" rx="14" ry="30" stroke="#1a396e" strokeWidth="1.5" fill="none"/>
-              <line x1="2" y1="32" x2="62" y2="32" stroke="#1a396e" strokeWidth="1.5"/>
-              <ellipse cx="32" cy="32" rx="30" ry="10" stroke="#1a396e" strokeWidth="1.5" fill="none"/>
-            </svg>
-          </div>
-        </div>
-
         {/* Subtitle banner */}
         <div style={{
           background: '#0F1A2E', color: '#fff',
