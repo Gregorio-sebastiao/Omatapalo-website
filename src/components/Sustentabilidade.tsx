@@ -80,8 +80,13 @@ export default function Sustentabilidade() {
       setDisplayEsg(esg); setDisplayRelTitulo(relTitulo); setDisplayRelDesc(relDesc);
       return;
     }
-    gtx(introP1, locale).then(setDisplayP1);
-    gtx(introP2, locale).then(setDisplayP2);
+    if (locale === 'en') {
+      setDisplayP1('The Omatapalo Group is moving toward a future that redefines the boundaries of Engineering and Construction, with a clear focus on investment in renewable energy and innovation.');
+      setDisplayP2('The Group contributes to improving the quality of life for people and communities by promoting and supporting social and environmental initiatives.');
+    } else {
+      gtx(introP1, locale).then(setDisplayP1);
+      gtx(introP2, locale).then(setDisplayP2);
+    }
     gtx(relTitulo, locale).then(setDisplayRelTitulo);
     gtx(relDesc, locale).then(setDisplayRelDesc);
     Promise.all(esg.map(async p => ({
