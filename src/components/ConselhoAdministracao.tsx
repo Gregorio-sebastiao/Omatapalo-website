@@ -156,12 +156,13 @@ export default function ConselhoAdministracao() {
 
   useEffect(() => {
     if (locale === 'pt') { setTIERS(rawTiers); return; }
+    const fixRole = (text: string) => locale === 'en' ? text.replace(/Purchasing Central|Central de Compras/gi, 'Procurement') : text;
     Promise.all(rawTiers.map(async t => ({
       ...t,
       label: await gtx(t.label, locale),
       members: await Promise.all(t.members.map(async m => ({
         ...m,
-        role: await gtx(m.role, locale),
+        role: fixRole(await gtx(m.role, locale)),
       }))),
     }))).then(setTIERS);
   }, [rawTiers, locale]);
