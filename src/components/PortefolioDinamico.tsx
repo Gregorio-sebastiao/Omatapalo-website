@@ -188,9 +188,10 @@ export default function PortefolioDinamico() {
   useEffect(() => {
     const source = PROJECTS.length > 0 ? PROJECTS : FALLBACK_PROJECTS;
     if (locale === 'pt') { setDisplayProjects(source); return; }
+    const fixTitle = (text: string) => locale === 'en' ? text.replace(/Kwanza House|Casa do Kwanza/gi, 'Cash Center') : text;
     Promise.all(source.map(async p => ({
       ...p,
-      title: await gtx(p.title, locale),
+      title: fixTitle(await gtx(p.title, locale)),
       location: await gtx(p.location, locale),
     }))).then(setDisplayProjects);
   }, [PROJECTS, locale]);
