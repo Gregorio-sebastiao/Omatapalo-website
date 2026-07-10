@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import type React from 'react';
 import Image from 'next/image';
 import { createClient } from '@/lib/supabase/client';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
@@ -8,6 +9,29 @@ import { useLanguage } from '@/lib/i18n/LanguageContext';
 function ContactForm() {
   const { t } = useLanguage();
   const [sent, setSent] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState('');
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [subject, setSubject] = useState('');
+  const [message, setMessage] = useState('');
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setSending(true);
+    setError('');
+    const res = await fetch('/api/contact', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, email, subject, message }),
+    });
+    setSending(false);
+    if (res.ok) {
+      setSent(true);
+    } else {
+      setError(t.contact.error);
+    }
+  }
 
   if (sent) {
     return (
@@ -20,19 +44,20 @@ function ContactForm() {
 
   return (
     <form
-      onSubmit={(e) => { e.preventDefault(); setSent(true); }}
+      onSubmit={handleSubmit}
       style={{ background: '#fff', borderRadius: 'var(--radius-lg)', padding: 'var(--space-7)', boxShadow: 'var(--shadow-xl)', display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}
     >
       <h3 style={{ fontFamily: 'var(--font-display)', fontWeight: 900, textTransform: 'uppercase', fontSize: 'var(--text-h3)', color: 'var(--text-strong)', letterSpacing: '-0.01em' }}>{t.contact.title.replace('\n', ' ')}</h3>
-      <div className="field"><label className="field__label">{t.contact.name}</label><input className="field__input" required placeholder={t.contact.namePlaceholder} /></div>
+      <div className="field"><label className="field__label">{t.contact.name}</label><input className="field__input" required placeholder={t.contact.namePlaceholder} value={name} onChange={e => setName(e.target.value)} /></div>
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-4)' }} className="form-row">
-        <div className="field"><label className="field__label">{t.contact.email}</label><input className="field__input" type="email" required placeholder={t.contact.emailPlaceholder} /></div>
-        <div className="field"><label className="field__label">{t.contact.subject}</label><input className="field__input" placeholder={t.contact.subjectPlaceholder} /></div>
+        <div className="field"><label className="field__label">{t.contact.email}</label><input className="field__input" type="email" required placeholder={t.contact.emailPlaceholder} value={email} onChange={e => setEmail(e.target.value)} /></div>
+        <div className="field"><label className="field__label">{t.contact.subject}</label><input className="field__input" placeholder={t.contact.subjectPlaceholder} value={subject} onChange={e => setSubject(e.target.value)} /></div>
       </div>
-      <div className="field"><label className="field__label">{t.contact.message}</label><textarea className="field__textarea" required placeholder={t.contact.messagePlaceholder} /></div>
-      <button type="submit" className="btn btn-primary" style={{ height: '52px' }}>
-        {t.contact.send}
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      <div className="field"><label className="field__label">{t.contact.message}</label><textarea className="field__textarea" required placeholder={t.contact.messagePlaceholder} value={message} onChange={e => setMessage(e.target.value)} /></div>
+      {error && <p style={{ color: '#dc2626', fontSize: '14px', margin: 0 }}>{error}</p>}
+      <button type="submit" className="btn btn-primary" style={{ height: '52px' }} disabled={sending}>
+        {sending ? t.contact.sending : t.contact.send}
+        {!sending && <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>}
       </button>
     </form>
   );
