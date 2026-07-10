@@ -36,7 +36,7 @@ const FOOTER_COLS: Record<string, { h: string; links: { t: string; href: string 
     ]},
     { h: '', links: [
       { t: 'Sustainability',  href: '/sustentabilidade' },
-      { t: 'R. Social',       href: '/responsabilidade-social' },
+      { t: 'Social Responsibility', href: '/responsabilidade-social' },
       { t: 'CDH',             href: '/cdh' },
     ]},
     { h: '', links: [
