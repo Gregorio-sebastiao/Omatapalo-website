@@ -376,7 +376,7 @@ export const translations = {
       esgTitle2: 'Strategy',
       esgDesc: "The OMATAPALO Group's strategy involves a comprehensive commitment to sustainability in its environmental, social and governance dimensions.",
       esgTitles: ['Environmental', 'Social', 'Governance'],
-      odsEyebrow: 'Agenda 2030',
+      odsEyebrow: '2030 Agenda',
       odsTitle1: 'Sustainable',
       odsTitle2: 'Development',
       odsTitle3: 'Goals',
