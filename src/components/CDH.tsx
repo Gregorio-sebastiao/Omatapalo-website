@@ -111,8 +111,8 @@ export default function CDH() {
               <span style={{ fontFamily: 'var(--font-label)', fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#fff' }}>Clube Desportivo da Huíla</span>
             </div>
             <h3 style={{ margin: '0 0 clamp(12px,1.5vw,18px)', fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 'clamp(1.4rem,2.2vw,2.4rem)', color: '#fff', letterSpacing: '-0.03em', lineHeight: 0.95, textTransform: 'uppercase' }}>
-              Apoio ao Desenvolvimento<br />
-              <span style={{ color: 'transparent', WebkitTextStroke: '1.5px rgba(255,255,255,0.35)' }}>Desportivo</span>
+              {{ pt: 'Apoio ao Desenvolvimento', en: 'Support for Sports', fr: 'Soutien au Développement' }[locale] ?? 'Apoio ao Desenvolvimento'}<br />
+              <span style={{ color: 'transparent', WebkitTextStroke: '1.5px rgba(255,255,255,0.35)' }}>{{ pt: 'Desportivo', en: 'Development', fr: 'Sportif' }[locale] ?? 'Desportivo'}</span>
             </h3>
             <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'clamp(13px,1vw,15px)', color: '#fff', lineHeight: 1.85, margin: '0 0 clamp(16px,2vw,22px)' }}>{displayCfg.p1}</p>
             <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'clamp(13px,1vw,15px)', color: '#fff', lineHeight: 1.85, margin: '0 0 clamp(16px,2vw,22px)' }}>{displayCfg.p2}</p>
@@ -171,8 +171,8 @@ export default function CDH() {
             </div>
             {i === 0 && (
               <div style={{ position: 'absolute', bottom: 'clamp(14px,2vw,22px)', left: 'clamp(14px,2vw,22px)' }}>
-                <div style={{ fontFamily: 'var(--font-label)', fontSize: 9, letterSpacing: '0.16em', textTransform: 'uppercase', color: '#fff', marginBottom: 4 }}>Formação desportiva</div>
-                <div style={{ fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 'clamp(1.4rem,2.2vw,2.4rem)', color: '#fff', letterSpacing: '-0.03em', lineHeight: 1 }}>+200<br />Atletas</div>
+                <div style={{ fontFamily: 'var(--font-label)', fontSize: 9, letterSpacing: '0.16em', textTransform: 'uppercase', color: '#fff', marginBottom: 4 }}>{{ pt: 'Formação desportiva', en: 'Sports Training', fr: 'Formation sportive' }[locale] ?? 'Formação desportiva'}</div>
+                <div style={{ fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 'clamp(1.4rem,2.2vw,2.4rem)', color: '#fff', letterSpacing: '-0.03em', lineHeight: 1 }}>+200<br />{{ pt: 'Atletas', en: 'Athletes', fr: 'Athlètes' }[locale] ?? 'Atletas'}</div>
               </div>
             )}
           </div>
@@ -233,17 +233,17 @@ export default function CDH() {
             <div>
               <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 20 }}>
                 <div style={{ width: 28, height: 3, background: '#C8102E' }} />
-                <span style={{ fontFamily: 'var(--font-label)', fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.5)' }}>CDH · Vídeo oficial</span>
+                <span style={{ fontFamily: 'var(--font-label)', fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.5)' }}>CDH · {{ pt: 'Vídeo oficial', en: 'Official Video', fr: 'Vidéo officielle' }[locale] ?? 'Vídeo oficial'}</span>
               </div>
               <p style={{ margin: '0 0 clamp(24px,3vw,36px)', fontFamily: 'var(--font-sans)', fontSize: 'clamp(13px,1vw,15px)', color: '#fff', lineHeight: 1.8 }}>
-                Fica a conhecer o impacto do Clube Desportivo da Huíla e a parceria com o Grupo Omatapalo no desenvolvimento do desporto angolano.
+                {{ pt: 'Fica a conhecer o impacto do Clube Desportivo da Huíla e a parceria com o Grupo Omatapalo no desenvolvimento do desporto angolano.', en: 'Discover the impact of Clube Desportivo da Huíla and the partnership with Grupo Omatapalo in the development of Angolan sport.', fr: 'Découvrez l\'impact du Clube Desportivo da Huíla et le partenariat avec le Grupo Omatapalo dans le développement du sport angolais.' }[locale] ?? 'Fica a conhecer o impacto do Clube Desportivo da Huíla e a parceria com o Grupo Omatapalo no desenvolvimento do desporto angolano.'}
               </p>
               <button
                 onClick={() => setVideoOpen(true)}
                 style={{ display: 'inline-flex', alignItems: 'center', gap: 12, padding: '14px 28px', background: '#C8102E', border: 'none', borderRadius: 3, cursor: 'pointer', fontFamily: 'var(--font-label)', fontSize: 11, letterSpacing: '0.15em', textTransform: 'uppercase', color: '#fff', fontWeight: 700 }}
               >
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="#fff" style={{ marginLeft: 2 }}><polygon points="5 3 19 12 5 21 5 3" /></svg>
-                Assistir ao vídeo
+                {{ pt: 'Assistir ao vídeo', en: 'Watch the video', fr: 'Voir la vidéo' }[locale] ?? 'Assistir ao vídeo'}
               </button>
             </div>
           </div>
@@ -255,7 +255,7 @@ export default function CDH() {
         <div style={{ background: '#0a1a0a', borderTop: '1px solid rgba(255,255,255,0.06)', padding: 'clamp(36px,5vw,56px) 0' }}>
           <div className="wrap" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 24, textAlign: 'center' }}>
             <div>
-              <div style={{ fontFamily: 'var(--font-label)', fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', marginBottom: 8 }}>Segue o CDH</div>
+              <div style={{ fontFamily: 'var(--font-label)', fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', marginBottom: 8 }}>{{ pt: 'Segue o CDH', en: 'Follow CDH', fr: 'Suivez le CDH' }[locale] ?? 'Segue o CDH'}</div>
               <div style={{ fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 'clamp(1.2rem,2vw,1.8rem)', color: '#fff', letterSpacing: '-0.03em', textTransform: 'uppercase' }}>Clube Desportivo da Huíla</div>
             </div>
             <div style={{ display: 'flex', gap: 16 }}>
