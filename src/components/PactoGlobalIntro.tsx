@@ -2,7 +2,7 @@
 
 export default function PactoGlobalIntro() {
   return (
-    <section style={{ background: '#fff', padding: 'clamp(64px,8vh,100px) 0 clamp(24px,3vh,40px)' }}>
+    <section style={{ background: '#fff', padding: 'clamp(64px,8vh,100px) 0 0' }}>
       <div className="wrap">
         <div style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: 'clamp(40px,6vw,80px)', alignItems: 'start' }} className="pacto-intro-grid">
 
