@@ -9,7 +9,7 @@ const ODS_GOALS = [
 
 export default function OdsIntro() {
   return (
-    <section style={{ background: '#fff', padding: 'clamp(48px,7vh,80px) 0' }}>
+    <section style={{ background: '#f6f8fb', padding: 'clamp(48px,7vh,80px) 0' }}>
       <div className="wrap">
         <div style={{
           display: 'grid',
