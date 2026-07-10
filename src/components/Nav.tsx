@@ -9,7 +9,6 @@ import type { Locale } from '@/lib/i18n/translations';
 const FLAGS: { locale: Locale; countryCode: string; label: string }[] = [
   { locale: 'pt', countryCode: 'ao', label: 'PT' },
   { locale: 'en', countryCode: 'gb', label: 'EN' },
-  { locale: 'fr', countryCode: 'fr', label: 'FR' },
 ];
 
 function FlagImg({ code, size = 20 }: { code: string; size?: number }) {
