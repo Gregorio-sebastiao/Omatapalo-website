@@ -166,7 +166,7 @@ export default function Footer() {
               <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '11px' }}>
                 {c.links.map((l) => (
                   <li key={l.t}>
-                    <a href={l.href} style={{ fontSize: 'var(--text-sm)', color: '#fff', transition: 'color 0.2s' }} className="ftr-link">{l.t}</a>
+                    <a href={l.href} style={{ fontSize: 'var(--text-sm)', color: '#fff', transition: 'color 0.2s', textTransform: 'uppercase', letterSpacing: '0.05em' }} className="ftr-link">{l.t}</a>
                   </li>
                 ))}
               </ul>
