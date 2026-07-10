@@ -35,7 +35,7 @@ const PILLARS = [
 
 export default function PactoGlobal() {
   return (
-    <section style={{ background: '#fff', padding: 'clamp(64px,8vh,100px) 0' }}>
+    <section style={{ background: '#fff', padding: 'clamp(24px,3vh,40px) 0 clamp(64px,8vh,100px)' }}>
       <div className="wrap">
 
         {/* Subtitle banner */}
