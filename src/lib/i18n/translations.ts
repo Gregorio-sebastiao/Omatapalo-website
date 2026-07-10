@@ -335,7 +335,7 @@ export const translations = {
       ],
     },
     responsabilidade: {
-      eyebrow: 'Social Responsibility',
+      eyebrow: 'Corporate Social Responsibility',
       missionTitle1: 'Bringing Smiles',
       missionTitle2: 'Mission',
       videoLabel: 'CSR at Omatapalo',

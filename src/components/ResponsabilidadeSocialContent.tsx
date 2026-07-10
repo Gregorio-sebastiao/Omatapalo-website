@@ -174,7 +174,7 @@ export default function ResponsabilidadeSocialContent() {
           {/* eyebrow */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 'clamp(20px,3vh,32px)' }}>
             <svg width="10" height="10" viewBox="0 0 10 10"><rect width="10" height="10" fill="#1a396e" /></svg>
-            <span style={{ fontFamily: 'var(--font-label)', fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#1a396e' }}>{`${(t as any).responsabilidade?.eyebrow ?? 'Responsabilidade Social'} · Grupo Omatapalo`}</span>
+            <span style={{ fontFamily: 'var(--font-label)', fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#1a396e' }}>{`${(t as any).responsabilidade?.eyebrow ?? 'Responsabilidade Social'} · ${{ pt: 'Grupo Omatapalo', en: 'Omatapalo Group', fr: 'Groupe Omatapalo' }[locale] ?? 'Grupo Omatapalo'}`}</span>
           </div>
 
           {/* Título full-width */}
