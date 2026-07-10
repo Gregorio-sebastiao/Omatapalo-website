@@ -189,7 +189,11 @@ export default function PortefolioDinamico() {
     const source = PROJECTS.length > 0 ? PROJECTS : FALLBACK_PROJECTS;
     if (locale === 'pt') { setDisplayProjects(source); return; }
     const fixTitle = (text: string) => locale === 'en'
-      ? text.replace(/Kwanza House|Casa do Kwanza/gi, 'Cash Center').replace(/New Hospital dos Queimados|Novo Hospital dos Queimados|Hospital dos Queimados/gi, 'New Burn Center')
+      ? text
+          .replace(/Kwanza House|Casa do Kwanza/gi, 'Cash Center')
+          .replace(/New Hospital dos Queimados|Novo Hospital dos Queimados|Hospital dos Queimados/gi, 'New Burn Center')
+          .replace(/Construction of the New Centrality of M['’]Banza Congo[^–]*–\s*(?:1ª|1st)\s*Phase/gi, "Construction of the New M'Banza Congo City Center – Phase 1")
+          .replace(/Empreitada de Construção da Nova Centralidade de M['’]Banza Congo[^–]*–\s*1ªFase/gi, "Construction of the New M'Banza Congo City Center – Phase 1")
       : text;
     Promise.all(source.map(async p => ({
       ...p,
