@@ -8,6 +8,12 @@ export default function PactoGlobalIntro() {
 
           {/* Texto */}
           <div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 24 }}>
+              <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><rect width="10" height="10" fill="#1a396e" /></svg>
+              <span style={{ fontFamily: 'var(--font-label)', fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#1a396e' }}>
+                Responsabilidade Social · Grupo Omatapalo
+              </span>
+            </div>
             <h2 style={{
               fontFamily: 'var(--font-display)', fontWeight: 900,
               fontSize: 'clamp(1.5rem,3vw,2.4rem)',
