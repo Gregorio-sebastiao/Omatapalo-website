@@ -113,10 +113,12 @@ export default function ResponsabilidadeSocialContent() {
     }
     // Traduz textos longos via gtx (com override EN na citação)
     const citacaoEN = 'For us, social responsibility begins at home and in the conditions we provide for our staff. It is on this foundation and this philosophy that our ability to make things happen is based.';
+    const p1EN = 'In a country where poverty and inequality exist, OMATAPALO considers social responsibility to be of the utmost importance. Its contribution to improving the quality of life of individuals and communities is achieved through the promotion of and support for social initiatives in the fields of charity and social solidarity.';
+    const p2EN = 'In this regard, OMATAPALO embraces four of the 17 goals set by the UN in the 2030 Agenda as drivers for its active participation in economic, social and environmental matters.';
     Promise.all([
       locale === 'en' ? Promise.resolve(citacaoEN) : gtx(texts.citacao, locale),
-      gtx(texts.p1, locale),
-      gtx(texts.p2, locale),
+      locale === 'en' ? Promise.resolve(p1EN) : gtx(texts.p1, locale),
+      locale === 'en' ? Promise.resolve(p2EN) : gtx(texts.p2, locale),
     ]).then(([citacao, p1, p2]) => setDisplayTexts({ citacao, p1, p2 }));
 
     // Traduz ODS descriptions e projects
