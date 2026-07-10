@@ -68,6 +68,10 @@ export default function Academia() {
 
   useEffect(() => {
     if (locale === 'pt') { setDisplayParagraph(cfg.paragraph); return; }
+    if (locale === 'en') {
+      setDisplayParagraph("OMATAPALO ACADEMY, which opened in 2021, has as its primary objective the training of the Group's management and staff, with a view to the development and specialization of its professionals.");
+      return;
+    }
     gtx(cfg.paragraph, locale).then(setDisplayParagraph);
   }, [cfg.paragraph, locale]);
 
