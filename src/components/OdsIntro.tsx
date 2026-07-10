@@ -63,7 +63,9 @@ export default function OdsIntro() {
           <div style={{
             display: 'grid',
             gridTemplateColumns: '1fr 1fr',
-            gap: 10,
+            gap: 8,
+            maxWidth: 320,
+            marginLeft: 'auto',
           }}>
             {ODS_GOALS.map((g) => (
               <img key={g.num} src={g.img} alt={g.label.replace('\n', ' ')} style={{ width: '100%', display: 'block', borderRadius: 4 }} />
