@@ -32,7 +32,7 @@ export default function OdsIntro() {
               <img
                 src="/ods-.png"
                 alt="Objectivos de Desenvolvimento Sustentável"
-                style={{ maxWidth: 260, width: '100%' }}
+                style={{ maxWidth: 260, width: '100%', mixBlendMode: 'multiply' }}
                 onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
               />
             </div>
