@@ -53,22 +53,16 @@ const FOOTER_COLS: Record<string, { h: string; links: { t: string; href: string 
   ],
   fr: [
     { h: 'Le Groupe', links: [
-      { t: 'Le Groupe et ses Activités', href: '/omatapalo' },
-      { t: 'Omatapalo dans le Monde',    href: '/omatapalo#mundo' },
-      { t: 'Histoire',                    href: '/omatapalo' },
-      { t: 'Conseil d\'Administration',  href: '/omatapalo#conselho' },
+      { t: 'Portefeuille', href: '/portefolio' },
+      { t: 'Équipe',       href: '/pessoas' },
     ]},
-    { h: 'Activité', links: [
-      { t: 'Portefeuille',     href: '/portefolio' },
-      { t: 'Durabilité',       href: '/sustentabilidade' },
-      { t: 'Médias',           href: '/media' },
-      { t: 'Contacts',         href: '/contactos' },
+    { h: 'Développement Durable', links: [
+      { t: 'Responsabilité', href: '/responsabilidade-social' },
+      { t: 'CDH',            href: '/cdh' },
     ]},
-    { h: 'Personnes', links: [
-      { t: 'Personnes',            href: '/pessoas' },
-      { t: 'CDH',                  href: '/cdh' },
-      { t: 'Mission Faire Sourire',href: '/responsabilidade-social#missao' },
-      { t: 'Travailler avec nous', href: '/contactos' },
+    { h: 'Actualités', links: [
+      { t: 'Dossier de Presse', href: '/press-kit' },
+      { t: 'Contacts',          href: '/contactos' },
     ]},
   ],
 };
