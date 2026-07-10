@@ -362,7 +362,7 @@ export const translations = {
       eyebrow: 'Voices from our team',
     },
     academia: {
-      stats: ['Training Hours', 'Year of Opening', 'Trained Employees'],
+      stats: ['Training Hours', 'Inauguration Year', 'Trained Employees'],
       badge: 'Since 2021',
       saberMais: 'Learn more',
     },
