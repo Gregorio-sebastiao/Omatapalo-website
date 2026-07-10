@@ -220,7 +220,14 @@ export default function Sustentabilidade() {
                 <span style={{ color: 'transparent', WebkitTextStroke: '1.5px rgba(26,57,110,0.22)' }}>{t.sustentabilidadePage.odsTitle3}</span>
               </h2>
               <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'clamp(14px,1.2vw,16px)', color: '#475569', lineHeight: 1.8, margin: '0 0 clamp(24px,3vw,36px)' }}>
-                {t.sustentabilidadePage.odsDesc}
+                {(() => {
+                  const boldMap: Record<string, string> = { pt: 'Pacto Global das Nações Unidas', en: 'UN Global Compact', fr: 'Pacte Mondial des Nations Unies' };
+                  const bold = boldMap[locale] ?? 'UN Global Compact';
+                  const desc = t.sustentabilidadePage.odsDesc;
+                  const idx = desc.indexOf(bold);
+                  if (idx === -1) return desc;
+                  return <>{desc.slice(0, idx)}<strong style={{ color: '#0F1A2E' }}>{bold}</strong>{desc.slice(idx + bold.length)}</>;
+                })()}
               </p>
 
               {/* Goals list */}
