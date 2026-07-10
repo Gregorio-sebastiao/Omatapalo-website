@@ -157,7 +157,7 @@ export default function Sustentabilidade() {
                 <img src={heroImg} alt="Sustentabilidade Omatapalo" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
                 <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, transparent 50%, rgba(7,16,31,0.65) 100%)' }} />
                 <div style={{ position: 'absolute', bottom: 24, left: 24, background: '#1a396e', padding: '6px 14px', fontFamily: 'var(--font-label)', fontSize: 9, letterSpacing: '0.18em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.9)' }}>
-                  Grupo Omatapalo · ESG
+                  {{ pt: 'Grupo Omatapalo · ESG', en: 'Omatapalo Group · ESG', fr: 'Groupe Omatapalo · ESG' }[locale] ?? 'Grupo Omatapalo · ESG'}
                 </div>
               </div>
             </div>
