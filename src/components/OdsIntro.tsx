@@ -64,7 +64,7 @@ export default function OdsIntro() {
             display: 'grid',
             gridTemplateColumns: '1fr 1fr',
             gap: 8,
-            maxWidth: 200,
+            maxWidth: 280,
             marginLeft: 'auto',
             alignSelf: 'center',
           }}>
