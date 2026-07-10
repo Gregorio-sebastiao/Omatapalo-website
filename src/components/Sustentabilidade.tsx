@@ -63,6 +63,15 @@ export default function Sustentabilidade() {
     fr: { 'Qualidade': 'Qualité', 'Gestão Ambiental': 'Gestion Environnementale', 'Segurança e Saúde': 'Santé et Sécurité', 'Pacto Global ONU': 'Pacte Mondial ONU' },
   };
 
+  const displayODS = locale === 'en'
+    ? [
+        { src: '/SGD 1.png', alt: 'SDG 1' },
+        { src: '/SGD 2.png', alt: 'SDG 2' },
+        { src: '/SGD 3.png', alt: 'SDG 3' },
+        { src: '/SGD 4.png', alt: 'SDG 4' },
+      ]
+    : ODS;
+
   const certsTitle = { pt: 'Certificações', en: 'Certifications', fr: 'Certifications' }[locale] ?? 'Certificações';
   const certsOutline = { pt: '& Normas', en: '& Standards', fr: '& Normes' }[locale] ?? '& Normas';
   const certsDesc = {
@@ -262,7 +271,7 @@ export default function Sustentabilidade() {
 
               {/* ODS icons */}
               <div style={{ display: 'flex', gap: 'clamp(12px,1.5vw,20px)', flexWrap: 'wrap' }} className="sus-ods-row">
-                {ODS.map(o => (
+                {displayODS.map(o => (
                   <div key={o.alt} className="sus-ods-icon" style={{ opacity: 0 }}>
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img src={o.src} alt={o.alt} style={{ width: 'clamp(52px,6vw,72px)', height: 'auto', display: 'block' }} />
