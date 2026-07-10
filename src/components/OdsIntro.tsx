@@ -30,7 +30,7 @@ export default function OdsIntro() {
             </h2>
             <div style={{ marginBottom: 28, textAlign: 'center' }}>
               <img
-                src="/ods-logo.png"
+                src="/ods-.png"
                 alt="Objectivos de Desenvolvimento Sustentável"
                 style={{ maxWidth: 260, width: '100%' }}
                 onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
