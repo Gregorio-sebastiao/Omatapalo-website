@@ -8,7 +8,7 @@ export default function IdentidadeVisualPage() {
     <>
       <Nav />
       <main>
-        <PageHero page="identidade-visual"
+        <PageHero page="press-kit"
           title="Press Kit"
           eyebrow="Grupo Omatapalo · Marca"
           outlineWord="Kit"

@@ -2,6 +2,8 @@
 
 import { useEffect, useState, useRef } from 'react';
 import { createClient } from '@/lib/supabase/client';
+import { useLanguage } from '@/lib/i18n/LanguageContext';
+import { gtx } from '@/lib/i18n/gtx';
 
 type Asset = { id: number; title: string; description: string; download_url: string; sort_order: number };
 
@@ -24,8 +26,15 @@ function DownloadIcon() {
   );
 }
 
+const PT_P1 = 'Para assegurar a correcta aplicação do nosso logotipo é essencial baixá-lo nas versões com o perfil de cores adequado a cada tipo de trabalho. Seja para impressões de alta qualidade ou para uso digital, o uso correcto das cores garante que a nossa marca seja representada de maneira uniforme e profissional.';
+const PT_P2 = 'Faça o download dos arquivos nas versões correcta e contribua para Manter a integridade da nossa Press Kit.';
+
 export default function IdentidadeVisual() {
+  const { locale } = useLanguage();
   const [assets, setAssets] = useState<Asset[]>(FALLBACK);
+  const [displayAssets, setDisplayAssets] = useState<Asset[]>(FALLBACK);
+  const [p1, setP1] = useState(PT_P1);
+  const [p2, setP2] = useState(PT_P2);
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -36,6 +45,24 @@ export default function IdentidadeVisual() {
       .order('sort_order')
       .then(({ data }) => { if (data && data.length > 0) setAssets(data); });
   }, []);
+
+  useEffect(() => {
+    if (locale === 'pt') { setP1(PT_P1); setP2(PT_P2); return; }
+    gtx(PT_P1, locale).then(setP1);
+    gtx(PT_P2, locale).then(setP2);
+  }, [locale]);
+
+  useEffect(() => {
+    if (assets.length === 0) { setDisplayAssets([]); return; }
+    if (locale === 'pt') { setDisplayAssets(assets); return; }
+    let cancelled = false;
+    Promise.all(assets.map(async (a) => ({
+      ...a,
+      title: await gtx(a.title, locale),
+      description: a.description ? await gtx(a.description, locale) : a.description,
+    }))).then((translated) => { if (!cancelled) setDisplayAssets(translated); });
+    return () => { cancelled = true; };
+  }, [assets, locale]);
 
   useEffect(() => {
     import('gsap').then(({ gsap }) => {
@@ -49,7 +76,7 @@ export default function IdentidadeVisual() {
         );
       });
     });
-  }, [assets]);
+  }, [displayAssets]);
 
   return (
     <section ref={sectionRef} style={{ background: '#f6f8fb', paddingTop: 'clamp(64px,9vh,112px)', paddingBottom: 'clamp(72px,10vh,120px)' }}>
@@ -61,16 +88,16 @@ export default function IdentidadeVisual() {
             Press Kit
           </h2>
           <p style={{ fontSize: 'clamp(14px,1.1vw,16px)', color: '#374151', lineHeight: 1.8, maxWidth: 860, margin: '0 0 12px' }}>
-            Para assegurar a correcta aplicação do nosso logotipo é essencial baixá-lo nas versões com o perfil de cores adequado a cada tipo de trabalho. Seja para impressões de alta qualidade ou para uso digital, o uso correcto das cores garante que a nossa marca seja representada de maneira uniforme e profissional.
+            {p1}
           </p>
           <p style={{ fontSize: 'clamp(14px,1.1vw,16px)', color: '#1a396e', lineHeight: 1.8, maxWidth: 860, margin: 0, fontWeight: 600 }}>
-            Faça o download dos arquivos nas versões correcta e contribua para Manter a integridade da nossa Press Kit.
+            {p2}
           </p>
         </div>
 
         {/* Grid */}
         <div className="iv-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 20 }}>
-          {assets.map(asset => (
+          {displayAssets.map(asset => (
             <div
               key={asset.id}
               className="iv-card"
