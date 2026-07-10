@@ -264,18 +264,18 @@ export default function PortefolioDinamico() {
         <div style={{ marginBottom: 'clamp(40px,6vw,72px)' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 18 }}>
             <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><rect width="10" height="10" fill="#1a396e" /></svg>
-            <span style={{ fontFamily: 'var(--font-label)', fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#1a396e' }}>23 Anos de Obra</span>
+            <span style={{ fontFamily: 'var(--font-label)', fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#1a396e' }}>{{ pt: '23 Anos de Obra', en: '23 Years of Work', fr: '23 Ans de Travaux' }[locale] ?? '23 Anos de Obra'}</span>
           </div>
           <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 24, flexWrap: 'wrap' }}>
             <h2 style={{ margin: 0, fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 'clamp(2rem,4vw,4.5rem)', color: '#0F1A2E', letterSpacing: '-0.035em', lineHeight: 0.92, textTransform: 'uppercase' }}>
-              Portefólio<br />
-              <span style={{ color: 'transparent', WebkitTextStroke: '1.5px rgba(26,57,110,0.22)' }}>de Projectos</span>
+              {{ pt: 'Portefólio', en: 'Portfolio', fr: 'Portefeuille' }[locale] ?? 'Portefólio'}<br />
+              <span style={{ color: 'transparent', WebkitTextStroke: '1.5px rgba(26,57,110,0.22)' }}>{{ pt: 'de Projectos', en: 'of Projects', fr: 'de Projets' }[locale] ?? 'de Projectos'}</span>
             </h2>
             <div style={{ display: 'flex', gap: 'clamp(24px,4vw,48px)', paddingBottom: 4 }}>
               {[
-                { n: `${allProjects.length}`, l: 'Projectos' },
-                { n: '12',                  l: 'Categorias' },
-                { n: '18',                  l: 'Províncias' },
+                { n: `${allProjects.length}`, l: { pt: 'Projectos', en: 'Projects', fr: 'Projets' }[locale] ?? 'Projectos' },
+                { n: '12',                    l: { pt: 'Categorias', en: 'Categories', fr: 'Catégories' }[locale] ?? 'Categorias' },
+                { n: '18',                    l: { pt: 'Províncias', en: 'Provinces', fr: 'Provinces' }[locale] ?? 'Províncias' },
               ].map(s => (
                 <div key={s.l}>
                   <div style={{ fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 'clamp(1.4rem,2.5vw,2.2rem)', color: '#0F1A2E', letterSpacing: '-0.04em', lineHeight: 1 }}>{s.n}</div>
