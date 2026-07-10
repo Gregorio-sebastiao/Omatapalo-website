@@ -36,7 +36,7 @@ const DEFAULT_NAV = [
     { t: 'Candidaturas', href: '/pessoas#candidaturas' },
   ]},
   { t: 'Sustentabilidade', href: '/sustentabilidade' },
-  { t: 'R.Social', href: '/responsabilidade-social', sub: [
+  { t: 'R. Social', href: '/responsabilidade-social', sub: [
     { t: 'Missão Fazer Sorrir', href: '/responsabilidade-social#missao' },
   ]},
   { t: 'CDH', href: '/cdh' },

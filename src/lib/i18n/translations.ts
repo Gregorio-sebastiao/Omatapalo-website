@@ -9,7 +9,7 @@ export const translations = {
       pessoas: 'Pessoas',
       candidaturas: 'Candidaturas',
       sustentabilidade: 'Sustentabilidade',
-      rsocial: 'R.Social',
+      rsocial: 'R. Social',
       missaoSorrir: 'Missão Fazer Sorrir',
       cdh: 'CDH',
       media: 'Media',
