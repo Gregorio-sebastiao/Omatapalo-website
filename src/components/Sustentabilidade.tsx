@@ -81,8 +81,8 @@ export default function Sustentabilidade() {
       return;
     }
     if (locale === 'en') {
-      setDisplayP1('The Omatapalo Group is moving toward a future that redefines the boundaries of Engineering and Construction, with a clear focus on investment in renewable energy and innovation.');
-      setDisplayP2('The Group contributes to improving the quality of life for people and communities by promoting and supporting social and environmental initiatives.');
+      setDisplayP1('The Omatapalo Group is moving towards a future that redefines the boundaries of engineering and construction, with a clear focus on investment in renewable energy and innovation.');
+      setDisplayP2('It contributes to improving the quality of life of people and communities by promoting and supporting social and environmental initiatives.');
     } else {
       gtx(introP1, locale).then(setDisplayP1);
       gtx(introP2, locale).then(setDisplayP2);
