@@ -46,7 +46,7 @@ export const SECTORS: Sector[] = [
       { slug: 'venture-vanguard',  logo: '/Venture Vanguard.png',      name: 'Venture Vanguard', year: '2024', area: 'Trading',                    desc: 'Consultoria e trading de commodities e serviços.', sector: 'terciario', sectorLabel: 'Sector Terciário' },
       { slug: 'sotrans',           logo: '/SOTRANS-Logo.png',          name: 'Sotrans',          year: '2014', area: 'Transportes',                desc: 'Transporte de passageiros e logística.', sector: 'terciario', sectorLabel: 'Sector Terciário' },
       { slug: 'emadel-lar',        logo: '/EMADEL-LAR.png',            name: 'EmadelLar',        year: '',     area: '',                           desc: '', sector: 'terciario', sectorLabel: 'Sector Terciário' },
-      { slug: 'okuajuluka',        logo: '/Okuanjuluka.png',           name: 'Okuajuluka',       year: '',     area: 'Arquitectura de Interiores', desc: '', sector: 'terciario', sectorLabel: 'Sector Terciário' },
+      { slug: 'okuajuluka',        logo: '/Okuanjuluka.png',           name: 'Okuanjuluka',       year: '',     area: 'Arquitectura de Interiores', desc: '', sector: 'terciario', sectorLabel: 'Sector Terciário' },
     ],
   },
 ];
