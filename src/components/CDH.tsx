@@ -56,9 +56,15 @@ export default function CDH() {
         if (cfg[f]) translated[f] = await gtx(cfg[f], locale);
       }
       // translate metric labels/descs
+      const EN_METRIC_LABELS: Record<string, string> = {
+        'Atletas federados': 'Registered Athletes',
+        'Em formação': 'In training',
+        'Atletas seniores': 'Senior Athletes',
+        'Clube Desportivo da Huíla': 'Clube Desportivo da Huíla',
+      };
       translated.metrics = await Promise.all(cfg.metrics.map(async m => ({
         ...m,
-        label: await gtx(m.label, locale),
+        label: locale === 'en' && EN_METRIC_LABELS[m.label] ? EN_METRIC_LABELS[m.label] : await gtx(m.label, locale),
         desc: await gtx(m.desc, locale),
       })));
       // translate photo labels
