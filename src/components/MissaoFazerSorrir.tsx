@@ -904,6 +904,9 @@ export default function MissaoFazerSorrir({ hideHero = false, filterODS = null }
         </div>
       )}
 
+      {/* ODS Interactive Section */}
+      <OdsInteractiveSection />
+
       {/* ���� PROJECTS GRID �������������������������������������������������������������������� */}
       <div id="projectos-terreno" style={{ background: '#F4F6F9' }}>
         <div className="wrap" style={{ paddingTop: 'clamp(64px,8vw,100px)', paddingBottom: 'clamp(64px,8vw,100px)' }}>
