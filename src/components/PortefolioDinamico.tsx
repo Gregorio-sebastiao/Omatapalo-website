@@ -188,18 +188,23 @@ export default function PortefolioDinamico() {
   useEffect(() => {
     const source = PROJECTS.length > 0 ? PROJECTS : FALLBACK_PROJECTS;
     if (locale === 'pt') { setDisplayProjects(source); return; }
-    const fixTitle = (text: string) => locale === 'en'
-      ? text
-          .replace(/Kwanza House|Casa do Kwanza/gi, 'Cash Center')
-          .replace(/New Hospital dos Queimados|Novo Hospital dos Queimados|Hospital dos Queimados/gi, 'New Burn Center')
-          .replace(/Construction of the New Centrality of M['’]Banza Congo[^–]*–\s*(?:1ª|1st)\s*Phase/gi, "Construction of the New M'Banza Congo City Center – Phase 1")
-          .replace(/Empreitada de Construção da Nova Centralidade de M['’]Banza Congo[^–]*–\s*1ªFase/gi, "Construction of the New M'Banza Congo City Center – Phase 1")
-      : text;
-    Promise.all(source.map(async p => ({
-      ...p,
-      title: fixTitle(await gtx(p.title, locale)),
-      location: await gtx(p.location, locale),
-    }))).then(setDisplayProjects);
+    const fixTitle = (text: string) => {
+      if (locale === 'en') return text
+        .replace(/Kwanza House|Casa do Kwanza/gi, 'Cash Center')
+        .replace(/New Hospital dos Queimados|Novo Hospital dos Queimados|Hospital dos Queimados/gi, 'New Burn Center');
+      return text;
+    };
+    const SLUG_TITLES: Record<string, Record<string, string>> = {
+      'empreitada-de-construcao-da-nova-centralidade-de-mbanza-congo-1fase-200-fogos-t3': {
+        en: "Construction of the New M'Banza Congo City Center – Phase 1",
+        fr: "Construction du nouveau centre-ville de M'Banza Congo – 1re phase",
+      },
+    };
+    Promise.all(source.map(async p => {
+      const override = SLUG_TITLES[p.slug]?.[locale];
+const translated = override ?? fixTitle(await gtx(p.title, locale));
+      return { ...p, title: translated, location: await gtx(p.location, locale) };
+    })).then(setDisplayProjects);
   }, [PROJECTS, locale]);
 
   const allProjects = displayProjects.length > 0 ? displayProjects : (PROJECTS.length > 0 ? PROJECTS : FALLBACK_PROJECTS);
