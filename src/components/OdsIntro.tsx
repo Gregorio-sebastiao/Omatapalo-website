@@ -64,7 +64,7 @@ export default function OdsIntro() {
             display: 'grid',
             gridTemplateColumns: '1fr 1fr',
             gap: 8,
-            maxWidth: 320,
+            maxWidth: 260,
             marginLeft: 'auto',
           }}>
             {ODS_GOALS.map((g) => (
