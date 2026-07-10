@@ -19,7 +19,7 @@ const FOOTER_COLS: Record<string, { h: string; links: { t: string; href: string 
     ]},
     { h: '', links: [
       { t: 'Sustentabilidade',  href: '/sustentabilidade' },
-      { t: 'Responsabilidade',  href: '/responsabilidade-social' },
+      { t: 'R. Social',         href: '/responsabilidade-social' },
       { t: 'CDH',               href: '/cdh' },
     ]},
     { h: '', links: [
@@ -36,7 +36,7 @@ const FOOTER_COLS: Record<string, { h: string; links: { t: string; href: string 
     ]},
     { h: '', links: [
       { t: 'Sustainability',  href: '/sustentabilidade' },
-      { t: 'Responsibility',  href: '/responsabilidade-social' },
+      { t: 'R. Social',       href: '/responsabilidade-social' },
       { t: 'CDH',             href: '/cdh' },
     ]},
     { h: '', links: [
@@ -53,7 +53,7 @@ const FOOTER_COLS: Record<string, { h: string; links: { t: string; href: string 
     ]},
     { h: '', links: [
       { t: 'Développement Durable', href: '/sustentabilidade' },
-      { t: 'Responsabilité',        href: '/responsabilidade-social' },
+      { t: 'R. Social',             href: '/responsabilidade-social' },
       { t: 'CDH',                   href: '/cdh' },
     ]},
     { h: '', links: [
