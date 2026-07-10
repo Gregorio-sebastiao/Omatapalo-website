@@ -37,9 +37,23 @@ const ENG_CONST: Record<string, string> = {
   fr: 'Génie Civil et Construction',
 };
 
+const NOUN_MAP: Record<string, [RegExp, string][]> = {
+  en: [
+    [/Engenharia e Construção/gi, 'Engineering and Construction'],
+    [/Novo Hospital dos Queimados/gi, 'New Burn Center'],
+    [/Hospital dos Queimados/gi, 'Burn Center'],
+  ],
+  fr: [
+    [/Engenharia e Construção/gi, 'Génie Civil et Construction'],
+    [/Novo Hospital dos Queimados/gi, 'Nouveau Centre des Brûlés'],
+    [/Hospital dos Queimados/gi, 'Centre des Brûlés'],
+  ],
+};
+
 function fixProperNouns(text: string, locale: string): string {
-  const repl = ENG_CONST[locale];
-  return repl ? text.replace(/Engenharia e Construção/gi, repl) : text;
+  const rules = NOUN_MAP[locale];
+  if (!rules) return text;
+  return rules.reduce((t, [pat, rep]) => t.replace(pat, rep), text);
 }
 
 const EYEBROW: Record<string, string> = { pt: 'História', en: 'History', fr: 'Histoire' };
