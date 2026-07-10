@@ -406,7 +406,7 @@ export const translations = {
       pessoas: { title: 'Our People', eyebrow: 'Omatapalo Group · +15 000 Employees', outline: 'People' },
       contactos: { title: 'Contact Us', eyebrow: 'Omatapalo Group' },
       media: { title: 'Latest News', eyebrow: 'Omatapalo Group · News' },
-      cdh: { title: 'Huíla Sports Club', eyebrow: 'Omatapalo Group' },
+      cdh: { title: 'Clube Desportivo da Huíla', eyebrow: 'Omatapalo Group' },
       omatapalo: { title: 'The Group', eyebrow: 'Omatapalo Group · Since 2003' },
       'missao-fazer-sorrir': { title: 'Mission Make Smile', eyebrow: 'Omatapalo Group · CSR' },
       'press-kit': { title: 'Press Kit', eyebrow: 'Omatapalo Group · Brand' },
