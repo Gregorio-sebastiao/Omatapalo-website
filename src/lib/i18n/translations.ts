@@ -339,7 +339,7 @@ export const translations = {
       missionTitle1: 'Bringing Smiles',
       missionTitle2: 'Mission',
       videoLabel: 'CSR at Omatapalo',
-      agenda: 'Agenda 2030 · Select an objective',
+      agenda: '2030 Agenda · Select an SDG',
       directas: 'direct',
       indirectas: 'indirect',
       projectoSing: 'project',
