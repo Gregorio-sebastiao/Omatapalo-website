@@ -82,11 +82,11 @@ export default function CDH() {
           <div>
             <div style={{ display: 'inline-flex', alignItems: 'center', gap: 10, marginBottom: 'clamp(20px,2.8vw,32px)', background: 'rgba(200,16,46,0.18)', border: '1px solid rgba(200,16,46,0.35)', borderRadius: 2, padding: '7px 16px' }}>
               <div style={{ width: 7, height: 7, background: '#C8102E', borderRadius: '50%' }} />
-              <span style={{ fontFamily: 'var(--font-label)', fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#fff' }}>Desporto &amp; Comunidade · CDH</span>
+              <span style={{ fontFamily: 'var(--font-label)', fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#fff' }}>{{ pt: 'Desporto & Comunidade · CDH', en: 'Sport & Community · CDH', fr: 'Sport & Communauté · CDH' }[locale] ?? 'Desporto & Comunidade · CDH'}</span>
             </div>
             <h2 style={{ margin: 0, fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 'clamp(2.4rem,5vw,6rem)', color: '#fff', letterSpacing: '-0.04em', lineHeight: 0.87, textTransform: 'uppercase' }}>
-              Construímos<br />mais do que<br />
-              <span style={{ color: 'transparent', WebkitTextStroke: '2px rgba(255,255,255,0.25)' }}>infra-estruturas.</span>
+              {{ pt: 'Construímos', en: 'We Build', fr: 'Nous construisons' }[locale] ?? 'Construímos'}<br />{{ pt: 'mais do que', en: 'more than', fr: 'bien plus que' }[locale] ?? 'mais do que'}<br />
+              <span style={{ color: 'transparent', WebkitTextStroke: '2px rgba(255,255,255,0.25)' }}>{{ pt: 'infra-estruturas.', en: 'infrastructure.', fr: 'des infrastructures.' }[locale] ?? 'infra-estruturas.'}</span>
             </h2>
             <div style={{ display: 'flex', gap: 0, marginTop: 'clamp(18px,2.5vw,28px)', overflow: 'hidden', borderRadius: 2, width: 72, height: 4 }}>
               <div style={{ flex: 1, background: '#006633' }} />
