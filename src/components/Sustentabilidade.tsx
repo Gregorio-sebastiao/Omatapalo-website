@@ -248,7 +248,7 @@ export default function Sustentabilidade() {
               <div aria-hidden style={{ position: 'absolute', top: -20, right: -12, zIndex: 0, fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 'clamp(80px,12vw,160px)', lineHeight: 1, color: 'rgba(26,57,110,0.05)', letterSpacing: '-0.05em', pointerEvents: 'none', userSelect: 'none' }}>ODS</div>
               <div style={{ position: 'relative', aspectRatio: '4/5', borderRadius: 4, overflow: 'hidden', background: '#0d1d35', zIndex: 1 }}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="https://omatapalo.com/wp-content/uploads/3-1-e1757449622367.webp" alt="ODS Omatapalo" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
+                <img src="/Sustentabilidade-omatapalo.png" alt="ODS Omatapalo" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
                 <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, transparent 50%, rgba(7,16,31,0.6) 100%)' }} />
               </div>
             </div>
