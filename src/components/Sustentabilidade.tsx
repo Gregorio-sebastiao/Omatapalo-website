@@ -72,8 +72,8 @@ export default function Sustentabilidade() {
       ]
     : ODS;
 
-  const certsTitle = { pt: 'Certificações', en: 'Certifications', fr: 'Certifications' }[locale] ?? 'Certificações';
-  const certsOutline = { pt: '& Normas', en: '& Standards', fr: '& Normes' }[locale] ?? '& Normas';
+  const certsTitle = { pt: 'Certificações', en: 'Quality', fr: 'Certifications' }[locale] ?? 'Certificações';
+  const certsOutline = { pt: '& Normas', en: '& Compliance', fr: '& Normes' }[locale] ?? '& Normas';
   const certsDesc = {
     pt: 'Em 2024 a Omatapalo tornou-se a primeira empresa angolana de construção civil signatária do Pacto Global das Nações Unidas, alinhando a estratégia com os 17 ODS.',
     en: 'In 2024, Omatapalo became the first Angolan civil construction company to sign the UN Global Compact, aligning its strategy with the 17 SDGs.',
