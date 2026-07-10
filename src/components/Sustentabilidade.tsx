@@ -54,8 +54,25 @@ export default function Sustentabilidade() {
   const [displayP1, setDisplayP1]           = useState(introP1);
   const [displayP2, setDisplayP2]           = useState(introP2);
   const [displayEsg, setDisplayEsg]         = useState(esg);
+  const [displayCertLogos, setDisplayCertLogos] = useState(certLogos);
   const [displayRelTitulo, setDisplayRelTitulo] = useState(relTitulo);
   const [displayRelDesc, setDisplayRelDesc] = useState(relDesc);
+
+  const CERT_LABELS: Record<string, Record<string, string>> = {
+    en: { 'Qualidade': 'Quality', 'Gestão Ambiental': 'Environmental Management', 'Segurança e Saúde': 'Health & Safety', 'Pacto Global ONU': 'UN Global Compact' },
+    fr: { 'Qualidade': 'Qualité', 'Gestão Ambiental': 'Gestion Environnementale', 'Segurança e Saúde': 'Santé et Sécurité', 'Pacto Global ONU': 'Pacte Mondial ONU' },
+  };
+
+  const certsTitle = { pt: 'Certificações', en: 'Certifications', fr: 'Certifications' }[locale] ?? 'Certificações';
+  const certsOutline = { pt: '& Normas', en: '& Standards', fr: '& Normes' }[locale] ?? '& Normas';
+  const certsDesc = {
+    pt: 'Em 2024 a Omatapalo tornou-se a primeira empresa angolana de construção civil signatária do Pacto Global das Nações Unidas, alinhando a estratégia com os 17 ODS.',
+    en: 'In 2024, Omatapalo became the first Angolan civil construction company to sign the UN Global Compact, aligning its strategy with the 17 SDGs.',
+    fr: "En 2024, Omatapalo est devenue la première entreprise angolaise de construction civile signataire du Pacte Mondial des Nations Unies, alignant sa stratégie sur les 17 ODD.",
+  }[locale] ?? '';
+  const relTitle1 = { pt: 'Relatório de', en: 'Sustainability', fr: 'Rapport de' }[locale] ?? 'Relatório de';
+  const relTitle2 = { pt: 'Sustentabilidade', en: 'Report', fr: 'Durabilité' }[locale] ?? 'Sustentabilidade';
+  const docLabel = { pt: 'Documento PDF', en: 'PDF Document', fr: 'Document PDF' }[locale] ?? 'Documento PDF';
 
   useEffect(() => {
     createClient().from('site_settings').select('value').eq('key', 'sustentabilidade_cfg').single().then(({ data }) => {
@@ -78,8 +95,11 @@ export default function Sustentabilidade() {
     if (locale === 'pt') {
       setDisplayP1(introP1); setDisplayP2(introP2);
       setDisplayEsg(esg); setDisplayRelTitulo(relTitulo); setDisplayRelDesc(relDesc);
+      setDisplayCertLogos(certLogos);
       return;
     }
+    const labelMap = CERT_LABELS[locale] ?? {};
+    setDisplayCertLogos(certLogos.map(c => ({ ...c, label: labelMap[c.label] ?? c.label })));
     if (locale === 'en') {
       setDisplayP1('The Omatapalo Group is moving towards a future that redefines the boundaries of engineering and construction, with a clear focus on investment in renewable energy and innovation.');
       setDisplayP2('It contributes to improving the quality of life of people and communities by promoting and supporting social and environmental initiatives.');
@@ -94,7 +114,7 @@ export default function Sustentabilidade() {
       t: t.sustentabilidadePage.esgTitles[['Ambiental', 'Social', 'Governança'].indexOf(p.t)] ?? await gtx(p.t, locale),
       d: await gtx(p.d, locale),
     }))).then(setDisplayEsg);
-  }, [locale, introP1, introP2, esg, relTitulo, relDesc]);
+  }, [locale, introP1, introP2, esg, certLogos, relTitulo, relDesc]);
 
   useEffect(() => {
     import('gsap').then(({ gsap }) => {
@@ -276,17 +296,17 @@ export default function Sustentabilidade() {
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'clamp(24px,4vw,64px)', alignItems: 'flex-end' }} className="sus-s4-hdr-grid">
               <h2 style={{ margin: 0, fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 'clamp(2rem,4vw,4.5rem)', color: '#fff', letterSpacing: '-0.035em', lineHeight: 0.92, textTransform: 'uppercase' }}>
-                Certificações<br />
-                <span style={{ color: 'transparent', WebkitTextStroke: '1.5px rgba(255,255,255,0.2)' }}>&amp; Normas</span>
+                {certsTitle}<br />
+                <span style={{ color: 'transparent', WebkitTextStroke: '1.5px rgba(255,255,255,0.2)' }}>{certsOutline}</span>
               </h2>
               <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'clamp(13px,1.1vw,16px)', color: '#fff', lineHeight: 1.8, margin: 0 }}>
-                Em 2024 a Omatapalo tornou-se a primeira empresa angolana de construção civil signatária do Pacto Global das Nações Unidas, alinhando a estratégia com os 17 ODS.
+                {certsDesc}
               </p>
             </div>
           </div>
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 'clamp(12px,1.5vw,20px)' }} className="sus-cert-grid">
-            {certLogos.map(c => (
+            {displayCertLogos.map(c => (
               <a key={c.alt} href={c.href} target="_blank" rel="noopener noreferrer" className="sus-cert" style={{
                 opacity: 0, textDecoration: 'none',
                 background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)',
@@ -321,8 +341,8 @@ export default function Sustentabilidade() {
                 <span style={{ fontFamily: 'var(--font-label)', fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#fff' }}>{t.sustentabilidadePage.relEyebrow}</span>
               </div>
               <h2 style={{ margin: '0 0 clamp(16px,2vw,28px)', fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 'clamp(2rem,3.5vw,4rem)', color: '#fff', letterSpacing: '-0.035em', lineHeight: 0.92, textTransform: 'uppercase' }}>
-                Relatório de<br />
-                <span style={{ color: 'transparent', WebkitTextStroke: '1.5px rgba(255,255,255,0.18)' }}>Sustentabilidade</span>
+                {relTitle1}<br />
+                <span style={{ color: 'transparent', WebkitTextStroke: '1.5px rgba(255,255,255,0.18)' }}>{relTitle2}</span>
               </h2>
               <p style={{ fontFamily: 'var(--font-sans)', fontSize: 'clamp(14px,1.2vw,16px)', color: '#fff', lineHeight: 1.8, margin: 0, maxWidth: 440 }}>
                 {displayRelDesc}
@@ -340,7 +360,7 @@ export default function Sustentabilidade() {
                   </svg>
                 </div>
                 <div>
-                  <div style={{ fontFamily: 'var(--font-label)', fontSize: 9, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.3)', marginBottom: 4 }}>Documento PDF</div>
+                  <div style={{ fontFamily: 'var(--font-label)', fontSize: 9, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.3)', marginBottom: 4 }}>{docLabel}</div>
                   <div style={{ fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 'clamp(0.9rem,1.2vw,1.1rem)', color: '#fff', letterSpacing: '-0.01em' }}>{displayRelTitulo}</div>
                 </div>
               </div>
