@@ -1,6 +1,7 @@
 ﻿'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import PactoGlobal from '@/components/PactoGlobal';
 
 /* ������������������������������������������������������������������������������������������������������������������
    TYPES
@@ -883,6 +884,10 @@ export default function MissaoFazerSorrir({ hideHero = false, filterODS = null }
           </div>
         </div>
       )}
+
+
+      {/* Pacto Global */}
+      {!hideHero && <PactoGlobal />}
 
       {/* ���� IMPACT STATS ���������������������������������������������������������������������� */}
       {!hideHero && (
