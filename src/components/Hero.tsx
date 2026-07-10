@@ -49,7 +49,7 @@ export default function Hero() {
     ? { ...HOME_DEFAULTS, title_line1: 'NOUS FAISONS', title_line2: 'EN SORTE QUE CELA SE PRODUISE',
         stat1_label: 'Ans d\'Expérience', stat2_label: 'Collaborateurs', stat3_label: 'Surface Construite', stat4_label: 'de Route', stat7_label: 'Hôpitaux' }
     : locale === 'en'
-    ? { ...HOME_DEFAULTS, title_line1: 'WE MAKE', title_line2: 'IT HAPPEN', stat2_label: 'Employees' }
+    ? { ...HOME_DEFAULTS, title_line1: 'WE MAKE', title_line2: 'IT HAPPEN', stat2_label: 'Employees', stat4_label: 'Road' }
     : HOME_DEFAULTS;
   const c             = useContent(page, localeDefaults);
   const eyebrow = locale !== 'pt' ? t.hero.eyebrow : c.eyebrow;
