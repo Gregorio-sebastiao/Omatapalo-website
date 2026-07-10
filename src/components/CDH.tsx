@@ -122,15 +122,25 @@ export default function CDH() {
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 24 }}>
               <svg width="10" height="10" viewBox="0 0 10 10"><rect width="10" height="10" fill="rgba(200,16,46,0.7)" /></svg>
-              <span style={{ fontFamily: 'var(--font-label)', fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#fff' }}>Impacto da Parceria</span>
+              <span style={{ fontFamily: 'var(--font-label)', fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#fff' }}>
+                {{ pt: 'Impacto da Parceria', en: 'Partnership Impact', fr: 'Impact du Partenariat' }[locale] ?? 'Impacto da Parceria'}
+              </span>
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', flex: 1, justifyContent: 'space-between' }}>
-              {[
-                { cor: '#C8102E', titulo: 'Melhoria das condições de treino', desc: 'Instalações modernas que elevam o nível de preparação dos atletas.' },
-                { cor: '#006633', titulo: 'Desenvolvimento de jovens talentos', desc: 'Formação de uma nova geração de futebolistas angolanos com visão de futuro.' },
-                { cor: '#FFD700', titulo: 'Fortalecimento do desporto na Huíla', desc: 'Contribuição directa para o crescimento do ecossistema desportivo provincial.' },
-                { cor: '#C8102E', titulo: 'Promoção de valores', desc: 'Disciplina, trabalho em equipa e inclusão social como pilares do projecto.' },
-              ].map(item => (
+              {([
+                { cor: '#C8102E',
+                  titulo: { pt: 'Melhoria das condições de treino', en: 'Improved Training Conditions', fr: 'Amélioration des conditions d\'entraînement' }[locale] ?? 'Melhoria das condições de treino',
+                  desc:   { pt: 'Instalações modernas que elevam o nível de preparação dos atletas.', en: 'Modern facilities that raise the level of athlete preparation.', fr: 'Des installations modernes qui élèvent le niveau de préparation des athlètes.' }[locale] ?? 'Instalações modernas que elevam o nível de preparação dos atletas.' },
+                { cor: '#006633',
+                  titulo: { pt: 'Desenvolvimento de jovens talentos', en: 'Development of Young Talent', fr: 'Développement des jeunes talents' }[locale] ?? 'Desenvolvimento de jovens talentos',
+                  desc:   { pt: 'Formação de uma nova geração de futebolistas angolanos com visão de futuro.', en: 'Training a new generation of Angolan footballers with a vision for the future.', fr: 'Formation d\'une nouvelle génération de footballeurs angolais avec une vision d\'avenir.' }[locale] ?? 'Formação de uma nova geração de futebolistas angolanos com visão de futuro.' },
+                { cor: '#FFD700',
+                  titulo: { pt: 'Fortalecimento do desporto na Huíla', en: 'Strengthening Sport in Huíla', fr: 'Renforcement du sport à Huíla' }[locale] ?? 'Fortalecimento do desporto na Huíla',
+                  desc:   { pt: 'Contribuição directa para o crescimento do ecossistema desportivo provincial.', en: 'A direct contribution to the growth of the provincial sports ecosystem.', fr: 'Une contribution directe à la croissance de l\'écosystème sportif provincial.' }[locale] ?? 'Contribuição directa para o crescimento do ecossistema desportivo provincial.' },
+                { cor: '#C8102E',
+                  titulo: { pt: 'Promoção de valores', en: 'Promotion of Values', fr: 'Promotion des valeurs' }[locale] ?? 'Promoção de valores',
+                  desc:   { pt: 'Disciplina, trabalho em equipa e inclusão social como pilares do projecto.', en: 'Discipline, teamwork and social inclusion as the pillars of the project.', fr: 'Discipline, travail d\'équipe et inclusion sociale comme piliers du projet.' }[locale] ?? 'Disciplina, trabalho em equipa e inclusão social como pilares do projecto.' },
+              ] as { cor: string; titulo: string; desc: string }[]).map(item => (
                 <div key={item.titulo} style={{ display: 'flex', gap: 16, alignItems: 'flex-start', padding: 'clamp(14px,1.8vw,22px) 0', borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
                   <div style={{ width: 4, flexShrink: 0, alignSelf: 'stretch', background: item.cor, borderRadius: 1, minHeight: 48 }} />
                   <div>
