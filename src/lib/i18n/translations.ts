@@ -382,7 +382,7 @@ export const translations = {
       odsTitle3: 'Goals',
       odsDesc: 'OMATAPALO embraces 4 of the 17 SDGs set by the UN in the 2030 Agenda, and in 2024 became the first Angolan civil construction company to sign the UN Global Compact.',
       odsGoals: ['No Poverty', 'Zero Hunger', 'Good Health & Well-being', 'Quality Education'],
-      certsEyebrow: 'Certifications',
+      certsEyebrow: 'Quality & Compliance',
       relEyebrow: 'Report',
       relBtn: 'Download PDF',
       relBtnOnline: 'View online',
