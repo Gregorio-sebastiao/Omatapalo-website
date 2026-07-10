@@ -1,10 +1,10 @@
 'use client';
 
 const ODS_GOALS = [
-  { num: 1, label: 'ERRADICAR\nA POBREZA', color: '#E5243B', img: '/ods-1.png' },
-  { num: 2, label: 'ERRADICAR\nA FOME', color: '#DDA63A', img: '/ods-2.png' },
-  { num: 3, label: 'SAÚDE\nDE QUALIDADE', color: '#4C9F38', img: '/ods-3.png' },
-  { num: 4, label: 'EDUCAÇÃO\nDE QUALIDADE', color: '#C5192D', img: '/ods-4.png' },
+  { num: 1, label: 'ERRADICAR\nA POBREZA', color: '#E5243B', img: '/responsabilidade-1.png' },
+  { num: 2, label: 'ERRADICAR\nA FOME', color: '#DDA63A', img: '/responsabilidade-2.png' },
+  { num: 3, label: 'SAÚDE\nDE QUALIDADE', color: '#4C9F38', img: '/responsabilidade-3.png' },
+  { num: 4, label: 'EDUCAÇÃO\nDE QUALIDADE', color: '#C5192D', img: '/responsabilidade-4.png' },
 ];
 
 export default function OdsIntro() {
