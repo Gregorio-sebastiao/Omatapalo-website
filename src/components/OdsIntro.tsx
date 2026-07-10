@@ -20,6 +20,14 @@ export default function OdsIntro() {
 
           {/* Esquerda: logo + texto + lista */}
           <div>
+            <h2 style={{
+              fontFamily: 'var(--font-display)', fontWeight: 900,
+              fontSize: 'clamp(1.4rem,2.5vw,2rem)',
+              color: '#1a396e', letterSpacing: '-0.02em', lineHeight: 1.1,
+              margin: '0 0 24px',
+            }}>
+              Objectivos de Desenvolvimento Sustentável (ODS)
+            </h2>
             <div style={{ marginBottom: 28, textAlign: 'center' }}>
               <img
                 src="/ods-logo.png"
