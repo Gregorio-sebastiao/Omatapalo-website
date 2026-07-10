@@ -1,10 +1,10 @@
 'use client';
 
 const ODS_GOALS = [
-  { num: 1, label: 'ERRADICAR\nA POBREZA', color: '#E5243B', icon: '👨‍👩‍👧‍👦' },
-  { num: 2, label: 'ERRADICAR\nA FOME', color: '#DDA63A', icon: '🌾' },
-  { num: 3, label: 'SAÚDE\nDE QUALIDADE', color: '#4C9F38', icon: '❤️' },
-  { num: 4, label: 'EDUCAÇÃO\nDE QUALIDADE', color: '#C5192D', icon: '📖' },
+  { num: 1, label: 'ERRADICAR\nA POBREZA', color: '#E5243B', img: '/ods-1.png' },
+  { num: 2, label: 'ERRADICAR\nA FOME', color: '#DDA63A', img: '/ods-2.png' },
+  { num: 3, label: 'SAÚDE\nDE QUALIDADE', color: '#4C9F38', img: '/ods-3.png' },
+  { num: 4, label: 'EDUCAÇÃO\nDE QUALIDADE', color: '#C5192D', img: '/ods-4.png' },
 ];
 
 export default function OdsIntro() {
@@ -66,28 +66,7 @@ export default function OdsIntro() {
             gap: 10,
           }}>
             {ODS_GOALS.map((g) => (
-              <div key={g.num} style={{
-                background: g.color,
-                borderRadius: 4,
-                padding: '16px 14px',
-                aspectRatio: '1',
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'space-between',
-              }}>
-                <div style={{
-                  fontFamily: 'var(--font-display)',
-                  fontWeight: 900,
-                  fontSize: 'clamp(11px,1.2vw,14px)',
-                  color: '#fff',
-                  lineHeight: 1.2,
-                  whiteSpace: 'pre-line',
-                }}>
-                  <span style={{ fontSize: 'clamp(18px,2vw,24px)', display: 'block', marginBottom: 4 }}>{g.num}</span>
-                  {g.label}
-                </div>
-                <div style={{ fontSize: 'clamp(24px,3vw,40px)', textAlign: 'right' }}>{g.icon}</div>
-              </div>
+              <img key={g.num} src={g.img} alt={g.label.replace('\n', ' ')} style={{ width: '100%', display: 'block', borderRadius: 4 }} />
             ))}
           </div>
         </div>
