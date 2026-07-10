@@ -42,6 +42,7 @@ const NOUN_MAP: Record<string, [RegExp, string][]> = {
     [/Engenharia e Construção/gi, 'Engineering and Construction'],
     [/Novo Hospital dos Queimados/gi, 'New Burn Center'],
     [/Hospital dos Queimados/gi, 'Burn Center'],
+    [/Casa do Kwanza/gi, 'Cash Center'],
   ],
   fr: [
     [/Engenharia e Construção/gi, 'Génie Civil et Construction'],
