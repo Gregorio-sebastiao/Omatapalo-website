@@ -12,55 +12,52 @@ const FOOTER_DESC: Record<string, string> = {
 
 const FOOTER_COLS: Record<string, { h: string; links: { t: string; href: string }[] }[]> = {
   pt: [
-    { h: 'O Grupo', links: [
-      { t: 'O Grupo e os Negócios',     href: '/omatapalo' },
-      { t: 'Omatapalo no Mundo',        href: '/omatapalo#mundo' },
-      { t: 'História',                   href: '/omatapalo' },
-      { t: 'Conselho de Administração', href: '/omatapalo#conselho' },
+    { h: '', links: [
+      { t: 'O Grupo',    href: '/omatapalo' },
+      { t: 'Portefólio', href: '/portefolio' },
+      { t: 'Pessoas',    href: '/pessoas' },
     ]},
-    { h: 'Atividade', links: [
-      { t: 'Portefólio',       href: '/portefolio' },
-      { t: 'Sustentabilidade', href: '/sustentabilidade' },
-      { t: 'Media',            href: '/media' },
-      { t: 'Contactos',        href: '/contactos' },
+    { h: '', links: [
+      { t: 'Sustentabilidade',  href: '/sustentabilidade' },
+      { t: 'Responsabilidade',  href: '/responsabilidade-social' },
+      { t: 'CDH',               href: '/cdh' },
     ]},
-    { h: 'Pessoas', links: [
-      { t: 'Pessoas',             href: '/pessoas' },
-      { t: 'CDH',                 href: '/cdh' },
-      { t: 'Missão Fazer Sorrir', href: '/responsabilidade-social#missao' },
-      { t: 'Trabalhar connosco',  href: '/contactos' },
+    { h: '', links: [
+      { t: 'Notícias',   href: '/noticias' },
+      { t: 'Press Kit',  href: '/press-kit' },
+      { t: 'Contactos',  href: '/contactos' },
     ]},
   ],
   en: [
-    { h: 'The Group', links: [
-      { t: 'The Group & Businesses',  href: '/omatapalo' },
-      { t: 'Omatapalo in the World',  href: '/omatapalo#mundo' },
-      { t: 'History',                  href: '/omatapalo' },
-      { t: 'Board of Directors',       href: '/omatapalo#conselho' },
+    { h: '', links: [
+      { t: 'The Group', href: '/omatapalo' },
+      { t: 'Portfolio', href: '/portefolio' },
+      { t: 'People',    href: '/pessoas' },
     ]},
-    { h: 'Activity', links: [
-      { t: 'Portfolio',       href: '/portefolio' },
+    { h: '', links: [
       { t: 'Sustainability',  href: '/sustentabilidade' },
-      { t: 'Media',           href: '/media' },
-      { t: 'Contacts',        href: '/contactos' },
+      { t: 'Responsibility',  href: '/responsabilidade-social' },
+      { t: 'CDH',             href: '/cdh' },
     ]},
-    { h: 'People', links: [
-      { t: 'People',               href: '/pessoas' },
-      { t: 'CDH',                  href: '/cdh' },
-      { t: 'Mission Make Smile',   href: '/responsabilidade-social#missao' },
-      { t: 'Work with us',         href: '/contactos' },
+    { h: '', links: [
+      { t: 'News',      href: '/noticias' },
+      { t: 'Press Kit', href: '/press-kit' },
+      { t: 'Contacts',  href: '/contactos' },
     ]},
   ],
   fr: [
-    { h: 'Le Groupe', links: [
+    { h: '', links: [
+      { t: 'Le Groupe',    href: '/omatapalo' },
       { t: 'Portefeuille', href: '/portefolio' },
       { t: 'Équipe',       href: '/pessoas' },
     ]},
-    { h: 'Développement Durable', links: [
-      { t: 'Responsabilité', href: '/responsabilidade-social' },
-      { t: 'CDH',            href: '/cdh' },
+    { h: '', links: [
+      { t: 'Développement Durable', href: '/sustentabilidade' },
+      { t: 'Responsabilité',        href: '/responsabilidade-social' },
+      { t: 'CDH',                   href: '/cdh' },
     ]},
-    { h: 'Actualités', links: [
+    { h: '', links: [
+      { t: 'Actualités',        href: '/noticias' },
       { t: 'Dossier de Presse', href: '/press-kit' },
       { t: 'Contacts',          href: '/contactos' },
     ]},
