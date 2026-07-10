@@ -34,8 +34,14 @@ export default function Pessoas() {
       });
   }, []);
 
+  const EN_OVERRIDES = {
+    body_p1: "With more than 15,000 direct employees, OMATAPALO's technical staff possesses expertise in areas related to its business.",
+    body_p2: "The company bases its operations on commitment, diligence in execution, and responsible conduct, forming a multidisciplinary team capable of managing processes, delivering results, and ensuring quality standards and strict adherence to deadlines — all to meet the needs of a society that increasingly demands faster solutions.",
+  };
+
   useEffect(() => {
     if (locale === 'pt') { setContent(rawContent); return; }
+    if (locale === 'en') { setContent({ ...rawContent, ...EN_OVERRIDES }); return; }
     Promise.all([
       gtx(rawContent.body_p1, locale),
       gtx(rawContent.body_p2, locale),
