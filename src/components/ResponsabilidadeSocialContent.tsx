@@ -111,9 +111,10 @@ export default function ResponsabilidadeSocialContent() {
       setDisplayOds(odsData.map((o, i) => ({ ...o, label: (t as any).responsabilidade?.odsLabels?.[i] ?? o.label })));
       return;
     }
-    // Traduz textos longos via gtx
+    // Traduz textos longos via gtx (com override EN na citação)
+    const citacaoEN = 'For us, social responsibility begins at home and in the conditions we provide for our staff. It is on this foundation and this philosophy that our ability to make things happen is based.';
     Promise.all([
-      gtx(texts.citacao, locale),
+      locale === 'en' ? Promise.resolve(citacaoEN) : gtx(texts.citacao, locale),
       gtx(texts.p1, locale),
       gtx(texts.p2, locale),
     ]).then(([citacao, p1, p2]) => setDisplayTexts({ citacao, p1, p2 }));
