@@ -237,7 +237,7 @@ export const translations = {
       candidaturas: 'Applications',
       sustentabilidade: 'Sustainability',
       rsocial: 'CSR',
-      missaoSorrir: 'Mission Make Smile',
+      missaoSorrir: 'Bringing Smiles Mission',
       cdh: 'CDH',
       media: 'Media',
       noticias: 'News',
