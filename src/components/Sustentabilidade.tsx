@@ -116,7 +116,8 @@ export default function Sustentabilidade() {
       gtx(introP1, locale).then(setDisplayP1);
       gtx(introP2, locale).then(setDisplayP2);
     }
-    gtx(relTitulo, locale).then(setDisplayRelTitulo);
+    if (locale === 'en') setDisplayRelTitulo('2024 Sustainability Report');
+    else gtx(relTitulo, locale).then(setDisplayRelTitulo);
     gtx(relDesc, locale).then(setDisplayRelDesc);
     Promise.all(esg.map(async p => ({
       ...p,
