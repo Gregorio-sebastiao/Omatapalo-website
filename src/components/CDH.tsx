@@ -45,8 +45,13 @@ export default function CDH() {
   useEffect(() => {
     if (locale === 'pt') { setDisplayCfg(cfg); return; }
     (async () => {
-      const fields = ['hero_text', 'p1', 'p2', 'p3'] as const;
+      const fields = ['p1', 'p2', 'p3'] as const;
       const translated = { ...cfg };
+      if (locale === 'en') {
+        translated.hero_text = "Through its support of Clube Desportivo da Huíla, the Omatapalo Group reaffirms its commitment to the development of Angolan sports by investing in talent development, promoting positive values, and creating opportunities for future generations. We believe that sports are a powerful tool for social inclusion, education, and community transformation.";
+      } else {
+        translated.hero_text = await gtx(cfg.hero_text, locale);
+      }
       for (const f of fields) {
         if (cfg[f]) translated[f] = await gtx(cfg[f], locale);
       }
