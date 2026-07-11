@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { createClient } from '@/lib/supabase/client';
-import Link from 'next/link';
 import { SECTORS, type Company, type Sector } from '@/data/empresas';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
 import { gtx } from '@/lib/i18n/gtx';
@@ -67,16 +66,8 @@ function TiltCard({ company, index, visitarSite }: { company: Company; index: nu
     textDecoration: 'none',
   };
 
-  return (
-    <Link
-      href={company.link ?? `/empresas/${company.slug}`}
-      target={company.link ? '_blank' : undefined}
-      rel={company.link ? 'noopener noreferrer' : undefined}
-      className="neg-card"
-      onMouseEnter={onEnter}
-      onMouseLeave={onLeave}
-      style={cardStyle}
-    >
+  const inner = (
+    <>
       {/* Image area — white bg with coloured logo */}
       <div style={{ position: 'relative', aspectRatio: '16/9', overflow: 'hidden', background: '#F6F8FB', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -115,7 +106,34 @@ function TiltCard({ company, index, visitarSite }: { company: Company; index: nu
 
         <div style={{ height: 2, width: hovered ? 28 : 0, background: '#1a396e', transition: 'width 0.35s ease' }} />
       </div>
-    </Link>
+    </>
+  );
+
+  if (company.link) {
+    return (
+      <a
+        href={company.link}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="neg-card"
+        onMouseEnter={onEnter}
+        onMouseLeave={onLeave}
+        style={cardStyle}
+      >
+        {inner}
+      </a>
+    );
+  }
+
+  return (
+    <div
+      className="neg-card"
+      onMouseEnter={onEnter}
+      onMouseLeave={onLeave}
+      style={cardStyle}
+    >
+      {inner}
+    </div>
   );
 }
 
