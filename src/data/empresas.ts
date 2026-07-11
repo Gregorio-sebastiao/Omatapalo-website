@@ -45,7 +45,7 @@ export const SECTORS: Sector[] = [
       { slug: 'ontour',            logo: '/ONTOUR.png',                name: 'OnTour',           year: '2022', area: 'Turismo',                    desc: 'Serviços de turismo e hospitalidade em Angola.', sector: 'terciario', sectorLabel: 'Sector Terciário' },
       { slug: 'venture-vanguard',  logo: '/Venture Vanguard.png',      name: 'Venture Vanguard', year: '2024', area: 'Trading',                    desc: 'Consultoria e trading de commodities e serviços.', sector: 'terciario', sectorLabel: 'Sector Terciário' },
       { slug: 'sotrans',           logo: '/SOTRANS-Logo.png',          name: 'Sotrans',          year: '2014', area: 'Transportes',                desc: 'Transporte de passageiros e logística.', sector: 'terciario', sectorLabel: 'Sector Terciário' },
-      { slug: 'emadel-lar',        logo: '/EMADEL-LAR.png',            name: 'EmadelLar',        year: '',     area: '',                           desc: '', sector: 'terciario', sectorLabel: 'Sector Terciário' },
+      { slug: 'emadel-lar',        logo: '/EMADEL-LAR.png',            name: 'EmadelLar',        year: '',     area: '',                           desc: '', link: 'https://emadel.ao/emadel-lar/', sector: 'terciario', sectorLabel: 'Sector Terciário' },
       { slug: 'okuajuluka',        logo: '/Okuanjuluka.png',           name: 'Okuanjuluka',       year: '',     area: 'Arquitectura de Interiores', desc: '', sector: 'terciario', sectorLabel: 'Sector Terciário' },
     ],
   },
