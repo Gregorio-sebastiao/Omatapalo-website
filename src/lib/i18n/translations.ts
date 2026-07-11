@@ -80,6 +80,14 @@ export const translations = {
       eyebrow: 'Os Nossos Projectos',
       viewAll: 'Ver todos os projectos',
       back: '← Portefólio',
+      loading: 'A carregar projectos…',
+      noResults: 'Nenhum projecto encontrado',
+      categories: [
+        'Todos os Projectos', 'Edifícios Institucionais', 'Saúde', 'Ensino',
+        'Habitação e Escritórios', 'Recintos Desportivos, Culturais e Comerciais',
+        'Agricultura e Indústria', 'Turismo e Lazer', 'Vias de Comunicação',
+        'Pontes e Viadutos', 'Infra-estruturas', 'Oil & Gas', 'Energia',
+      ],
     },
     noticias: {
       eyebrow: 'Últimas Notícias',
@@ -93,6 +101,10 @@ export const translations = {
     },
     pessoas: {
       eyebrow: 'As Nossas Pessoas',
+      eyebrowSection: 'Pessoas',
+      headline1: 'A nossa maior obra são as',
+      headline2: 'Pessoas',
+      cta: 'Trabalhar connosco',
     },
     sustentabilidade: {
       eyebrow: 'Sustentabilidade',
@@ -123,12 +135,6 @@ export const translations = {
       stats: ['Vidas Tocadas', 'Sopas Distribuídas', 'Merendas Escolares', 'Iniciativas Activas'],
       odsLabels: ['Erradicação da Pobreza', 'Erradicar a Fome', 'Saúde de Qualidade', 'Educação de Qualidade'],
     },
-    pessoas: {
-      eyebrowSection: 'Pessoas',
-      headline1: 'A nossa maior obra são as',
-      headline2: 'Pessoas',
-      cta: 'Trabalhar connosco',
-    },
     testemunhos: {
       eyebrow: 'Vozes da nossa equipa',
     },
@@ -157,19 +163,6 @@ export const translations = {
       relEyebrow: 'Relatório',
       relBtn: 'Descarregar PDF',
       relBtnOnline: 'Consultar online',
-    },
-    portefolio: {
-      eyebrow: 'Os Nossos Projectos',
-      viewAll: 'Ver todos os projectos',
-      back: '← Portefólio',
-      loading: 'A carregar projectos…',
-      noResults: 'Nenhum projecto encontrado',
-      categories: [
-        'Todos os Projectos', 'Edifícios Institucionais', 'Saúde', 'Ensino',
-        'Habitação e Escritórios', 'Recintos Desportivos, Culturais e Comerciais',
-        'Agricultura e Indústria', 'Turismo e Lazer', 'Vias de Comunicação',
-        'Pontes e Viadutos', 'Infra-estruturas', 'Oil & Gas', 'Energia',
-      ],
     },
     pageTitles: {
       sustentabilidade: { title: 'Sustentabilidade', eyebrow: 'Grupo Omatapalo' },
@@ -305,6 +298,14 @@ export const translations = {
       eyebrow: 'Our Projects',
       viewAll: 'View all projects',
       back: '← Portfolio',
+      loading: 'Loading projects…',
+      noResults: 'No projects found',
+      categories: [
+        'All Projects', 'Institutional Buildings', 'Health', 'Education',
+        'Housing & Offices', 'Sports, Cultural & Commercial Venues',
+        'Agriculture & Industry', 'Tourism & Leisure', 'Roads',
+        'Bridges & Viaducts', 'Infrastructure', 'Oil & Gas', 'Energy',
+      ],
     },
     noticias: {
       eyebrow: 'Latest News',
@@ -318,6 +319,10 @@ export const translations = {
     },
     pessoas: {
       eyebrow: 'Our People',
+      eyebrowSection: 'People',
+      headline1: 'Our greatest work is our',
+      headline2: 'People',
+      cta: 'Work with us',
     },
     sustentabilidade: {
       eyebrow: 'Sustainability',
@@ -348,12 +353,6 @@ export const translations = {
       stats: ['Lives Touched', 'Soups Distributed', 'School Meals', 'Active Initiatives'],
       odsLabels: ['No Poverty', 'Zero Hunger', 'Good Health', 'Quality Education'],
     },
-    pessoas: {
-      eyebrowSection: 'People',
-      headline1: 'Our greatest work is our',
-      headline2: 'People',
-      cta: 'Work with us',
-    },
     testemunhos: {
       eyebrow: 'Voices from our team',
     },
@@ -382,19 +381,6 @@ export const translations = {
       relEyebrow: 'Transparency',
       relBtn: 'Download PDF',
       relBtnOnline: 'View online',
-    },
-    portefolio: {
-      eyebrow: 'Our Projects',
-      viewAll: 'View all projects',
-      back: '← Portfolio',
-      loading: 'Loading projects…',
-      noResults: 'No projects found',
-      categories: [
-        'All Projects', 'Institutional Buildings', 'Health', 'Education',
-        'Housing & Offices', 'Sports, Cultural & Commercial Venues',
-        'Agriculture & Industry', 'Tourism & Leisure', 'Roads',
-        'Bridges & Viaducts', 'Infrastructure', 'Oil & Gas', 'Energy',
-      ],
     },
     pageTitles: {
       sustentabilidade: { title: 'Sustainability', eyebrow: 'Omatapalo Group' },
@@ -530,6 +516,14 @@ export const translations = {
       eyebrow: 'Nos Projets',
       viewAll: 'Voir tous les projets',
       back: '← Portefeuille',
+      loading: 'Chargement des projets…',
+      noResults: 'Aucun projet trouvé',
+      categories: [
+        'Tous les Projets', 'Bâtiments Institutionnels', 'Santé', 'Enseignement',
+        'Logement et Bureaux', 'Équipements Sportifs, Culturels et Commerciaux',
+        "Agriculture et Industrie", 'Tourisme et Loisirs', 'Voies de Communication',
+        'Ponts et Viaducs', 'Infrastructures', 'Oil & Gas', 'Énergie',
+      ],
     },
     noticias: {
       eyebrow: 'Dernières Actualités',
@@ -543,6 +537,10 @@ export const translations = {
     },
     pessoas: {
       eyebrow: 'Nos Collaborateurs',
+      eyebrowSection: 'Personnes',
+      headline1: 'Notre plus grand œuvre est nos',
+      headline2: 'Collaborateurs',
+      cta: 'Travailler avec nous',
     },
     sustentabilidade: {
       eyebrow: 'Durabilité',
@@ -573,12 +571,6 @@ export const translations = {
       stats: ['Vies Touchées', 'Soupes Distribuées', 'Repas Scolaires', 'Initiatives Actives'],
       odsLabels: ['Pas de Pauvreté', 'Faim Zéro', 'Bonne Santé', 'Éducation de Qualité'],
     },
-    pessoas: {
-      eyebrowSection: 'Personnes',
-      headline1: 'Notre plus grand œuvre est nos',
-      headline2: 'Collaborateurs',
-      cta: 'Travailler avec nous',
-    },
     testemunhos: {
       eyebrow: 'Voix de notre équipe',
     },
@@ -607,19 +599,6 @@ export const translations = {
       relEyebrow: 'Rapport',
       relBtn: 'Télécharger le PDF',
       relBtnOnline: 'Consulter en ligne',
-    },
-    portefolio: {
-      eyebrow: 'Nos Projets',
-      viewAll: 'Voir tous les projets',
-      back: '← Portefeuille',
-      loading: 'Chargement des projets…',
-      noResults: 'Aucun projet trouvé',
-      categories: [
-        'Tous les Projets', 'Bâtiments Institutionnels', 'Santé', 'Enseignement',
-        'Logement et Bureaux', 'Équipements Sportifs, Culturels et Commerciaux',
-        "Agriculture et Industrie", 'Tourisme et Loisirs', 'Voies de Communication',
-        'Ponts et Viaducs', 'Infrastructures', 'Oil & Gas', 'Énergie',
-      ],
     },
     pageTitles: {
       sustentabilidade: { title: 'Durabilité', eyebrow: 'Groupe Omatapalo' },
