@@ -40,7 +40,7 @@ export const SECTORS: Sector[] = [
     id: 'terciario', label: 'Sector Terciário', short: '03',
     companies: [
       { slug: 'investimo-ge',      logo: '/Investimo Ge.png',          name: 'Investimo GE',     year: '2025', area: 'Gestão de Edifícios',        desc: 'Gestão técnica e operacional de edifícios.', sector: 'terciario', sectorLabel: 'Sector Terciário' },
-      { slug: 'investimo',         logo: '/investimo.png',             name: 'Investimo',        year: '2014', area: 'Imobiliário',                desc: 'Investimento e promoção imobiliária em Angola.', sector: 'terciario', sectorLabel: 'Sector Terciário' },
+      { slug: 'investimo',         logo: '/investimo.png',             name: 'Investimo',        year: '2014', area: 'Imobiliário',                desc: 'Investimento e promoção imobiliária em Angola.', link: 'https://investimo.ao/', sector: 'terciario', sectorLabel: 'Sector Terciário' },
       { slug: 'prime-properties',  logo: '/Logo-Prime-Properties.png', name: 'Prime Properties', year: '2024', area: 'Imobiliário',                desc: 'Gestão e comercialização de activos imobiliários premium.', link: 'https://www.primeproperties.ao/', sector: 'terciario', sectorLabel: 'Sector Terciário' },
       { slug: 'ontour',            logo: '/ONTOUR.png',                name: 'OnTour',           year: '2022', area: 'Turismo',                    desc: 'Serviços de turismo e hospitalidade em Angola.', sector: 'terciario', sectorLabel: 'Sector Terciário' },
       { slug: 'venture-vanguard',  logo: '/Venture Vanguard.png',      name: 'Venture Vanguard', year: '2024', area: 'Trading',                    desc: 'Consultoria e trading de commodities e serviços.', sector: 'terciario', sectorLabel: 'Sector Terciário' },
