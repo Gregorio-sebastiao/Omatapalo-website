@@ -32,7 +32,7 @@ export const SECTORS: Sector[] = [
       { slug: 'siema',       logo: '/SIEMA-1.png',                           name: 'Siema',      year: '2012', area: 'Instalações Especiais',    desc: 'Sistemas eléctricos, AVAC e infraestruturas técnicas.', sector: 'secundario', sectorLabel: 'Sector Secundário' },
       { slug: 'planasul',    logo: '/Planasul (1).png',                      name: 'Planasul',   year: '2003', area: 'Engenharia e Construção',  desc: 'Construção civil e obras públicas em Angola.', sector: 'secundario', sectorLabel: 'Sector Secundário' },
       { slug: 'selagrup',    logo: '/SelaGrup-Logotipo.png',                 name: 'Selagrup',   year: '2020', area: 'Captação de Água',         desc: 'Furos e redes de distribuição de água.', sector: 'secundario', sectorLabel: 'Sector Secundário' },
-      { slug: 'emadel',      logo: '/Emadel.png',                            name: 'Emadel',     year: '2010', area: 'Carpintaria',              desc: 'Soluções em madeira para construção e decoração.', sector: 'secundario', sectorLabel: 'Sector Secundário' },
+      { slug: 'emadel',      logo: '/Emadel.png',                            name: 'Emadel',     year: '2010', area: 'Carpintaria',              desc: 'Soluções em madeira para construção e decoração.', link: 'https://emadel.ao/', sector: 'secundario', sectorLabel: 'Sector Secundário' },
       { slug: 'enerline',    logo: '/Enerline.png',                          name: 'Enerline',   year: '2014', area: 'Energia',                  desc: 'Soluções energéticas e energias renováveis.', link: 'https://enerline.ao/', sector: 'secundario', sectorLabel: 'Sector Secundário' },
     ],
   },
