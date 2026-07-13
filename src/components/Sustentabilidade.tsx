@@ -22,7 +22,7 @@ const ODS = [
 const DEFAULT_ESG = [
   { n: '01', t: 'Ambiental',  d: 'Energias renováveis, gestão de resíduos e compensação de carbono em todos os projectos.', img: '/Environmental.png' },
   { n: '02', t: 'Social',     d: 'Contribuição para a melhoria da qualidade de vida dos colaboradores, das pessoas e das comunidades.', img: '/social.jpg' },
-  { n: '03', t: 'Governança', d: 'Transparência e responsabilidade em todas as operações, alinhadas com o Pacto Global das Nações Unidas.', img: 'https://omatapalo.com/wp-content/uploads/imagem-home.jpg' },
+  { n: '03', t: 'Governança', d: 'Transparência e responsabilidade em todas as operações, alinhadas com o Pacto Global das Nações Unidas.', img: '/inauguracao.jpg' },
 ];
 
 const gridTexture: React.CSSProperties = {
