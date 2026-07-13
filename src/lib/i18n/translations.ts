@@ -1,4 +1,4 @@
-export const translations = {
+﻿export const translations = {
   pt: {
     nav: {
       grupo: 'O Grupo',
