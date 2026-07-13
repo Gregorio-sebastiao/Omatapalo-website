@@ -24,8 +24,8 @@ async function getGaId(): Promise<string> {
       next: { revalidate: 3600 },
     });
     const data = await res.json();
-    return data?.[0]?.value ?? '';
-  } catch { return ''; }
+    return data?.[0]?.value ?? 'G-C5FQXGNTXZ';
+  } catch { return 'G-C5FQXGNTXZ'; }
 }
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
