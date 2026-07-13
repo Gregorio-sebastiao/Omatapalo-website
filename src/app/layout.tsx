@@ -18,7 +18,7 @@ async function getGaId(): Promise<string> {
   try {
     const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
     const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-    if (!url || !key) return '';
+    if (!url || !key) return 'G-C5FQXGNTXZ';
     const res = await fetch(`${url}/rest/v1/site_settings?key=eq.ga_tracking_id&select=value&limit=1`, {
       headers: { apikey: key, Authorization: `Bearer ${key}` },
       next: { revalidate: 3600 },
