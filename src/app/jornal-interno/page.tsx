@@ -2,10 +2,9 @@
 
 import Nav from '@/components/Nav';
 import Footer from '@/components/Footer';
-import PageHero from '@/components/PageHero';
 
 const EDICOES = [
-  { src: '/MARÇO JORNAL.webp', alt: 'Acontece — Março 2026', label: 'Março 2026' },
+  { src: '/MARCO-JORNAL.webp', alt: 'Acontece — Março 2026', label: 'Março 2026' },
 ];
 
 export default function JornalInterno() {
@@ -14,14 +13,47 @@ export default function JornalInterno() {
       <Nav />
       <main style={{ minHeight: '100vh', background: '#F6F8FB', paddingBottom: 'clamp(60px,8vh,100px)' }}>
 
-        <PageHero
-          title="Acontece"
-          imgSrc="/CAPA JORNAL.png"
-          eyebrow="Grupo Omatapalo · Comunicação Interna"
-          outlineWord="Acontece"
-          imgOpacity={0.45}
-          position="center"
-        />
+        {/* Hero personalizado — capa de jornal visível sem corte */}
+        <section style={{ position: 'relative', height: 'clamp(420px,55vw,640px)', overflow: 'hidden', background: '#1a396e', display: 'flex', alignItems: 'flex-end' }}>
+          {/* Imagem da capa à direita, contida sem corte */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/CAPA JORNAL.png"
+            alt=""
+            style={{
+              position: 'absolute', right: 0, top: 0, height: '100%', width: 'auto',
+              maxWidth: '45%', objectFit: 'contain', objectPosition: 'right top',
+            }}
+          />
+          {/* Gradiente sobre a imagem */}
+          <div style={{
+            position: 'absolute', inset: 0,
+            background: 'linear-gradient(to right, #1a396e 45%, rgba(26,57,110,0.7) 70%, rgba(26,57,110,0.2) 100%)',
+          }} />
+          {/* Texto */}
+          <div style={{
+            position: 'relative', zIndex: 1,
+            padding: 'clamp(40px,6vw,80px) clamp(24px,6vw,96px)',
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 20 }}>
+              <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><rect width="10" height="10" fill="#fff" /></svg>
+              <span style={{ fontFamily: 'var(--font-label)', fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#fff' }}>
+                Grupo Omatapalo · Comunicação Interna
+              </span>
+            </div>
+            <h1 style={{
+              fontFamily: 'var(--font-display)', fontWeight: 900,
+              textTransform: 'uppercase', letterSpacing: '-0.035em',
+              fontSize: 'clamp(1.5rem,5.5vw,6rem)', lineHeight: 0.92,
+              color: '#fff', margin: 0,
+            }}>
+              Novidades do Grupo Omatapalo<br />
+              <span style={{ color: 'transparent', WebkitTextStroke: '1.5px rgba(255,255,255,0.25)' }}>
+                Acontece
+              </span>
+            </h1>
+          </div>
+        </section>
 
         <div className="wrap" style={{ paddingTop: 'clamp(48px,6vh,80px)' }}>
           {/* Grid — 4 por linha */}
