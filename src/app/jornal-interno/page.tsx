@@ -2,6 +2,7 @@
 
 import Nav from '@/components/Nav';
 import Footer from '@/components/Footer';
+import PageHero from '@/components/PageHero';
 
 const EDICOES = [
   { src: '/MARÇO JORNAL.webp', alt: 'Acontece — Março 2026', label: 'Março 2026' },
@@ -11,15 +12,18 @@ export default function JornalInterno() {
   return (
     <>
       <Nav />
-      <main style={{ minHeight: '100vh', background: '#F6F8FB', paddingTop: 'clamp(80px,10vh,120px)', paddingBottom: 'clamp(60px,8vh,100px)' }}>
-        <div className="wrap">
+      <main style={{ minHeight: '100vh', background: '#F6F8FB', paddingBottom: 'clamp(60px,8vh,100px)' }}>
 
-          {/* Hero banner */}
-          <div style={{ marginBottom: 'clamp(32px,5vw,64px)', borderRadius: 8, overflow: 'hidden' }}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/CAPA JORNAL.png" alt="Acontece — Jornal Interno Omatapalo" style={{ width: '100%', display: 'block' }} />
-          </div>
+        <PageHero
+          title="Acontece"
+          imgSrc="/CAPA JORNAL.png"
+          eyebrow="Grupo Omatapalo · Comunicação Interna"
+          outlineWord="Acontece"
+          imgOpacity={0.45}
+          position="center"
+        />
 
+        <div className="wrap" style={{ paddingTop: 'clamp(48px,6vh,80px)' }}>
           {/* Grid — 4 por linha */}
           <div style={{
             display: 'grid',
@@ -58,17 +62,17 @@ export default function JornalInterno() {
               </a>
             ))}
           </div>
-
         </div>
+
       </main>
       <Footer />
 
       <style>{`
         @media (max-width: 900px) {
-          .wrap > div:last-child { grid-template-columns: repeat(2, 1fr) !important; }
+          .wrap > div { grid-template-columns: repeat(2, 1fr) !important; }
         }
         @media (max-width: 500px) {
-          .wrap > div:last-child { grid-template-columns: 1fr !important; }
+          .wrap > div { grid-template-columns: 1fr !important; }
         }
       `}</style>
     </>
