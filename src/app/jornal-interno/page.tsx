@@ -14,17 +14,10 @@ export default function JornalInterno() {
       <main style={{ minHeight: '100vh', background: '#F6F8FB', paddingTop: 'clamp(80px,10vh,120px)', paddingBottom: 'clamp(60px,8vh,100px)' }}>
         <div className="wrap">
 
-          {/* Header */}
-          <div style={{ marginBottom: 'clamp(32px,5vw,64px)', borderBottom: '2px solid #1a396e', paddingBottom: 24 }}>
-            <div style={{ fontFamily: 'var(--font-label)', fontSize: 11, letterSpacing: '0.18em', textTransform: 'uppercase', color: '#1a396e', marginBottom: 12 }}>
-              Grupo Omatapalo · Comunicação Interna
-            </div>
-            <h1 style={{ fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 'clamp(2.5rem,6vw,5rem)', color: '#0F1A2E', letterSpacing: '-0.04em', lineHeight: 0.95, textTransform: 'uppercase', margin: 0 }}>
-              Acontece
-            </h1>
-            <p style={{ fontFamily: 'var(--font-label)', fontSize: 13, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#64748b', marginTop: 10 }}>
-              Notícias e Novidades do Grupo Omatapalo
-            </p>
+          {/* Hero banner */}
+          <div style={{ marginBottom: 'clamp(32px,5vw,64px)', borderRadius: 8, overflow: 'hidden' }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/CAPA JORNAL.png" alt="Acontece — Jornal Interno Omatapalo" style={{ width: '100%', display: 'block' }} />
           </div>
 
           {/* Grid — 4 por linha */}
