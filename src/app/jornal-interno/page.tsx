@@ -7,13 +7,14 @@ import PageHero from '@/components/PageHero';
 const EDICOES = [
   { src: '/MARCO-JORNAL.webp',                    alt: 'Acontece — Março 2026',    label: 'Março 2026'    },
   { src: '/JORNAL-NOVEMBRO-2025.jpg',             alt: 'Acontece — Novembro 2025', label: 'Novembro 2025' },
+  { src: '/JORNAL-ABRIL-2025.png',                alt: 'Acontece — Outubro 2025',  label: 'Outubro 2025'  },
   { src: '/FREE-JORNAL-OMATAPALO-SETEMBRO-1.jpg', alt: 'Acontece — Setembro 2025', label: 'Setembro 2025' },
   { src: '/JORNAL-AGOSTO-2025.png',               alt: 'Acontece — Agosto 2025',   label: 'Agosto 2025'   },
   { src: '/JORNAL-JULHO-2025.jpg',                alt: 'Acontece — Julho 2025',    label: 'Julho 2025'    },
-  { src: '/JORNAL-JUNHO-2025.jpg',                alt: 'Acontece — Junho 2025',    label: 'Junho 2025'    },
-  { src: '/JORNAL-MAIO-2025.jpg',                 alt: 'Acontece — Maio 2025',     label: 'Maio 2025'     },
-  { src: '/JORNAL-ABRIL-2025.png',                alt: 'Acontece — Abril 2025',    label: 'Abril 2025'    },
-  { src: '/JORNAL-MARCO-2025.jpg',                alt: 'Acontece — Março 2025',    label: 'Março 2025'    },
+  { src: '/JORNAL-JUNHO-2025-v2.jpg',             alt: 'Acontece — Junho 2025',    label: 'Junho 2025'    },
+  { src: '/JORNAL-MAIO-2025-v2.jpg',              alt: 'Acontece — Maio 2025',     label: 'Maio 2025'     },
+  { src: '/JORNAL-JUNHO-2025.jpg',                alt: 'Acontece — Abril 2025',    label: 'Abril 2025'    },
+  { src: '/JORNAL-MAIO-2025.jpg',                 alt: 'Acontece — Março 2025',    label: 'Março 2025'    },
 ];
 
 export default function JornalInterno() {
