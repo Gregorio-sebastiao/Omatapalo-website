@@ -1,8 +1,11 @@
 'use client';
 
+import { useState } from 'react';
 import Nav from '@/components/Nav';
 import Footer from '@/components/Footer';
 import PageHero from '@/components/PageHero';
+
+const PER_PAGE = 8;
 
 const EDICOES = [
   { src: '/MARCO-JORNAL.webp',                    alt: 'Acontece — Março 2026',    label: 'Março 2026'    },
@@ -18,6 +21,10 @@ const EDICOES = [
 ];
 
 export default function JornalInterno() {
+  const [page, setPage] = useState(1);
+  const totalPages = Math.ceil(EDICOES.length / PER_PAGE);
+  const visible = EDICOES.slice((page - 1) * PER_PAGE, page * PER_PAGE);
+
   return (
     <>
       <Nav />
@@ -33,13 +40,12 @@ export default function JornalInterno() {
         />
 
         <div className="wrap" style={{ paddingTop: 'clamp(48px,6vh,80px)' }}>
-          {/* Grid — 4 por linha */}
           <div style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(4, 1fr)',
             gap: 'clamp(12px,2vw,24px)',
           }}>
-            {EDICOES.map((ed, i) => (
+            {visible.map((ed, i) => (
               <a
                 key={i}
                 href={ed.src}
@@ -59,11 +65,7 @@ export default function JornalInterno() {
                   onMouseLeave={e => { (e.currentTarget as HTMLElement).style.boxShadow = '0 2px 12px rgba(26,57,110,0.06)'; (e.currentTarget as HTMLElement).style.borderColor = '#E8EDF5'; }}
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={ed.src}
-                    alt={ed.alt}
-                    style={{ width: '100%', display: 'block', objectFit: 'cover' }}
-                  />
+                  <img src={ed.src} alt={ed.alt} style={{ width: '100%', display: 'block', objectFit: 'cover' }} />
                 </div>
                 <div style={{ fontFamily: 'var(--font-label)', fontSize: 11, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#1a396e', textAlign: 'center' }}>
                   {ed.label}
@@ -71,6 +73,43 @@ export default function JornalInterno() {
               </a>
             ))}
           </div>
+
+          {/* Paginação */}
+          {totalPages > 1 && (
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 8, marginTop: 'clamp(40px,5vh,64px)' }}>
+              <button
+                onClick={() => { setPage(p => Math.max(1, p - 1)); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                disabled={page === 1}
+                style={{
+                  width: 40, height: 40, borderRadius: '50%', border: '1.5px solid #1a396e',
+                  background: page === 1 ? '#E8EDF5' : '#1a396e', color: page === 1 ? '#9aabcc' : '#fff',
+                  cursor: page === 1 ? 'default' : 'pointer', fontSize: 18, display: 'flex', alignItems: 'center', justifyContent: 'center',
+                }}
+              >‹</button>
+
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map(n => (
+                <button
+                  key={n}
+                  onClick={() => { setPage(n); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                  style={{
+                    width: 40, height: 40, borderRadius: '50%', border: '1.5px solid #1a396e',
+                    background: page === n ? '#1a396e' : 'transparent', color: page === n ? '#fff' : '#1a396e',
+                    cursor: 'pointer', fontFamily: 'var(--font-label)', fontSize: 13, fontWeight: 600,
+                  }}
+                >{n}</button>
+              ))}
+
+              <button
+                onClick={() => { setPage(p => Math.min(totalPages, p + 1)); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                disabled={page === totalPages}
+                style={{
+                  width: 40, height: 40, borderRadius: '50%', border: '1.5px solid #1a396e',
+                  background: page === totalPages ? '#E8EDF5' : '#1a396e', color: page === totalPages ? '#9aabcc' : '#fff',
+                  cursor: page === totalPages ? 'default' : 'pointer', fontSize: 18, display: 'flex', alignItems: 'center', justifyContent: 'center',
+                }}
+              >›</button>
+            </div>
+          )}
         </div>
 
       </main>
@@ -78,10 +117,10 @@ export default function JornalInterno() {
 
       <style>{`
         @media (max-width: 900px) {
-          .wrap > div { grid-template-columns: repeat(2, 1fr) !important; }
+          .wrap > div:first-child { grid-template-columns: repeat(2, 1fr) !important; }
         }
         @media (max-width: 500px) {
-          .wrap > div { grid-template-columns: 1fr !important; }
+          .wrap > div:first-child { grid-template-columns: 1fr !important; }
         }
       `}</style>
     </>
