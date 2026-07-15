@@ -5,7 +5,12 @@ import Footer from '@/components/Footer';
 import PageHero from '@/components/PageHero';
 
 const EDICOES = [
-  { src: '/MARCO-JORNAL.webp', alt: 'Acontece — Março 2026', label: 'Março 2026' },
+  { src: '/MARCO-JORNAL.webp',                    alt: 'Acontece — Março 2026',    label: 'Março 2026'    },
+  { src: '/FREE-JORNAL-OMATAPALO-SETEMBRO-1.jpg', alt: 'Acontece — Setembro 2025', label: 'Setembro 2025' },
+  { src: '/JORNAL-AGOSTO-2025.png',               alt: 'Acontece — Agosto 2025',   label: 'Agosto 2025'   },
+  { src: '/JORNAL-MAIO-2025.jpg',                 alt: 'Acontece — Maio 2025',     label: 'Maio 2025'     },
+  { src: '/JORNAL-ABRIL-2025.png',                alt: 'Acontece — Abril 2025',    label: 'Abril 2025'    },
+  { src: '/JORNAL-MARCO-2025.jpg',                alt: 'Acontece — Março 2025',    label: 'Março 2025'    },
 ];
 
 export default function JornalInterno() {
