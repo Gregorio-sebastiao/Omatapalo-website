@@ -76,25 +76,28 @@ export default function JornalInterno() {
 
           {/* Paginação */}
           {totalPages > 1 && (
-            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 8, marginTop: 'clamp(40px,5vh,64px)' }}>
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 4, marginTop: 'clamp(40px,5vh,64px)' }}>
               <button
                 onClick={() => { setPage(p => Math.max(1, p - 1)); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
                 disabled={page === 1}
                 style={{
-                  width: 40, height: 40, borderRadius: '50%', border: '1.5px solid #1a396e',
-                  background: page === 1 ? '#E8EDF5' : '#1a396e', color: page === 1 ? '#9aabcc' : '#fff',
-                  cursor: page === 1 ? 'default' : 'pointer', fontSize: 18, display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  padding: '8px 16px', border: '1px solid #d0d8e8', borderRadius: 6,
+                  background: '#fff', color: page === 1 ? '#9aabcc' : '#1a396e',
+                  cursor: page === 1 ? 'default' : 'pointer', fontSize: 13, fontWeight: 600,
+                  fontFamily: 'var(--font-label)', letterSpacing: '0.05em',
                 }}
-              >‹</button>
+              >« Anterior</button>
 
               {Array.from({ length: totalPages }, (_, i) => i + 1).map(n => (
                 <button
                   key={n}
                   onClick={() => { setPage(n); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
                   style={{
-                    width: 40, height: 40, borderRadius: '50%', border: '1.5px solid #1a396e',
-                    background: page === n ? '#1a396e' : 'transparent', color: page === n ? '#fff' : '#1a396e',
-                    cursor: 'pointer', fontFamily: 'var(--font-label)', fontSize: 13, fontWeight: 600,
+                    width: 38, height: 38, border: '1px solid #d0d8e8', borderRadius: 6,
+                    background: page === n ? '#1a396e' : '#fff',
+                    color: page === n ? '#fff' : '#1a396e',
+                    cursor: 'pointer', fontSize: 13, fontWeight: 600,
+                    fontFamily: 'var(--font-label)',
                   }}
                 >{n}</button>
               ))}
@@ -103,11 +106,12 @@ export default function JornalInterno() {
                 onClick={() => { setPage(p => Math.min(totalPages, p + 1)); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
                 disabled={page === totalPages}
                 style={{
-                  width: 40, height: 40, borderRadius: '50%', border: '1.5px solid #1a396e',
-                  background: page === totalPages ? '#E8EDF5' : '#1a396e', color: page === totalPages ? '#9aabcc' : '#fff',
-                  cursor: page === totalPages ? 'default' : 'pointer', fontSize: 18, display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  padding: '8px 16px', border: '1px solid #d0d8e8', borderRadius: 6,
+                  background: '#fff', color: page === totalPages ? '#9aabcc' : '#1a396e',
+                  cursor: page === totalPages ? 'default' : 'pointer', fontSize: 13, fontWeight: 600,
+                  fontFamily: 'var(--font-label)', letterSpacing: '0.05em',
                 }}
-              >›</button>
+              >Próximo »</button>
             </div>
           )}
         </div>
