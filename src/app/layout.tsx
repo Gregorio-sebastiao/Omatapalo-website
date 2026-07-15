@@ -12,6 +12,9 @@ export const metadata: Metadata = {
     shortcut: '/Five-icon-OMATAPALO.png',
     apple: '/Five-icon-OMATAPALO.png',
   },
+  other: {
+    'facebook-domain-verification': 'o6a92g6177ssua4mihkh1klq49ps6v',
+  },
 };
 
 async function getGaId(): Promise<string> {
