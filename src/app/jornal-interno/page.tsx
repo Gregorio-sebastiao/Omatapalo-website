@@ -11,7 +11,7 @@ const EDICOES = [
   { src: '/MARCO-JORNAL.webp',                    alt: 'Acontece — Março 2026',    label: 'Março 2026'    },
   { src: '/JORNAL-NOVEMBRO-2025.jpg',             alt: 'Acontece — Novembro 2025', label: 'Novembro 2025' },
   { src: '/JORNAL-ABRIL-2025.png',                alt: 'Acontece — Outubro 2025',  label: 'Outubro 2025'  },
-  { src: '/FREE-JORNAL-OMATAPALO-SETEMBRO-1.jpg', alt: 'Acontece — Setembro 2025', label: 'Setembro 2025' },
+  { src: '/FREE-JORNAL-OMATAPALO-SETEMBRO-1.jpg', alt: 'Acontece — Setembro 2025', label: 'Setembro 2025', href: 'https://drive.usercontent.google.com/u/0/uc?id=13O2Im13MYhPenIfWPflYOoFXCvFOCTSt&export=download' },
   { src: '/JORNAL-AGOSTO-2025.png',               alt: 'Acontece — Agosto 2025',   label: 'Agosto 2025'   },
   { src: '/JORNAL-JULHO-2025.jpg',                alt: 'Acontece — Julho 2025',    label: 'Julho 2025'    },
   { src: '/JORNAL-JUNHO-2025-v2.jpg',             alt: 'Acontece — Junho 2025',    label: 'Junho 2025'    },
@@ -53,7 +53,7 @@ export default function JornalInterno() {
             {visible.map((ed, i) => (
               <a
                 key={i}
-                href={ed.src}
+                href={ed.href ?? ed.src}
                 target="_blank"
                 rel="noopener noreferrer"
                 style={{ textDecoration: 'none', display: 'flex', flexDirection: 'column', gap: 10 }}
