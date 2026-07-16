@@ -32,7 +32,7 @@ export default function JornalInterno() {
 
         <PageHero
           title="Acontece"
-          imgSrc="/CAPA JORNAL.png"
+          imgSrc="/CAPAWEB.png"
           eyebrow="Grupo Omatapalo · Comunicação Interna"
           outlineWord="Acontece"
           imgOpacity={0.45}
