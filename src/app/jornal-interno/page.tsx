@@ -74,9 +74,12 @@ export default function JornalInterno() {
             ))}
           </div>
 
-          {/* Paginação */}
-          {totalPages > 1 && (
-            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 4, marginTop: 'clamp(40px,5vh,64px)' }}>
+        </div>
+
+        {/* Paginação — fora do grid para evitar overflow */}
+        {totalPages > 1 && (
+          <div style={{ width: '100%', overflowX: 'auto', paddingBlock: 'clamp(40px,5vh,64px)' }}>
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 4, minWidth: 'max-content', margin: '0 auto' }}>
               <button
                 onClick={() => { setPage(p => Math.max(1, p - 1)); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
                 disabled={page === 1}
@@ -84,7 +87,7 @@ export default function JornalInterno() {
                   padding: '8px 16px', border: '1px solid #d0d8e8', borderRadius: 6,
                   background: '#fff', color: page === 1 ? '#9aabcc' : '#1a396e',
                   cursor: page === 1 ? 'default' : 'pointer', fontSize: 13, fontWeight: 600,
-                  fontFamily: 'var(--font-label)', letterSpacing: '0.05em',
+                  fontFamily: 'var(--font-label)', letterSpacing: '0.05em', whiteSpace: 'nowrap',
                 }}
               >« Anterior</button>
 
@@ -97,7 +100,7 @@ export default function JornalInterno() {
                     background: page === n ? '#1a396e' : '#fff',
                     color: page === n ? '#fff' : '#1a396e',
                     cursor: 'pointer', fontSize: 13, fontWeight: 600,
-                    fontFamily: 'var(--font-label)',
+                    fontFamily: 'var(--font-label)', flexShrink: 0,
                   }}
                 >{n}</button>
               ))}
@@ -109,12 +112,13 @@ export default function JornalInterno() {
                   padding: '8px 16px', border: '1px solid #d0d8e8', borderRadius: 6,
                   background: '#fff', color: page === totalPages ? '#9aabcc' : '#1a396e',
                   cursor: page === totalPages ? 'default' : 'pointer', fontSize: 13, fontWeight: 600,
-                  fontFamily: 'var(--font-label)', letterSpacing: '0.05em',
+                  fontFamily: 'var(--font-label)', letterSpacing: '0.05em', whiteSpace: 'nowrap',
                 }}
               >Próximo »</button>
             </div>
-          )}
-        </div>
+          </div>
+        )}
+
 
       </main>
       <Footer />
