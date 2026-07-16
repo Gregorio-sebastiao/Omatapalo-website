@@ -30,14 +30,18 @@ export default function JornalInterno() {
       <Nav />
       <main style={{ minHeight: '100vh', background: '#F6F8FB', paddingBottom: 'clamp(60px,8vh,100px)' }}>
 
-        {/* Hero — imagem completa sem corte */}
-        <div style={{ width: '100%', background: '#1a396e', lineHeight: 0 }}>
+        {/* Hero — imagem completa com overlay azul igual às outras páginas */}
+        <div style={{ position: 'relative', width: '100%', background: '#1a396e', lineHeight: 0 }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/CAPAWEB.png"
             alt="Acontece — Jornal Interno Grupo Omatapalo"
-            style={{ width: '100%', display: 'block' }}
+            style={{ width: '100%', display: 'block', opacity: 0.45 }}
           />
+          <div style={{
+            position: 'absolute', inset: 0,
+            background: 'linear-gradient(to top, #1a396e 0%, rgba(26,57,110,0.6) 50%, rgba(26,57,110,0.3) 100%)',
+          }} />
         </div>
 
         <div className="wrap" style={{ paddingTop: 'clamp(48px,6vh,80px)' }}>
