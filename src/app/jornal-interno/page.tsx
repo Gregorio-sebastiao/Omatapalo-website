@@ -13,7 +13,7 @@ const EDICOES = [
   { src: '/JORNAL-ABRIL-2025.png',                alt: 'Acontece — Outubro 2025',  label: 'Outubro 2025'  },
   { src: '/FREE-JORNAL-OMATAPALO-SETEMBRO-1.jpg', alt: 'Acontece — Setembro 2025', label: 'Setembro 2025', href: 'https://drive.usercontent.google.com/u/0/uc?id=13O2Im13MYhPenIfWPflYOoFXCvFOCTSt&export=download' },
   { src: '/JORNAL-AGOSTO-2025.png',               alt: 'Acontece — Agosto 2025',   label: 'Agosto 2025'   },
-  { src: '/JORNAL-JULHO-2025.jpg',                alt: 'Acontece — Julho 2025',    label: 'Julho 2025'    },
+  { src: '/JORNAL-JULHO-2025.jpg',                alt: 'Acontece — Julho 2025',    label: 'Julho 2025',    href: 'https://drive.usercontent.google.com/u/0/uc?id=1BdErKennmPBUkxDf_oZR1X8nbjZcUG1v&export=download' },
   { src: '/JORNAL-JUNHO-2025-v2.jpg',             alt: 'Acontece — Junho 2025',    label: 'Junho 2025'    },
   { src: '/JORNAL-MAIO-2025-v2.jpg',              alt: 'Acontece — Maio 2025',     label: 'Maio 2025'     },
   { src: '/JORNAL-JUNHO-2025.jpg',                alt: 'Acontece — Abril 2025',    label: 'Abril 2025'    },
