@@ -30,14 +30,15 @@ export default function JornalInterno() {
       <Nav />
       <main style={{ minHeight: '100vh', background: '#F6F8FB', paddingBottom: 'clamp(60px,8vh,100px)' }}>
 
-        <PageHero
-          title="Acontece"
-          imgSrc="/CAPAWEB.png"
-          eyebrow="Grupo Omatapalo · Comunicação Interna"
-          outlineWord="Acontece"
-          imgOpacity={0.18}
-          position="center"
-        />
+        {/* Hero — imagem completa sem corte */}
+        <div style={{ width: '100%', background: '#1a396e', lineHeight: 0 }}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/CAPAWEB.png"
+            alt="Acontece — Jornal Interno Grupo Omatapalo"
+            style={{ width: '100%', display: 'block' }}
+          />
+        </div>
 
         <div className="wrap" style={{ paddingTop: 'clamp(48px,6vh,80px)' }}>
           <div style={{
