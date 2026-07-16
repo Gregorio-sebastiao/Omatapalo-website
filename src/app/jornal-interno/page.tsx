@@ -8,7 +8,7 @@ import PageHero from '@/components/PageHero';
 const PER_PAGE = 8;
 
 const EDICOES = [
-  { src: '/MARCO-JORNAL.webp',                    alt: 'Acontece — Março 2026',    label: 'Março 2026'    },
+  { src: '/MARCO-JORNAL.webp',                    alt: 'Acontece — Março 2026',    label: 'Março 2026',    href: 'https://drive.usercontent.google.com/u/0/uc?id=12DBkUXeB6fOpjF91Sp7_aMqtNyc5kRq2&export=download' },
   { src: '/JORNAL-NOVEMBRO-2025.jpg',             alt: 'Acontece — Novembro 2025', label: 'Novembro 2025' },
   { src: '/JORNAL-ABRIL-2025.png',                alt: 'Acontece — Outubro 2025',  label: 'Outubro 2025'  },
   { src: '/FREE-JORNAL-OMATAPALO-SETEMBRO-1.jpg', alt: 'Acontece — Setembro 2025', label: 'Setembro 2025', href: 'https://drive.usercontent.google.com/u/0/uc?id=13O2Im13MYhPenIfWPflYOoFXCvFOCTSt&export=download' },
