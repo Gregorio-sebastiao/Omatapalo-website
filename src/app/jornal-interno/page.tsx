@@ -30,11 +30,11 @@ export default function JornalInterno() {
       <Nav />
       <main style={{ minHeight: '100vh', background: '#F6F8FB', paddingBottom: 'clamp(60px,8vh,100px)' }}>
 
-        {/* Hero — imagem CAPAWEB sem overlay */}
-        <div style={{ width: '100%', lineHeight: 0 }}>
+        {/* Hero — mesma altura das outras páginas, imagem completa */}
+        <section style={{ position: 'relative', height: 'clamp(420px,55vw,640px)', background: '#1a396e', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/CAPAWEB.png" alt="Acontece — Jornal Interno" style={{ width: '100%', display: 'block', maxHeight: 320, objectFit: 'cover', objectPosition: 'center' }} />
-        </div>
+          <img src="/CAPAWEB.png" alt="Acontece — Jornal Interno" style={{ width: '100%', height: '100%', objectFit: 'contain', objectPosition: 'center', display: 'block' }} />
+        </section>
 
         <div className="wrap" style={{ paddingTop: 'clamp(48px,6vh,80px)' }}>
           <div style={{
